@@ -4,14 +4,14 @@
   "description": "Animated Heroicons for Vue, built with Motion",
   "author": "Aniket-508",
   "license": "MIT",
-  "homepage": "https://heroicons-animated.com",
+  "homepage": "https://vue.heroicons-animated.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Aniket-508/heroicons-animated",
+    "url": "https://github.com/heroicons-animated/heroicons-animated-vue",
     "directory": "packages/vue"
   },
   "bugs": {
-    "url": "https://github.com/Aniket-508/heroicons-animated/issues"
+    "url": "https://github.com/heroicons-animated/heroicons-animated-vue/issues"
   },
   "keywords": [
     "heroicons",
@@ -61,7 +61,6 @@
     "@vueuse/motion": "^2.0.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
     "@vitejs/plugin-vue": "^5.2.1",
     "typescript": "catalog:",
     "vite": "catalog:",

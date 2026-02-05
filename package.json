@@ -1,0 +1,26 @@
+{
+  "name": "heroicons-animated-vue",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Animated Heroicons for Vue",
+  "author": "Aniket-508",
+  "license": "MIT",
+  "homepage": "https://vue.heroicons-animated.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroicons-animated/heroicons-animated-vue"
+  },
+  "bugs": {
+    "url": "https://github.com/heroicons-animated/heroicons-animated-vue/issues"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm -r dev",
+    "type-check": "pnpm -r type-check"
+  },
+  "engines": {
+    "node": ">=20.x",
+    "pnpm": ">=10.x"
+  },
+  "packageManager": "pnpm@10.28.0"
+}
