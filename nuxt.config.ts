@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   alias: {
-    "@ha-vue-icons": resolve(__dirname, "../../packages/vue/src/icons"),
+    "@ha-vue-icons": resolve(__dirname, "src/icons"),
   },
   app: {
     head: {

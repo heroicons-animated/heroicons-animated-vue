@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const iconsDir = path.resolve(
   __dirname,
-  "../../../packages/vue/src/icons"
+  "../src/icons"
 );
 const registryPath = path.resolve(__dirname, "../public/r");
 const registryIndexPath = path.join(registryPath, "registry.json");
