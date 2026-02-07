@@ -1,91 +1,58 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
 import { ICON_MANIFEST } from "~/lib/manifest";
 import { LINK } from "~/lib/constants";
+import CliBlock from "~/components/CliBlock.vue";
+import CommentBlock from "~/components/CommentBlock.vue";
+import IconsList from "~/components/IconsList.vue";
 
-const query = ref("");
-
-const filteredIcons = computed(() => {
-  const term = query.value.toLowerCase().trim();
-  if (!term) {
-    return ICON_MANIFEST;
-  }
-
-  const tokens = term.split(/\s+/).filter(Boolean);
-  return ICON_MANIFEST.filter((icon) => {
-    const haystack = [icon.name, ...icon.keywords]
-      .join(" ")
-      .toLowerCase();
-    return tokens.every((token) => haystack.includes(token));
-  });
-});
-
-const totalCount = ICON_MANIFEST.length;
-const resultCount = computed(() => filteredIcons.value.length);
+const icons = ICON_MANIFEST;
 </script>
 
 <template>
-  <main class="page">
-    <section class="hero">
-      <div class="badges">
-        <span class="badge accent">Nuxt 4 Demo</span>
-        <span class="badge">Vue 3</span>
-        <span class="badge">@vueuse/motion</span>
-        <span class="badge">MIT Licensed</span>
-      </div>
-      <h1 class="hero-title">Heroicons Animated for Vue</h1>
-      <p class="hero-subtitle">
-        A motion-first icon gallery for Vue. Hover any icon to see the animation
-        and use the registry endpoints to pull components into your own stack.
-      </p>
-
-      <div class="search-card">
-        <input
-          v-model="query"
-          class="search-input"
-          type="search"
-          placeholder="Search icons by name, keyword, or intent"
-          aria-label="Search icons"
-        />
-        <div class="stats">
-          <span>{{ resultCount }} of {{ totalCount }} icons</span>
-          <span class="code-pill"
-            >pnpm add @heroicons-animated/vue @vueuse/motion</span
-          >
-          <span class="code-pill">/r/registry.json</span>
-        </div>
-      </div>
-    </section>
-
-    <h2 class="section-title">Icon Gallery</h2>
-
-    <div v-if="filteredIcons.length" class="grid">
-      <IconCard
-        v-for="icon in filteredIcons"
-        :key="icon.name"
-        :name="icon.name"
-      />
-    </div>
-
-    <div v-else class="empty">
-      No icons matched your search. Try a shorter keyword like "arrow" or
-      "check".
-    </div>
-
-    <div class="footer">
-      <span>Made for Vue + Nuxt 4.</span>
-      <a :href="LINK.HEROICONS" target="_blank" rel="noreferrer">
+  <section
+    class="view-container flex flex-col items-center justify-center border-neutral-200 px-0 pt-[60px] xl:border-x dark:border-neutral-800"
+    id="hero"
+  >
+    <h1 class="px-4 text-center font-sans text-[32px] min-[640px]:text-[42px]">
+      Beautifully animated heroicons for Vue<span class="text-primary">^</span>
+    </h1>
+    <p
+      class="mt-5 max-w-[582px] px-4 text-center font-mono text-secondary text-sm"
+    >
+      an open-source (<a
+        class="underline underline-offset-3 transition-[decoration-color] duration-100 focus-within:outline-offset-0 hover:decoration-primary focus-visible:outline-1 focus-visible:outline-primary"
+        :href="`${LINK.GITHUB}/blob/main/LICENSE`"
+        rel="noopener noreferrer"
+        tabIndex="0"
+        target="_blank"
+      >MIT License</a>) collection of smooth animated <br />
+      316 icons for your projects. feel free to use them, share your feedback,
+      and let's make this library awesome together!
+    </p>
+    <p class="mt-4 font-mono text-secondary text-xs min-[640px]:text-sm">
+      Crafted with
+      <a
+        class="bg-[#E5E5E5] px-2 py-0.5 text-primary focus-within:outline-offset-1 focus-visible:outline-1 focus-visible:outline-primary dark:bg-[#262626]"
+        :href="LINK.MOTION"
+        rel="noopener noreferrer"
+        tabIndex="0"
+        target="_blank"
+      >Motion</a>
+      &
+      <a
+        class="bg-[#E5E5E5] px-2 py-0.5 text-primary focus-within:outline-offset-1 focus-visible:outline-1 focus-visible:outline-primary dark:bg-[#262626]"
+        :href="LINK.HEROICONS"
+        rel="noopener noreferrer"
+        tabIndex="0"
+        target="_blank"
+      >
         Heroicons
       </a>
-      <a :href="LINK.MOTION" target="_blank" rel="noreferrer">
-        Motion
-      </a>
-      <a :href="LINK.GITHUB" target="_blank" rel="noreferrer">
-        GitHub
-      </a>
-      <a :href="LINK.SPONSOR" target="_blank" rel="noreferrer">
-        Sponsor
-      </a>
-    </div>
-  </main>
+    </p>
+    <CliBlock :icons="icons" />
+    <CommentBlock />
+  </section>
+  <section id="icons">
+    <IconsList />
+  </section>
 </template>

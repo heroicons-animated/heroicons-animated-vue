@@ -1,4 +1,5 @@
 import { resolve } from "node:path";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -6,23 +7,32 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   alias: {
-    "@ha-vue-icons": resolve(__dirname, "src/icons"),
+    "@heroicons-animated/vue": resolve(__dirname, "src/icons"),
+  },
+  vite: {
+    plugins: [tailwindcss()],
   },
   app: {
     head: {
-      title: "Heroicons Animated for Vue",
+      title: "heroicons-animated | Animated Heroicons for Vue",
+      htmlAttrs: {
+        lang: "en",
+      },
+      bodyAttrs: {
+        class: "relative bg-background antialiased",
+      },
       meta: [
         {
           name: "description",
           content:
-            "Animated Heroicons for Vue. Motion-powered, copy‑paste ready, and fully customizable.",
+            "Free open-source library of beautifully animated icons for Vue. Built with Motion and Heroicons.",
         },
         {
           name: "keywords",
           content:
             "animated icons, vue icons, heroicons, vueuse motion, nuxt icons",
         },
-        { name: "theme-color", content: "#0f172a" },
+        { name: "theme-color", content: "#f5f5f5" },
       ],
       link: [
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -30,6 +40,13 @@ export default defineNuxtConfig({
           rel: "preconnect",
           href: "https://fonts.gstatic.com",
           crossorigin: "",
+        },
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+        { rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
+        { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap",
         },
       ],
     },

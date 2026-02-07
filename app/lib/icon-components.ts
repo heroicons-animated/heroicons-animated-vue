@@ -1,6 +1,6 @@
 import type { Component } from "vue";
 
-const modules = import.meta.glob("@ha-vue-icons/*.vue", {
+const modules = import.meta.glob("@heroicons-animated/vue/*.vue", {
   import: "default",
   eager: true,
 });

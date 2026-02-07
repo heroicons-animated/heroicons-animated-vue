@@ -1,5 +1,5 @@
 const SITE = {
-  NAME: "heroicons-animated-vue",
+  NAME: "heroicons-animated",
   URL: "https://vue.heroicons-animated.com",
   OG_IMAGE: "/og.png",
   AUTHOR: {
@@ -8,7 +8,7 @@ const SITE = {
     GITHUB: "Aniket-508",
   },
   DESCRIPTION: {
-    LONG: "Animated Heroicons for Vue. Motion-powered, copy-paste ready, and fully customizable.",
+    LONG: "Free open-source library of beautifully animated icons for Vue. Built with Motion and Heroicons.",
     SHORT:
       "Animated Heroicons for Vue. Motion-powered, copy-paste ready, fully customizable.",
   },
@@ -34,4 +34,11 @@ const LINK = {
   SPONSOR: "https://github.com/sponsors/Aniket-508",
 } as const;
 
-export { LINK, SITE };
+const PACKAGE_MANAGER = {
+  PNPM: "pnpm",
+  NPM: "npm",
+  YARN: "yarn",
+  BUN: "bun",
+} as const;
+
+export { LINK, PACKAGE_MANAGER, SITE };
