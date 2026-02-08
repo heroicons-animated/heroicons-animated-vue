@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import StarIcon from "@heroicons-animated/vue/star";
 import { LINK } from "~/lib/constants";
 
-const GITHUB_API =
-  "https://api.github.com/repos/heroicons-animated/heroicons-animated-vue";
-const CACHE_KEY = "github-stars-cache";
-const CACHE_DURATION = 600_000;
-
-type StarsCache = {
-  stars: number;
-  timestamp: number;
+type StarsResponse = {
+  stars: number | null;
 };
 
-const stars = ref<number | null>(null);
+const { data } = await useFetch<StarsResponse>("/api/github-stars");
+const stars = computed(() => data.value?.stars ?? null);
 const starRef = ref<InstanceType<typeof StarIcon> | null>(null);
 
 const handleMouseEnter = () => {
@@ -23,50 +18,6 @@ const handleMouseEnter = () => {
 const handleMouseLeave = () => {
   starRef.value?.stopAnimation?.();
 };
-
-const getCachedStars = (): number | null => {
-  if (typeof window === "undefined") return null;
-  try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (!cached) return null;
-    const data = JSON.parse(cached) as StarsCache;
-    if (Date.now() - data.timestamp < CACHE_DURATION) {
-      return data.stars;
-    }
-  } catch {
-    // ignore cache read errors
-  }
-  return null;
-};
-
-onMounted(async () => {
-  const cached = getCachedStars();
-  if (cached !== null) {
-    stars.value = cached;
-    return;
-  }
-
-  try {
-    const response = await fetch(GITHUB_API, {
-      headers: {
-        Accept: "application/vnd.github.v3+json",
-        "User-Agent": "heroicons-animated",
-      },
-    });
-    if (!response.ok) return;
-    const data = await response.json();
-    if (typeof data?.stargazers_count === "number") {
-      const count = data.stargazers_count;
-      stars.value = count;
-      localStorage.setItem(
-        CACHE_KEY,
-        JSON.stringify({ stars: count, timestamp: Date.now() })
-      );
-    }
-  } catch {
-    // ignore
-  }
-});
 </script>
 
 <template>
