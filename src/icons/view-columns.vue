@@ -25,69 +25,73 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ViewColumnsIcon",
-};
+  export default {
+    name: "ViewColumnsIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const createLineVariants = (index: number) => ({
-  normal: { pathLength: 1, opacity: 1, transition: { duration: 0.2 } },
-  animate: {
-    pathLength: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      delay: 0.2 + index * 0.15,
-      duration: 0.3,
-      ease: "linear",
+  const createLineVariants = (index: number) => ({
+    normal: { pathLength: 1, opacity: 1, transition: { duration: 0.2 } },
+    animate: {
+      pathLength: [0, 1],
+      opacity: [0, 1],
+      transition: {
+        delay: 0.2 + index * 0.15,
+        duration: 0.3,
+        ease: "linear",
+      },
     },
-  },
-});
+  });
 
-const line0Ref = ref();
-const line1Ref = ref();
-const motion0 = useMotion(line0Ref, {
-  initial: createLineVariants(0).normal,
-  enter: createLineVariants(0).normal,
-});
-const motion1 = useMotion(line1Ref, {
-  initial: createLineVariants(1).normal,
-  enter: createLineVariants(1).normal,
-});
+  const line0Ref = ref();
+  const line1Ref = ref();
+  const motion0 = useMotion(line0Ref, {
+    initial: createLineVariants(0).normal,
+    enter: createLineVariants(0).normal,
+  });
+  const motion1 = useMotion(line1Ref, {
+    initial: createLineVariants(1).normal,
+    enter: createLineVariants(1).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motion0.apply(createLineVariants(0).animate);
-  motion1.apply(createLineVariants(1).animate);
-};
+  const startAnimation = () => {
+    motion0.apply(createLineVariants(0).animate);
+    motion1.apply(createLineVariants(1).animate);
+  };
 
-const stopAnimation = () => {
-  motion0.apply(createLineVariants(0).normal);
-  motion1.apply(createLineVariants(1).normal);
-};
+  const stopAnimation = () => {
+    motion0.apply(createLineVariants(0).normal);
+    motion1.apply(createLineVariants(1).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

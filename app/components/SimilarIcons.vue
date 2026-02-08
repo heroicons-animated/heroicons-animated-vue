@@ -1,40 +1,41 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { ICON_MANIFEST, type IconManifestItem } from "~/lib/manifest";
-import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
-import IconCard from "~/components/IconCard.vue";
+  import { computed } from "vue";
+  import { ICON_MANIFEST, type IconManifestItem } from "~/lib/manifest";
+  import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
+  import IconCard from "~/components/IconCard.vue";
 
-const props = defineProps<{
-  currentIcon: IconManifestItem;
-}>();
+  const props = defineProps<{
+    currentIcon: IconManifestItem;
+  }>();
 
-const { framework } = useFramework();
+  const { framework } = useFramework();
 
-const similarIcons = computed(() => {
-  const currentKeywords = new Set(props.currentIcon.keywords);
+  const similarIcons = computed(() => {
+    const currentKeywords = new Set(props.currentIcon.keywords);
 
-  const scored = ICON_MANIFEST
-    .filter((icon) => icon.name !== props.currentIcon.name)
-    .map((icon) => ({
-      icon,
-      score: icon.keywords.filter((kw) => currentKeywords.has(kw)).length,
-    }))
-    .filter((item) => item.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 6);
+    const scored = ICON_MANIFEST.filter(
+      (icon) => icon.name !== props.currentIcon.name
+    )
+      .map((icon) => ({
+        icon,
+        score: icon.keywords.filter((kw) => currentKeywords.has(kw)).length,
+      }))
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6);
 
-  return scored.map((item) => item.icon);
-});
+    return scored.map((item) => item.icon);
+  });
 
-const getIconHref = (name: string) => {
-  if (framework.value === DEFAULT_FRAMEWORK) {
-    return `/icons/${name}`;
-  }
-  return {
-    path: `/icons/${name}`,
-    query: { framework: framework.value },
+  const getIconHref = (name: string) => {
+    if (framework.value === DEFAULT_FRAMEWORK) {
+      return `/icons/${name}`;
+    }
+    return {
+      path: `/icons/${name}`,
+      query: { framework: framework.value },
+    };
   };
-};
 </script>
 
 <template>

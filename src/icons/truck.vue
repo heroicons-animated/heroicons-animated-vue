@@ -56,107 +56,111 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "TruckIcon",
-};
+  export default {
+    name: "TruckIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const truckVariants = {
-  normal: { y: 0, transition: { duration: 0.2 } },
-  animate: {
-    y: [0, -1, 0, -0.5, 0],
-    transition: {
-      duration: 0.4,
-      ease: "easeInOut",
-      repeat: Number.POSITIVE_INFINITY,
-      repeatType: "loop" as const,
+  const truckVariants = {
+    normal: { y: 0, transition: { duration: 0.2 } },
+    animate: {
+      y: [0, -1, 0, -0.5, 0],
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut",
+        repeat: Number.POSITIVE_INFINITY,
+        repeatType: "loop" as const,
+      },
     },
-  },
-};
+  };
 
-const createSpeedLineVariants = (i: number) => ({
-  normal: {
-    opacity: 0,
-    x: 0,
-    scaleX: 0.2,
-    transition: { duration: 0.2 },
-  },
-  animate: {
-    opacity: [0, 0.7, 0.5, 0],
-    x: [0, -4, -10, -16],
-    scaleX: [0.2, 1, 0.8, 0.3],
-    transition: {
-      duration: 0.5,
-      ease: "easeOut",
-      repeat: Number.POSITIVE_INFINITY,
-      delay: i * 0.08,
-      times: [0, 0.2, 0.6, 1],
+  const createSpeedLineVariants = (i: number) => ({
+    normal: {
+      opacity: 0,
+      x: 0,
+      scaleX: 0.2,
+      transition: { duration: 0.2 },
     },
-  },
-});
+    animate: {
+      opacity: [0, 0.7, 0.5, 0],
+      x: [0, -4, -10, -16],
+      scaleX: [0.2, 1, 0.8, 0.3],
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+        repeat: Number.POSITIVE_INFINITY,
+        delay: i * 0.08,
+        times: [0, 0.2, 0.6, 1],
+      },
+    },
+  });
 
-const pathRef = ref();
-const line0Ref = ref();
-const line1Ref = ref();
-const line2Ref = ref();
+  const pathRef = ref();
+  const line0Ref = ref();
+  const line1Ref = ref();
+  const line2Ref = ref();
 
-const pathMotion = useMotion(pathRef, {
-  initial: truckVariants.normal,
-  enter: truckVariants.normal,
-});
-const lineMotion0 = useMotion(line0Ref, {
-  initial: createSpeedLineVariants(0).normal,
-  enter: createSpeedLineVariants(0).normal,
-});
-const lineMotion1 = useMotion(line1Ref, {
-  initial: createSpeedLineVariants(1).normal,
-  enter: createSpeedLineVariants(1).normal,
-});
-const lineMotion2 = useMotion(line2Ref, {
-  initial: createSpeedLineVariants(2).normal,
-  enter: createSpeedLineVariants(2).normal,
-});
+  const pathMotion = useMotion(pathRef, {
+    initial: truckVariants.normal,
+    enter: truckVariants.normal,
+  });
+  const lineMotion0 = useMotion(line0Ref, {
+    initial: createSpeedLineVariants(0).normal,
+    enter: createSpeedLineVariants(0).normal,
+  });
+  const lineMotion1 = useMotion(line1Ref, {
+    initial: createSpeedLineVariants(1).normal,
+    enter: createSpeedLineVariants(1).normal,
+  });
+  const lineMotion2 = useMotion(line2Ref, {
+    initial: createSpeedLineVariants(2).normal,
+    enter: createSpeedLineVariants(2).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  pathMotion.apply(truckVariants.animate);
-  lineMotion0.apply(createSpeedLineVariants(0).animate);
-  lineMotion1.apply(createSpeedLineVariants(1).animate);
-  lineMotion2.apply(createSpeedLineVariants(2).animate);
-};
+  const startAnimation = () => {
+    pathMotion.apply(truckVariants.animate);
+    lineMotion0.apply(createSpeedLineVariants(0).animate);
+    lineMotion1.apply(createSpeedLineVariants(1).animate);
+    lineMotion2.apply(createSpeedLineVariants(2).animate);
+  };
 
-const stopAnimation = () => {
-  pathMotion.apply(truckVariants.normal);
-  lineMotion0.apply(createSpeedLineVariants(0).normal);
-  lineMotion1.apply(createSpeedLineVariants(1).normal);
-  lineMotion2.apply(createSpeedLineVariants(2).normal);
-};
+  const stopAnimation = () => {
+    pathMotion.apply(truckVariants.normal);
+    lineMotion0.apply(createSpeedLineVariants(0).normal);
+    lineMotion1.apply(createSpeedLineVariants(1).normal);
+    lineMotion2.apply(createSpeedLineVariants(2).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

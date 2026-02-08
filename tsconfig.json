@@ -2,19 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./app/*"
-      ],
-      "~/*": [
-        "./app/*"
-      ]
+      "@/*": ["./app/*"],
+      "~/*": ["./app/*"]
     },
     "strictNullChecks": true
   },
-  "include": [
-    "app",
-    "src",
-    "scripts",
-    "nuxt.config.ts"
-  ]
+  "include": ["app", "src", "scripts", "nuxt.config.ts"]
 }

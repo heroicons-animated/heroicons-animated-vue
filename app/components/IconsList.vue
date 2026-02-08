@@ -1,76 +1,85 @@
 <script setup lang="ts">
-import Fuse from "fuse.js";
-import { computed, ref, watch } from "vue";
-import { useRoute, useRouter } from "#imports";
-import { ICON_MANIFEST } from "~/lib/manifest";
-import { DEFAULT_FRAMEWORK } from "~/lib/framework";
-import { useFramework } from "~/lib/framework";
-import SearchInput from "~/components/SearchInput.vue";
-import IconCard from "~/components/IconCard.vue";
+  import Fuse from "fuse.js";
+  import { computed, ref, watch } from "vue";
+  import { useRoute, useRouter } from "#imports";
+  import { ICON_MANIFEST } from "~/lib/manifest";
+  import { DEFAULT_FRAMEWORK } from "~/lib/framework";
+  import { useFramework } from "~/lib/framework";
+  import SearchInput from "~/components/SearchInput.vue";
+  import IconCard from "~/components/IconCard.vue";
 
-const route = useRoute();
-const router = useRouter();
-const { framework } = useFramework();
+  const route = useRoute();
+  const router = useRouter();
+  const { framework } = useFramework();
 
-const query = ref(typeof route.query.search === "string" ? route.query.search : "");
+  const query = ref(
+    typeof route.query.search === "string" ? route.query.search : ""
+  );
 
-watch(
-  () => route.query.search,
-  (value) => {
-    const next = typeof value === "string" ? value : "";
-    if (next !== query.value) {
-      query.value = next;
+  watch(
+    () => route.query.search,
+    (value) => {
+      const next = typeof value === "string" ? value : "";
+      if (next !== query.value) {
+        query.value = next;
+      }
     }
-  }
-);
+  );
 
-watch(query, (value) => {
-  if (process.server) return;
-  const current = typeof route.query.search === "string" ? route.query.search : "";
-  if (current === value) return;
-
-  const nextQuery: Record<string, string> = {};
-  for (const [key, val] of Object.entries(route.query)) {
-    if (typeof val === "string") {
-      nextQuery[key] = val;
+  watch(query, (value) => {
+    if (process.server) {
+      return;
     }
-  }
+    const current =
+      typeof route.query.search === "string" ? route.query.search : "";
+    if (current === value) {
+      return;
+    }
 
-  if (value.trim().length === 0) {
-    delete nextQuery.search;
-  } else {
-    nextQuery.search = value;
-  }
+    const nextQuery: Record<string, string> = {};
+    for (const [key, val] of Object.entries(route.query)) {
+      if (typeof val === "string") {
+        nextQuery[key] = val;
+      }
+    }
 
-  router.replace({ query: nextQuery });
-});
+    if (value.trim().length === 0) {
+      delete nextQuery.search;
+    } else {
+      nextQuery.search = value;
+    }
 
-const fuse = new Fuse(ICON_MANIFEST, {
-  keys: [
-    { name: "name", weight: 3 },
-    { name: "keywords", weight: 2 },
-  ],
-  threshold: 0.3,
-  ignoreLocation: true,
-  findAllMatches: true,
-  isCaseSensitive: false,
-  minMatchCharLength: 2,
-});
+    router.replace({ query: nextQuery });
+  });
 
-const filteredIcons = computed(() => {
-  if (!query.value.trim()) return ICON_MANIFEST;
-  return fuse.search(query.value).map((result) => result.item);
-});
+  const fuse = new Fuse(ICON_MANIFEST, {
+    keys: [
+      { name: "name", weight: 3 },
+      { name: "keywords", weight: 2 },
+    ],
+    threshold: 0.3,
+    ignoreLocation: true,
+    findAllMatches: true,
+    isCaseSensitive: false,
+    minMatchCharLength: 2,
+  });
 
-const getIconHref = (name: string) => {
-  if (framework.value === DEFAULT_FRAMEWORK) {
-    return `/icons/${name}`;
-  }
-  return {
-    path: `/icons/${name}`,
-    query: { framework: framework.value },
+  const filteredIcons = computed(() => {
+    if (!query.value.trim()) {
+      return ICON_MANIFEST;
+    }
+    return fuse.search(query.value).map((result) => result.item);
+  });
+
+  const getIconHref = (name: string) => {
+    if (framework.value === DEFAULT_FRAMEWORK) {
+      return `/icons/${name}`;
+    }
+    return {
+      path: `/icons/${name}`,
+      query: { framework: framework.value },
+    };
   };
-};
 </script>
 
 <template>

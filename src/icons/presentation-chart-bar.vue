@@ -27,93 +27,93 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "PresentationChartBarIcon",
-};
+  export default {
+    name: "PresentationChartBarIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const createBarVariants = (delay: number) => ({
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-    pathOffset: 0,
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    pathOffset: [1, 0],
-    transition: {
-      delay,
-      duration: 0.4,
-      ease: "easeOut",
-      opacity: { duration: 0.1, delay },
+  const createBarVariants = (delay: number) => ({
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+      pathOffset: 0,
     },
-  },
-});
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      pathOffset: [1, 0],
+      transition: {
+        delay,
+        duration: 0.4,
+        ease: "easeOut",
+        opacity: { duration: 0.1, delay },
+      },
+    },
+  });
 
-const bar1Ref = ref<SVGPathElement | null>();
-const bar2Ref = ref<SVGPathElement | null>();
-const bar3Ref = ref<SVGPathElement | null>();
-const bar1Motion = useMotion(bar1Ref, {
-  initial: createBarVariants(0).normal,
-  enter: createBarVariants(0).normal,
-});
-const bar2Motion = useMotion(bar2Ref, {
-  initial: createBarVariants(0.15).normal,
-  enter: createBarVariants(0.15).normal,
-});
-const bar3Motion = useMotion(bar3Ref, {
-  initial: createBarVariants(0.3).normal,
-  enter: createBarVariants(0.3).normal,
-});
+  const bar1Ref = ref<SVGPathElement | null>();
+  const bar2Ref = ref<SVGPathElement | null>();
+  const bar3Ref = ref<SVGPathElement | null>();
+  const bar1Motion = useMotion(bar1Ref, {
+    initial: createBarVariants(0).normal,
+    enter: createBarVariants(0).normal,
+  });
+  const bar2Motion = useMotion(bar2Ref, {
+    initial: createBarVariants(0.15).normal,
+    enter: createBarVariants(0.15).normal,
+  });
+  const bar3Motion = useMotion(bar3Ref, {
+    initial: createBarVariants(0.3).normal,
+    enter: createBarVariants(0.3).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  bar1Motion.apply(createBarVariants(0).animate);
-  bar2Motion.apply(createBarVariants(0.15).animate);
-  bar3Motion.apply(createBarVariants(0.3).animate);
-};
+  const startAnimation = () => {
+    bar1Motion.apply(createBarVariants(0).animate);
+    bar2Motion.apply(createBarVariants(0.15).animate);
+    bar3Motion.apply(createBarVariants(0.3).animate);
+  };
 
-const stopAnimation = () => {
-  const barNormal = { opacity: 1, pathLength: 1, pathOffset: 0 };
-  bar1Motion.apply(barNormal);
-  bar2Motion.apply(barNormal);
-  bar3Motion.apply(barNormal);
-};
+  const stopAnimation = () => {
+    const barNormal = { opacity: 1, pathLength: 1, pathOffset: 0 };
+    bar1Motion.apply(barNormal);
+    bar2Motion.apply(barNormal);
+    bar3Motion.apply(barNormal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

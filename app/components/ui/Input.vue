@@ -1,40 +1,38 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs, useSlots } from "vue";
-import { cn } from "~/lib/utils";
+  import { computed, ref, useAttrs, useSlots } from "vue";
+  import { cn } from "~/lib/utils";
 
-defineOptions({ inheritAttrs: false });
+  defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(
-  defineProps<{
-    modelValue?: string;
-    inputContainerClass?: string;
-    type?: string;
-    disabled?: boolean;
-  }>(),
-  {
-    type: "text",
-  }
-);
+  const props = withDefaults(
+    defineProps<{
+      modelValue?: string;
+      inputContainerClass?: string;
+      type?: string;
+      disabled?: boolean;
+    }>(),
+    {
+      type: "text",
+    }
+  );
 
-const emit = defineEmits<{
-  (e: "update:modelValue", value: string): void;
-}>();
+  const emit = defineEmits<(e: "update:modelValue", value: string) => void>();
 
-const attrs = useAttrs();
-const slots = useSlots();
-const inputRef = ref<HTMLInputElement | null>(null);
+  const attrs = useAttrs();
+  const slots = useSlots();
+  const inputRef = ref<HTMLInputElement | null>(null);
 
-const hasLeading = computed(() => !!slots.leading);
-const hasTrailing = computed(() => !!slots.trailing);
+  const hasLeading = computed(() => !!slots.leading);
+  const hasTrailing = computed(() => !!slots.trailing);
 
-const onInput = (event: Event) => {
-  emit("update:modelValue", (event.target as HTMLInputElement).value);
-};
+  const onInput = (event: Event) => {
+    emit("update:modelValue", (event.target as HTMLInputElement).value);
+  };
 
-defineExpose({
-  focus: () => inputRef.value?.focus(),
-  blur: () => inputRef.value?.blur(),
-});
+  defineExpose({
+    focus: () => inputRef.value?.focus(),
+    blur: () => inputRef.value?.blur(),
+  });
 </script>
 
 <template>
@@ -71,7 +69,7 @@ defineExpose({
         (attrs as any).class
       )"
       data-slot="input"
-    />
+    >
     <span
       v-if="hasTrailing"
       class="pointer-events-none absolute top-1/2 right-3 inline-flex shrink-0 -translate-y-1/2 [&_svg]:shrink-0"

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import ArrowTopRightOnSquareIcon from "@heroicons-animated/vue/arrow-top-right-on-square";
-import Avatar from "~/components/ui/Avatar.vue";
-import AvatarImage from "~/components/ui/AvatarImage.vue";
-import AvatarFallback from "~/components/ui/AvatarFallback.vue";
+  import { ref } from "vue";
+  import ArrowTopRightOnSquareIcon from "@heroicons-animated/vue/arrow-top-right-on-square";
+  import Avatar from "~/components/ui/Avatar.vue";
+  import AvatarImage from "~/components/ui/AvatarImage.vue";
+  import AvatarFallback from "~/components/ui/AvatarFallback.vue";
 
-const arrowRef = ref<InstanceType<typeof ArrowTopRightOnSquareIcon> | null>(
-  null
-);
+  const arrowRef = ref<InstanceType<typeof ArrowTopRightOnSquareIcon> | null>(
+    null
+  );
 </script>
 
 <template>
@@ -26,7 +26,8 @@ const arrowRef = ref<InstanceType<typeof ArrowTopRightOnSquareIcon> | null>(
         target="_blank"
       >
         lucide-animated by dmytro
-      </a>{{ " " }}and what i learned from the{{ " " }}
+      </a>
+      {{ " " }}and what i learned from the{{ " " }}
       <a
         class="inline-block underline underline-offset-3 transition-[decoration-color,color] duration-100 focus-within:outline-offset-0 hover:text-primary hover:decoration-primary focus-visible:text-primary focus-visible:outline-1 focus-visible:outline-primary"
         href="https://animations.dev/"
@@ -35,7 +36,8 @@ const arrowRef = ref<InstanceType<typeof ArrowTopRightOnSquareIcon> | null>(
         target="_blank"
       >
         animations.dev
-      </a>{{ " " }}course.
+      </a>
+      {{ " " }}course.
     </blockquote>
     <div
       class="mt-4 flex w-full flex-wrap items-center justify-between gap-4 border-neutral-200 border-t pt-4 max-[655px]:pl-4 dark:border-neutral-800"
@@ -51,7 +53,9 @@ const arrowRef = ref<InstanceType<typeof ArrowTopRightOnSquareIcon> | null>(
             AP
           </AvatarFallback>
         </Avatar>
-        <p class="text-[13px] text-neutral-600 tracking-[0.01em] dark:text-neutral-400">
+        <p
+          class="text-[13px] text-neutral-600 tracking-[0.01em] dark:text-neutral-400"
+        >
           <a
             class="inline-block underline underline-offset-3 transition-[decoration-color,color] duration-100 focus-within:outline-offset-0 hover:text-primary hover:decoration-primary focus-visible:text-primary focus-visible:outline-1 focus-visible:outline-primary"
             href="https://aniketpawar.com/"

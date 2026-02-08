@@ -45,107 +45,107 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ViewfinderCircleIcon",
-};
+  export default {
+    name: "ViewfinderCircleIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const cornerNormal = { scale: 1, rotate: 0, opacity: 1 };
-const cornerAnimate = {
-  scale: 1.2,
-  rotate: 45,
-  opacity: 0,
-  transition: { type: "spring", stiffness: 200, damping: 20 },
-};
-const circleNormal = { scale: 1, opacity: 1 };
-const circleAnimate = {
-  scale: 0.8,
-  opacity: 0,
-  transition: { duration: 0.3, delay: 0.1 },
-};
-
-const corner1Ref = ref();
-const corner2Ref = ref();
-const corner3Ref = ref();
-const corner4Ref = ref();
-const circleRef = ref();
-const corner1 = useMotion(corner1Ref, {
-  initial: cornerNormal,
-  enter: cornerNormal,
-});
-const corner2 = useMotion(corner2Ref, {
-  initial: cornerNormal,
-  enter: cornerNormal,
-});
-const corner3 = useMotion(corner3Ref, {
-  initial: cornerNormal,
-  enter: cornerNormal,
-});
-const corner4 = useMotion(corner4Ref, {
-  initial: cornerNormal,
-  enter: cornerNormal,
-});
-const circleMotion = useMotion(circleRef, {
-  initial: circleNormal,
-  enter: circleNormal,
-});
-
-let isControlled = false;
-
-const startAnimation = async () => {
-  corner1.apply(cornerAnimate);
-  corner2.apply(cornerAnimate);
-  corner3.apply(cornerAnimate);
-  corner4.apply(cornerAnimate);
-  circleMotion.apply(circleAnimate);
-  await new Promise((r) => setTimeout(r, 300));
-  corner1.apply(cornerNormal);
-  corner2.apply(cornerNormal);
-  corner3.apply(cornerNormal);
-  corner4.apply(cornerNormal);
-  circleMotion.apply(circleNormal);
-};
-
-const stopAnimation = () => {
-  corner1.apply(cornerNormal);
-  corner2.apply(cornerNormal);
-  corner3.apply(cornerNormal);
-  corner4.apply(cornerNormal);
-  circleMotion.apply(circleNormal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const cornerNormal = { scale: 1, rotate: 0, opacity: 1 };
+  const cornerAnimate = {
+    scale: 1.2,
+    rotate: 45,
+    opacity: 0,
+    transition: { type: "spring", stiffness: 200, damping: 20 },
+  };
+  const circleNormal = { scale: 1, opacity: 1 };
+  const circleAnimate = {
+    scale: 0.8,
+    opacity: 0,
+    transition: { duration: 0.3, delay: 0.1 },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const corner1Ref = ref();
+  const corner2Ref = ref();
+  const corner3Ref = ref();
+  const corner4Ref = ref();
+  const circleRef = ref();
+  const corner1 = useMotion(corner1Ref, {
+    initial: cornerNormal,
+    enter: cornerNormal,
+  });
+  const corner2 = useMotion(corner2Ref, {
+    initial: cornerNormal,
+    enter: cornerNormal,
+  });
+  const corner3 = useMotion(corner3Ref, {
+    initial: cornerNormal,
+    enter: cornerNormal,
+  });
+  const corner4 = useMotion(corner4Ref, {
+    initial: cornerNormal,
+    enter: cornerNormal,
+  });
+  const circleMotion = useMotion(circleRef, {
+    initial: circleNormal,
+    enter: circleNormal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = async () => {
+    corner1.apply(cornerAnimate);
+    corner2.apply(cornerAnimate);
+    corner3.apply(cornerAnimate);
+    corner4.apply(cornerAnimate);
+    circleMotion.apply(circleAnimate);
+    await new Promise((r) => setTimeout(r, 300));
+    corner1.apply(cornerNormal);
+    corner2.apply(cornerNormal);
+    corner3.apply(cornerNormal);
+    corner4.apply(cornerNormal);
+    circleMotion.apply(circleNormal);
+  };
+
+  const stopAnimation = () => {
+    corner1.apply(cornerNormal);
+    corner2.apply(cornerNormal);
+    corner3.apply(cornerNormal);
+    corner4.apply(cornerNormal);
+    circleMotion.apply(circleNormal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

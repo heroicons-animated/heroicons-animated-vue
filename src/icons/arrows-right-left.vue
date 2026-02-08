@@ -27,91 +27,91 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArrowsRightLeftIcon",
-};
+  export default {
+    name: "ArrowsRightLeftIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const leftArrowVariants = {
-  normal: { translateX: 0 },
-  animate: {
-    translateX: [0, -2, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.4, 1],
-    },
-  },
-};
-
-const rightArrowVariants = {
-  normal: { translateX: 0 },
-  animate: {
-    translateX: [0, 2, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.4, 1],
-    },
-  },
-};
-
-const leftArrowRef = ref();
-const rightArrowRef = ref();
-
-const leftArrowMotion = useMotion(leftArrowRef, {
-  initial: leftArrowVariants.normal,
-  enter: leftArrowVariants.normal,
-});
-
-const rightArrowMotion = useMotion(rightArrowRef, {
-  initial: rightArrowVariants.normal,
-  enter: rightArrowVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  leftArrowMotion.apply(leftArrowVariants.animate);
-  rightArrowMotion.apply(rightArrowVariants.animate);
-};
-
-const stopAnimation = () => {
-  leftArrowMotion.apply(leftArrowVariants.normal);
-  rightArrowMotion.apply(rightArrowVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const leftArrowVariants = {
+    normal: { translateX: 0 },
+    animate: {
+      translateX: [0, -2, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.4, 1],
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const rightArrowVariants = {
+    normal: { translateX: 0 },
+    animate: {
+      translateX: [0, 2, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.4, 1],
+      },
+    },
+  };
+
+  const leftArrowRef = ref();
+  const rightArrowRef = ref();
+
+  const leftArrowMotion = useMotion(leftArrowRef, {
+    initial: leftArrowVariants.normal,
+    enter: leftArrowVariants.normal,
+  });
+
+  const rightArrowMotion = useMotion(rightArrowRef, {
+    initial: rightArrowVariants.normal,
+    enter: rightArrowVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    leftArrowMotion.apply(leftArrowVariants.animate);
+    rightArrowMotion.apply(rightArrowVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    leftArrowMotion.apply(leftArrowVariants.normal);
+    rightArrowMotion.apply(rightArrowVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

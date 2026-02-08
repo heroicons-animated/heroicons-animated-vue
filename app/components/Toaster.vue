@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import {
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-} from "@heroicons/vue/24/outline";
-import { removeToast, toasts, type ToastItem } from "~/lib/toast";
-import { cn } from "~/lib/utils";
+  import { computed } from "vue";
+  import {
+    CheckCircleIcon,
+    ExclamationTriangleIcon,
+    InformationCircleIcon,
+    XMarkIcon,
+  } from "@heroicons/vue/24/outline";
+  import { removeToast, toasts, type ToastItem } from "~/lib/toast";
+  import { cn } from "~/lib/utils";
 
-const iconMap = {
-  info: InformationCircleIcon,
-  success: CheckCircleIcon,
-  warning: ExclamationTriangleIcon,
-  error: XMarkIcon,
-};
+  const iconMap = {
+    info: InformationCircleIcon,
+    success: CheckCircleIcon,
+    warning: ExclamationTriangleIcon,
+    error: XMarkIcon,
+  };
 
-const iconClasses: Record<ToastItem["type"], string> = {
-  info: "text-neutral-500 dark:text-neutral-400",
-  success: "text-green-600 dark:text-green-400",
-  warning: "text-yellow-500 dark:text-yellow-400",
-  error: "text-red-600 dark:text-red-400",
-};
+  const iconClasses: Record<ToastItem["type"], string> = {
+    info: "text-neutral-500 dark:text-neutral-400",
+    success: "text-green-600 dark:text-green-400",
+    warning: "text-yellow-500 dark:text-yellow-400",
+    error: "text-red-600 dark:text-red-400",
+  };
 
-const items = computed(() => toasts.value);
+  const items = computed(() => toasts.value);
 
-const handleActionClick = (toast: ToastItem) => {
-  toast.action?.onClick();
-  removeToast(toast.id);
-};
+  const handleActionClick = (toast: ToastItem) => {
+    toast.action?.onClick();
+    removeToast(toast.id);
+  };
 </script>
 
 <template>

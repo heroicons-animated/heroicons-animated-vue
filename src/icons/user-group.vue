@@ -36,90 +36,94 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "UserGroupIcon",
-};
+  export default {
+    name: "UserGroupIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const rightVariants = {
-  normal: {
-    x: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 200, damping: 13 },
-  },
-  animate: {
-    x: [-6, 0],
-    opacity: [0, 0, 1],
-    transition: {
-      delay: 0.1,
-      x: { type: "spring", stiffness: 200, damping: 13 },
-      opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+  const rightVariants = {
+    normal: {
+      x: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 200, damping: 13 },
     },
-  },
-};
-
-const leftVariants = {
-  normal: {
-    x: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 200, damping: 13 },
-  },
-  animate: {
-    x: [6, 0],
-    opacity: [0, 0, 1],
-    transition: {
-      delay: 0.1,
-      x: { type: "spring", stiffness: 200, damping: 13 },
-      opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+    animate: {
+      x: [-6, 0],
+      opacity: [0, 0, 1],
+      transition: {
+        delay: 0.1,
+        x: { type: "spring", stiffness: 200, damping: 13 },
+        opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+      },
     },
-  },
-};
+  };
 
-const rightRef = ref();
-const leftRef = ref();
-const rightMotion = useMotion(rightRef, {
-  initial: rightVariants.normal,
-  enter: rightVariants.normal,
-});
-const leftMotion = useMotion(leftRef, {
-  initial: leftVariants.normal,
-  enter: leftVariants.normal,
-});
+  const leftVariants = {
+    normal: {
+      x: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 200, damping: 13 },
+    },
+    animate: {
+      x: [6, 0],
+      opacity: [0, 0, 1],
+      transition: {
+        delay: 0.1,
+        x: { type: "spring", stiffness: 200, damping: 13 },
+        opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+      },
+    },
+  };
 
-let isControlled = false;
+  const rightRef = ref();
+  const leftRef = ref();
+  const rightMotion = useMotion(rightRef, {
+    initial: rightVariants.normal,
+    enter: rightVariants.normal,
+  });
+  const leftMotion = useMotion(leftRef, {
+    initial: leftVariants.normal,
+    enter: leftVariants.normal,
+  });
 
-const startAnimation = () => {
-  rightMotion.apply(rightVariants.animate);
-  leftMotion.apply(leftVariants.animate);
-};
+  let isControlled = false;
 
-const stopAnimation = () => {
-  rightMotion.apply(rightVariants.normal);
-  leftMotion.apply(leftVariants.normal);
-};
+  const startAnimation = () => {
+    rightMotion.apply(rightVariants.animate);
+    leftMotion.apply(leftVariants.animate);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const stopAnimation = () => {
+    rightMotion.apply(rightVariants.normal);
+    leftMotion.apply(leftVariants.normal);
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

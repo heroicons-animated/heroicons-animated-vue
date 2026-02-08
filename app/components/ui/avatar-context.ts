@@ -5,6 +5,5 @@ export type AvatarContext = {
   setImageLoaded: (value: boolean) => void;
 };
 
-export const avatarContextKey: InjectionKey<AvatarContext> = Symbol(
-  "AvatarContext"
-);
+export const avatarContextKey: InjectionKey<AvatarContext> =
+  Symbol("AvatarContext");

@@ -54,172 +54,172 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CakeIcon",
-};
+  export default {
+    name: "CakeIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const cakeBodyVariants = {
-  normal: {
-    translateY: 0,
-    opacity: 1,
-  },
-  animate: {
-    translateY: [8, -1, 0],
-    opacity: [0, 1, 1],
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-};
-
-const candleVariants = {
-  normal: {
-    scaleY: 1,
-    opacity: 1,
-  },
-  animate: {
-    scaleY: [0, 1.2, 1],
-    opacity: [0, 1, 1],
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
-      delay: 0.3,
-    },
-  },
-};
-
-const flameLeftVariants = {
-  normal: {
-    scale: 1,
-    opacity: 1,
-  },
-  animate: {
-    scale: [0, 1.3, 1],
-    opacity: [0, 1, 1],
-    transition: {
-      duration: 0.25,
-      ease: "easeOut",
-      delay: 0.5,
-    },
-  },
-};
-
-const flameMiddleVariants = {
-  normal: {
-    scale: 1,
-    opacity: 1,
-  },
-  animate: {
-    scale: [0, 1.3, 1],
-    opacity: [0, 1, 1],
-    transition: {
-      duration: 0.25,
-      ease: "easeOut",
-      delay: 0.65,
-    },
-  },
-};
-
-const flameRightVariants = {
-  normal: {
-    scale: 1,
-    opacity: 1,
-  },
-  animate: {
-    scale: [0, 1.3, 1],
-    opacity: [0, 1, 1],
-    transition: {
-      duration: 0.25,
-      ease: "easeOut",
-      delay: 0.8,
-    },
-  },
-};
-
-const cakeBodyRef = ref<SVGPathElement>();
-const candleGroupRef = ref<SVGGElement>();
-const flameLeftRef = ref<SVGPathElement>();
-const flameMiddleRef = ref<SVGPathElement>();
-const flameRightRef = ref<SVGPathElement>();
-
-const cakeBodyMotion = useMotion(cakeBodyRef, {
-  initial: cakeBodyVariants.normal,
-  enter: cakeBodyVariants.normal,
-});
-
-const candleGroupMotion = useMotion(candleGroupRef, {
-  initial: candleVariants.normal,
-  enter: candleVariants.normal,
-});
-
-const flameLeftMotion = useMotion(flameLeftRef, {
-  initial: flameLeftVariants.normal,
-  enter: flameLeftVariants.normal,
-});
-
-const flameMiddleMotion = useMotion(flameMiddleRef, {
-  initial: flameMiddleVariants.normal,
-  enter: flameMiddleVariants.normal,
-});
-
-const flameRightMotion = useMotion(flameRightRef, {
-  initial: flameRightVariants.normal,
-  enter: flameRightVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  cakeBodyMotion.apply(cakeBodyVariants.animate);
-  candleGroupMotion.apply(candleVariants.animate);
-  flameLeftMotion.apply(flameLeftVariants.animate);
-  flameMiddleMotion.apply(flameMiddleVariants.animate);
-  flameRightMotion.apply(flameRightVariants.animate);
-};
-
-const stopAnimation = () => {
-  cakeBodyMotion.apply(cakeBodyVariants.normal);
-  candleGroupMotion.apply(candleVariants.normal);
-  flameLeftMotion.apply(flameLeftVariants.normal);
-  flameMiddleMotion.apply(flameMiddleVariants.normal);
-  flameRightMotion.apply(flameRightVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const cakeBodyVariants = {
+    normal: {
+      translateY: 0,
+      opacity: 1,
+    },
+    animate: {
+      translateY: [8, -1, 0],
+      opacity: [0, 1, 1],
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const candleVariants = {
+    normal: {
+      scaleY: 1,
+      opacity: 1,
+    },
+    animate: {
+      scaleY: [0, 1.2, 1],
+      opacity: [0, 1, 1],
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+        delay: 0.3,
+      },
+    },
+  };
+
+  const flameLeftVariants = {
+    normal: {
+      scale: 1,
+      opacity: 1,
+    },
+    animate: {
+      scale: [0, 1.3, 1],
+      opacity: [0, 1, 1],
+      transition: {
+        duration: 0.25,
+        ease: "easeOut",
+        delay: 0.5,
+      },
+    },
+  };
+
+  const flameMiddleVariants = {
+    normal: {
+      scale: 1,
+      opacity: 1,
+    },
+    animate: {
+      scale: [0, 1.3, 1],
+      opacity: [0, 1, 1],
+      transition: {
+        duration: 0.25,
+        ease: "easeOut",
+        delay: 0.65,
+      },
+    },
+  };
+
+  const flameRightVariants = {
+    normal: {
+      scale: 1,
+      opacity: 1,
+    },
+    animate: {
+      scale: [0, 1.3, 1],
+      opacity: [0, 1, 1],
+      transition: {
+        duration: 0.25,
+        ease: "easeOut",
+        delay: 0.8,
+      },
+    },
+  };
+
+  const cakeBodyRef = ref<SVGPathElement>();
+  const candleGroupRef = ref<SVGGElement>();
+  const flameLeftRef = ref<SVGPathElement>();
+  const flameMiddleRef = ref<SVGPathElement>();
+  const flameRightRef = ref<SVGPathElement>();
+
+  const cakeBodyMotion = useMotion(cakeBodyRef, {
+    initial: cakeBodyVariants.normal,
+    enter: cakeBodyVariants.normal,
+  });
+
+  const candleGroupMotion = useMotion(candleGroupRef, {
+    initial: candleVariants.normal,
+    enter: candleVariants.normal,
+  });
+
+  const flameLeftMotion = useMotion(flameLeftRef, {
+    initial: flameLeftVariants.normal,
+    enter: flameLeftVariants.normal,
+  });
+
+  const flameMiddleMotion = useMotion(flameMiddleRef, {
+    initial: flameMiddleVariants.normal,
+    enter: flameMiddleVariants.normal,
+  });
+
+  const flameRightMotion = useMotion(flameRightRef, {
+    initial: flameRightVariants.normal,
+    enter: flameRightVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    cakeBodyMotion.apply(cakeBodyVariants.animate);
+    candleGroupMotion.apply(candleVariants.animate);
+    flameLeftMotion.apply(flameLeftVariants.animate);
+    flameMiddleMotion.apply(flameMiddleVariants.animate);
+    flameRightMotion.apply(flameRightVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    cakeBodyMotion.apply(cakeBodyVariants.normal);
+    candleGroupMotion.apply(candleVariants.normal);
+    flameLeftMotion.apply(flameLeftVariants.normal);
+    flameMiddleMotion.apply(flameMiddleVariants.normal);
+    flameRightMotion.apply(flameRightVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

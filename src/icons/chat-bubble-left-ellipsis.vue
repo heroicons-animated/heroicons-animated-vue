@@ -32,92 +32,92 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ChatBubbleLeftEllipsisIcon",
-};
+  export default {
+    name: "ChatBubbleLeftEllipsisIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const DOTS = [
-  {
-    d: "M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0",
-    index: 0,
-  },
-  {
-    d: "M12.75 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0",
-    index: 1,
-  },
-  {
-    d: "M16.875 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0",
-    index: 2,
-  },
-];
-
-const variants = {
-  normal: {
-    scale: 1,
-    transition: {
-      duration: 0.2,
-      ease: "easeOut",
-    },
-  },
-  animate: {
-    scale: [1, 1.08, 1],
-    transition: {
-      duration: 0.45,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const pathRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(pathRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionInstance.apply(variants.animate);
-};
-
-const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const DOTS = [
+    {
+      d: "M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0",
+      index: 0,
+    },
+    {
+      d: "M12.75 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0",
+      index: 1,
+    },
+    {
+      d: "M16.875 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0",
+      index: 2,
+    },
+  ];
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const variants = {
+    normal: {
+      scale: 1,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut",
+      },
+    },
+    animate: {
+      scale: [1, 1.08, 1],
+      transition: {
+        duration: 0.45,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const pathRef = ref<SVGPathElement | null>();
+  const motionInstance = useMotion(pathRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionInstance.apply(variants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionInstance.apply(variants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

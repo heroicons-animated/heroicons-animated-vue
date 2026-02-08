@@ -28,69 +28,69 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "FlagIcon",
-};
+  export default {
+    name: "FlagIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-// Match React: flag path (second) skewX [0, 3, -3, 2, -2, 0], 0.6s easeInOut, origin 0 50%
-const variants = {
-  normal: { skewX: 0 },
-  animate: {
-    skewX: [0, 3, -3, 2, -2, 0],
-    transition: { duration: 0.6, ease: "easeInOut" },
-  },
-};
-
-const flagRef = ref<SVGPathElement | null>(null);
-const motionInstance = useMotion(flagRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionInstance.apply(variants.animate);
-};
-
-const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  // Match React: flag path (second) skewX [0, 3, -3, 2, -2, 0], 0.6s easeInOut, origin 0 50%
+  const variants = {
+    normal: { skewX: 0 },
+    animate: {
+      skewX: [0, 3, -3, 2, -2, 0],
+      transition: { duration: 0.6, ease: "easeInOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const flagRef = ref<SVGPathElement | null>(null);
+  const motionInstance = useMotion(flagRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionInstance.apply(variants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionInstance.apply(variants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

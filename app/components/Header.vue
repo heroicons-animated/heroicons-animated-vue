@@ -1,33 +1,35 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useMotion } from "@vueuse/motion";
-import GithubStarsButton from "~/components/GithubStarsButton.vue";
-import Logo from "~/components/Logo.vue";
-import ThemeToggle from "~/components/ThemeToggle.vue";
-import { LINK } from "~/lib/constants";
+  import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import GithubStarsButton from "~/components/GithubStarsButton.vue";
+  import Logo from "~/components/Logo.vue";
+  import ThemeToggle from "~/components/ThemeToggle.vue";
+  import { LINK } from "~/lib/constants";
 
-const heartRef = ref<SVGSVGElement | null>(null);
-const heartMotion = useMotion(heartRef, {
-  initial: { scale: 1 },
-});
-
-const handleMouseEnter = () => {
-  heartMotion.apply({
-    scale: [1, 1.08, 1],
-    transition: { duration: 0.45, repeat: 2 },
+  const heartRef = ref<SVGSVGElement | null>(null);
+  const heartMotion = useMotion(heartRef, {
+    initial: { scale: 1 },
   });
-};
 
-const handleMouseLeave = () => {
-  heartMotion.apply({
-    scale: 1,
-    transition: { duration: 0.2 },
-  });
-};
+  const handleMouseEnter = () => {
+    heartMotion.apply({
+      scale: [1, 1.08, 1],
+      transition: { duration: 0.45, repeat: 2 },
+    });
+  };
+
+  const handleMouseLeave = () => {
+    heartMotion.apply({
+      scale: 1,
+      transition: { duration: 0.2 },
+    });
+  };
 </script>
 
 <template>
-  <header class="h-(--header-height) border-neutral-200 xl:border-b dark:border-neutral-800">
+  <header
+    class="h-(--header-height) border-neutral-200 xl:border-b dark:border-neutral-800"
+  >
     <div
       class="view-container flex h-full w-full justify-between gap-4 border-neutral-200 xl:border-x dark:border-neutral-800"
     >
@@ -67,7 +69,9 @@ const handleMouseLeave = () => {
           </span>
         </span>
       </a>
-      <div class="ml-auto flex w-full flex-1 flex-wrap-reverse items-center justify-end gap-2">
+      <div
+        class="ml-auto flex w-full flex-1 flex-wrap-reverse items-center justify-end gap-2"
+      >
         <a
           aria-label="Sponsor Project"
           class="supports-[corner-shape:squircle]:corner-squircle flex size-9 items-center justify-center gap-1 rounded-[14px] bg-white font-sans text-[#3F3F47] text-sm underline-offset-4 focus-within:outline-offset-2 hover:underline focus-visible:outline-1 focus-visible:outline-primary supports-[corner-shape:squircle]:rounded-[20px] sm:size-auto sm:bg-transparent sm:pr-1 dark:bg-white/10 dark:text-[#FAFAFA] sm:dark:bg-transparent"

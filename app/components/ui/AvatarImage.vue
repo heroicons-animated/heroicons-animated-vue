@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { inject, useAttrs } from "vue";
-import { cn } from "~/lib/utils";
-import { avatarContextKey } from "./avatar-context";
+  import { inject, useAttrs } from "vue";
+  import { cn } from "~/lib/utils";
+  import { avatarContextKey } from "./avatar-context";
 
-defineOptions({ inheritAttrs: false });
+  defineOptions({ inheritAttrs: false });
 
-const attrs = useAttrs();
-const ctx = inject(avatarContextKey);
+  const attrs = useAttrs();
+  const ctx = inject(avatarContextKey);
 
-const handleLoad = () => {
-  ctx?.setImageLoaded(true);
-};
+  const handleLoad = () => {
+    ctx?.setImageLoaded(true);
+  };
 
-const handleError = () => {
-  ctx?.setImageLoaded(false);
-};
+  const handleError = () => {
+    ctx?.setImageLoaded(false);
+  };
 </script>
 
 <template>
@@ -23,5 +23,5 @@ const handleError = () => {
     v-bind="attrs"
     @load="handleLoad"
     @error="handleError"
-  />
+  >
 </template>

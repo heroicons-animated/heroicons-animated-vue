@@ -34,81 +34,81 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "VideoCameraIcon",
-};
+  export default {
+    name: "VideoCameraIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const cameraVariants = {
-  normal: { scale: 1, transition: { duration: 0.2, ease: "easeOut" } },
-  animate: {
-    scale: [1, 1.05, 1],
-    transition: { duration: 0.4, ease: "easeInOut" },
-  },
-};
-const recordVariants = {
-  normal: { opacity: 0, transition: { duration: 0.2 } },
-  animate: {
-    opacity: [0, 1, 0, 1, 0],
-    transition: { duration: 0.8, ease: "easeInOut" },
-  },
-};
-
-const svgRef = ref();
-const dotRef = ref();
-const motionSvg = useMotion(svgRef, {
-  initial: cameraVariants.normal,
-  enter: cameraVariants.normal,
-});
-const motionDot = useMotion(dotRef, {
-  initial: recordVariants.normal,
-  enter: recordVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionSvg.apply(cameraVariants.animate);
-  motionDot.apply(recordVariants.animate);
-};
-
-const stopAnimation = () => {
-  motionSvg.apply(cameraVariants.normal);
-  motionDot.apply(recordVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const cameraVariants = {
+    normal: { scale: 1, transition: { duration: 0.2, ease: "easeOut" } },
+    animate: {
+      scale: [1, 1.05, 1],
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+  };
+  const recordVariants = {
+    normal: { opacity: 0, transition: { duration: 0.2 } },
+    animate: {
+      opacity: [0, 1, 0, 1, 0],
+      transition: { duration: 0.8, ease: "easeInOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const svgRef = ref();
+  const dotRef = ref();
+  const motionSvg = useMotion(svgRef, {
+    initial: cameraVariants.normal,
+    enter: cameraVariants.normal,
+  });
+  const motionDot = useMotion(dotRef, {
+    initial: recordVariants.normal,
+    enter: recordVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionSvg.apply(cameraVariants.animate);
+    motionDot.apply(recordVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionSvg.apply(cameraVariants.normal);
+    motionDot.apply(recordVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

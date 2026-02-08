@@ -1,55 +1,59 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-import Input from "~/components/ui/Input.vue";
-import Kbd from "~/components/ui/Kbd.vue";
+  import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+  import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
+  import Input from "~/components/ui/Input.vue";
+  import Kbd from "~/components/ui/Kbd.vue";
 
-const props = defineProps<{
-  modelValue: string;
-  resultCount?: number;
-  totalCount?: number;
-}>();
+  const props = defineProps<{
+    modelValue: string;
+    resultCount?: number;
+    totalCount?: number;
+  }>();
 
-const emit = defineEmits<{ (e: "update:modelValue", value: string): void }>();
+  const emit = defineEmits<(e: "update:modelValue", value: string) => void>();
 
-const inputRef = ref<{ focus: () => void; blur: () => void } | null>(null);
+  const inputRef = ref<{ focus: () => void; blur: () => void } | null>(null);
 
-const value = computed({
-  get: () => props.modelValue,
-  set: (next: string) => emit("update:modelValue", next),
-});
+  const value = computed({
+    get: () => props.modelValue,
+    set: (next: string) => emit("update:modelValue", next),
+  });
 
-const showResultCount = computed(
-  () =>
-    props.modelValue.length > 0 &&
-    props.resultCount !== undefined &&
-    props.totalCount !== undefined
-);
+  const showResultCount = computed(
+    () =>
+      props.modelValue.length > 0 &&
+      props.resultCount !== undefined &&
+      props.totalCount !== undefined
+  );
 
-const handleKeydown = (event: KeyboardEvent) => {
-  const key = event.key.toLowerCase();
-  if ((event.metaKey || event.ctrlKey) && key === "k") {
-    event.preventDefault();
-    inputRef.value?.focus();
-    return;
-  }
+  const handleKeydown = (event: KeyboardEvent) => {
+    const key = event.key.toLowerCase();
+    if ((event.metaKey || event.ctrlKey) && key === "k") {
+      event.preventDefault();
+      inputRef.value?.focus();
+      return;
+    }
 
-  if (key === "escape") {
-    event.preventDefault();
-    emit("update:modelValue", "");
-    inputRef.value?.blur();
-  }
-};
+    if (key === "escape") {
+      event.preventDefault();
+      emit("update:modelValue", "");
+      inputRef.value?.blur();
+    }
+  };
 
-onMounted(() => {
-  if (typeof window === "undefined") return;
-  window.addEventListener("keydown", handleKeydown);
-});
+  onMounted(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.addEventListener("keydown", handleKeydown);
+  });
 
-onBeforeUnmount(() => {
-  if (typeof window === "undefined") return;
-  window.removeEventListener("keydown", handleKeydown);
-});
+  onBeforeUnmount(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.removeEventListener("keydown", handleKeydown);
+  });
 </script>
 
 <template>
@@ -74,10 +78,16 @@ onBeforeUnmount(() => {
         type="search"
       >
         <template #leading>
-          <MagnifyingGlassIcon class="size-5 text-neutral-400" :stroke-width="2" />
+          <MagnifyingGlassIcon
+            class="size-5 text-neutral-400"
+            :stroke-width="2"
+          />
         </template>
         <template #trailing>
-          <span v-if="showResultCount" class="font-mono text-neutral-400 text-sm">
+          <span
+            v-if="showResultCount"
+            class="font-mono text-neutral-400 text-sm"
+          >
             {{ resultCount }}/{{ totalCount }}
           </span>
           <Kbd

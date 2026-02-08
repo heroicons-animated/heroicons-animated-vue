@@ -31,144 +31,144 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArrowTrendingDownIcon",
-};
+  export default {
+    name: "ArrowTrendingDownIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const svgVariants = {
-  normal: {
-    translateX: 0,
-    translateY: 0,
-  },
-  animate: {
-    translateX: [0, 2, 0],
-    translateY: [0, 2, 0],
-    transition: {
-      duration: 0.5,
+  const svgVariants = {
+    normal: {
+      translateX: 0,
+      translateY: 0,
     },
-  },
-};
+    animate: {
+      translateX: [0, 2, 0],
+      translateY: [0, 2, 0],
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
-const svgRef = ref<SVGSVGElement>();
-const pathRef = ref<SVGPathElement>();
-const arrowRef = ref<SVGPathElement>();
-const svgMotion = useMotion(svgRef, {
-  initial: svgVariants.normal,
-  enter: svgVariants.normal,
-});
+  const svgRef = ref<SVGSVGElement>();
+  const pathRef = ref<SVGPathElement>();
+  const arrowRef = ref<SVGPathElement>();
+  const svgMotion = useMotion(svgRef, {
+    initial: svgVariants.normal,
+    enter: svgVariants.normal,
+  });
 
-let isControlled = false;
-let pathAnimation: Animation | null = null;
-let arrowAnimation: Animation | null = null;
+  let isControlled = false;
+  let pathAnimation: Animation | null = null;
+  let arrowAnimation: Animation | null = null;
 
-const startAnimation = () => {
-  svgMotion.apply(svgVariants.animate);
+  const startAnimation = () => {
+    svgMotion.apply(svgVariants.animate);
 
-  // Animate path drawing using Web Animations API
-  if (pathRef.value) {
-    const pathLength = pathRef.value.getTotalLength();
-    pathRef.value.style.strokeDasharray = `${pathLength}`;
-    pathRef.value.style.strokeDashoffset = `${pathLength}`;
-    pathRef.value.style.opacity = "0";
+    // Animate path drawing using Web Animations API
+    if (pathRef.value) {
+      const pathLength = pathRef.value.getTotalLength();
+      pathRef.value.style.strokeDasharray = `${pathLength}`;
+      pathRef.value.style.strokeDashoffset = `${pathLength}`;
+      pathRef.value.style.opacity = "0";
 
-    pathAnimation = pathRef.value.animate(
-      [
-        { strokeDashoffset: pathLength, opacity: 0 },
-        { strokeDashoffset: 0, opacity: 1 },
-      ],
-      {
-        duration: 400,
-        easing: "ease-in-out",
-        fill: "forwards",
-      }
-    );
-  }
+      pathAnimation = pathRef.value.animate(
+        [
+          { strokeDashoffset: pathLength, opacity: 0 },
+          { strokeDashoffset: 0, opacity: 1 },
+        ],
+        {
+          duration: 400,
+          easing: "ease-in-out",
+          fill: "forwards",
+        }
+      );
+    }
 
-  // Animate arrow path drawing with delay
-  if (arrowRef.value) {
-    const arrowLength = arrowRef.value.getTotalLength();
-    arrowRef.value.style.strokeDasharray = `${arrowLength}`;
-    arrowRef.value.style.strokeDashoffset = `${arrowLength * 0.5}`;
-    arrowRef.value.style.opacity = "0";
+    // Animate arrow path drawing with delay
+    if (arrowRef.value) {
+      const arrowLength = arrowRef.value.getTotalLength();
+      arrowRef.value.style.strokeDasharray = `${arrowLength}`;
+      arrowRef.value.style.strokeDashoffset = `${arrowLength * 0.5}`;
+      arrowRef.value.style.opacity = "0";
 
-    setTimeout(() => {
-      if (arrowRef.value) {
-        arrowAnimation = arrowRef.value.animate(
-          [
-            { strokeDashoffset: arrowLength * 0.5, opacity: 0 },
-            { strokeDashoffset: 0, opacity: 1 },
-          ],
-          {
-            duration: 300,
-            easing: "ease-in-out",
-            fill: "forwards",
-          }
-        );
-      }
-    }, 300);
-  }
-};
+      setTimeout(() => {
+        if (arrowRef.value) {
+          arrowAnimation = arrowRef.value.animate(
+            [
+              { strokeDashoffset: arrowLength * 0.5, opacity: 0 },
+              { strokeDashoffset: 0, opacity: 1 },
+            ],
+            {
+              duration: 300,
+              easing: "ease-in-out",
+              fill: "forwards",
+            }
+          );
+        }
+      }, 300);
+    }
+  };
 
-const stopAnimation = () => {
-  svgMotion.apply(svgVariants.normal);
+  const stopAnimation = () => {
+    svgMotion.apply(svgVariants.normal);
 
-  if (pathAnimation) {
-    pathAnimation.cancel();
-    pathAnimation = null;
-  }
+    if (pathAnimation) {
+      pathAnimation.cancel();
+      pathAnimation = null;
+    }
 
-  if (arrowAnimation) {
-    arrowAnimation.cancel();
-    arrowAnimation = null;
-  }
+    if (arrowAnimation) {
+      arrowAnimation.cancel();
+      arrowAnimation = null;
+    }
 
-  if (pathRef.value) {
-    pathRef.value.style.strokeDasharray = "";
-    pathRef.value.style.strokeDashoffset = "";
-    pathRef.value.style.opacity = "1";
-  }
+    if (pathRef.value) {
+      pathRef.value.style.strokeDasharray = "";
+      pathRef.value.style.strokeDashoffset = "";
+      pathRef.value.style.opacity = "1";
+    }
 
-  if (arrowRef.value) {
-    arrowRef.value.style.strokeDasharray = "";
-    arrowRef.value.style.strokeDashoffset = "";
-    arrowRef.value.style.opacity = "1";
-  }
-};
+    if (arrowRef.value) {
+      arrowRef.value.style.strokeDasharray = "";
+      arrowRef.value.style.strokeDashoffset = "";
+      arrowRef.value.style.opacity = "1";
+    }
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

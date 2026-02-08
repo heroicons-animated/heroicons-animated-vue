@@ -37,124 +37,124 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "QrCodeIcon",
-};
+  export default {
+    name: "QrCodeIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const createDotVariants = (delay: number) => ({
-  normal: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    opacity: [0, 1],
-    scale: [0, 1.2, 1],
-    transition: { delay, duration: 0.3, ease: "easeOut" },
-  },
-});
-
-const DELAYS = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35];
-const dot0Ref = ref();
-const dot1Ref = ref();
-const dot2Ref = ref();
-const dot3Ref = ref();
-const dot4Ref = ref();
-const dot5Ref = ref();
-const dot6Ref = ref();
-const dot7Ref = ref();
-
-const motion0 = useMotion(dot0Ref, {
-  initial: createDotVariants(0).normal,
-  enter: createDotVariants(0).normal,
-});
-const motion1 = useMotion(dot1Ref, {
-  initial: createDotVariants(0.05).normal,
-  enter: createDotVariants(0.05).normal,
-});
-const motion2 = useMotion(dot2Ref, {
-  initial: createDotVariants(0.1).normal,
-  enter: createDotVariants(0.1).normal,
-});
-const motion3 = useMotion(dot3Ref, {
-  initial: createDotVariants(0.15).normal,
-  enter: createDotVariants(0.15).normal,
-});
-const motion4 = useMotion(dot4Ref, {
-  initial: createDotVariants(0.2).normal,
-  enter: createDotVariants(0.2).normal,
-});
-const motion5 = useMotion(dot5Ref, {
-  initial: createDotVariants(0.25).normal,
-  enter: createDotVariants(0.25).normal,
-});
-const motion6 = useMotion(dot6Ref, {
-  initial: createDotVariants(0.3).normal,
-  enter: createDotVariants(0.3).normal,
-});
-const motion7 = useMotion(dot7Ref, {
-  initial: createDotVariants(0.35).normal,
-  enter: createDotVariants(0.35).normal,
-});
-
-const motions = [
-  motion0,
-  motion1,
-  motion2,
-  motion3,
-  motion4,
-  motion5,
-  motion6,
-  motion7,
-];
-
-let isControlled = false;
-
-const startAnimation = () => {
-  DELAYS.forEach((d, i) => {
-    motions[i].apply(createDotVariants(d).animate);
-  });
-};
-
-const stopAnimation = () => {
-  motions.forEach((m, i) => {
-    m.apply(createDotVariants(DELAYS[i]).normal);
-  });
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const createDotVariants = (delay: number) => ({
+    normal: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.2, ease: "easeOut" },
+    },
+    animate: {
+      opacity: [0, 1],
+      scale: [0, 1.2, 1],
+      transition: { delay, duration: 0.3, ease: "easeOut" },
+    },
+  });
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const DELAYS = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35];
+  const dot0Ref = ref();
+  const dot1Ref = ref();
+  const dot2Ref = ref();
+  const dot3Ref = ref();
+  const dot4Ref = ref();
+  const dot5Ref = ref();
+  const dot6Ref = ref();
+  const dot7Ref = ref();
+
+  const motion0 = useMotion(dot0Ref, {
+    initial: createDotVariants(0).normal,
+    enter: createDotVariants(0).normal,
+  });
+  const motion1 = useMotion(dot1Ref, {
+    initial: createDotVariants(0.05).normal,
+    enter: createDotVariants(0.05).normal,
+  });
+  const motion2 = useMotion(dot2Ref, {
+    initial: createDotVariants(0.1).normal,
+    enter: createDotVariants(0.1).normal,
+  });
+  const motion3 = useMotion(dot3Ref, {
+    initial: createDotVariants(0.15).normal,
+    enter: createDotVariants(0.15).normal,
+  });
+  const motion4 = useMotion(dot4Ref, {
+    initial: createDotVariants(0.2).normal,
+    enter: createDotVariants(0.2).normal,
+  });
+  const motion5 = useMotion(dot5Ref, {
+    initial: createDotVariants(0.25).normal,
+    enter: createDotVariants(0.25).normal,
+  });
+  const motion6 = useMotion(dot6Ref, {
+    initial: createDotVariants(0.3).normal,
+    enter: createDotVariants(0.3).normal,
+  });
+  const motion7 = useMotion(dot7Ref, {
+    initial: createDotVariants(0.35).normal,
+    enter: createDotVariants(0.35).normal,
+  });
+
+  const motions = [
+    motion0,
+    motion1,
+    motion2,
+    motion3,
+    motion4,
+    motion5,
+    motion6,
+    motion7,
+  ];
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    DELAYS.forEach((d, i) => {
+      motions[i].apply(createDotVariants(d).animate);
+    });
+  };
+
+  const stopAnimation = () => {
+    motions.forEach((m, i) => {
+      m.apply(createDotVariants(DELAYS[i]).normal);
+    });
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

@@ -27,55 +27,59 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ClockIcon",
-};
+  export default {
+    name: "ClockIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const variants = {
-  normal: { rotate: 0, transition: { duration: 0.3 } },
-  animate: {
-    rotate: 360,
-    transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
-  },
-};
+  const variants = {
+    normal: { rotate: 0, transition: { duration: 0.3 } },
+    animate: {
+      rotate: 360,
+      transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] },
+    },
+  };
 
-const pathRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(pathRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
+  const pathRef = ref<SVGPathElement | null>();
+  const motionInstance = useMotion(pathRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => motionInstance.apply(variants.animate);
-const stopAnimation = () => motionInstance.apply(variants.normal);
+  const startAnimation = () => motionInstance.apply(variants.animate);
+  const stopAnimation = () => motionInstance.apply(variants.normal);
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

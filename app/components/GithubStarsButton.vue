@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import StarIcon from "@heroicons-animated/vue/star";
-import { LINK } from "~/lib/constants";
+  import { computed, ref } from "vue";
+  import StarIcon from "@heroicons-animated/vue/star";
+  import { LINK } from "~/lib/constants";
 
-type StarsResponse = {
-  stars: number | null;
-};
+  type StarsResponse = {
+    stars: number | null;
+  };
 
-const { data } = await useFetch<StarsResponse>("/api/github-stars");
-const stars = computed(() => data.value?.stars ?? null);
-const starRef = ref<InstanceType<typeof StarIcon> | null>(null);
+  const { data } = await useFetch<StarsResponse>("/api/github-stars");
+  const stars = computed(() => data.value?.stars ?? null);
+  const starRef = ref<InstanceType<typeof StarIcon> | null>(null);
 
-const handleMouseEnter = () => {
-  starRef.value?.startAnimation?.();
-};
+  const handleMouseEnter = () => {
+    starRef.value?.startAnimation?.();
+  };
 
-const handleMouseLeave = () => {
-  starRef.value?.stopAnimation?.();
-};
+  const handleMouseLeave = () => {
+    starRef.value?.stopAnimation?.();
+  };
 </script>
 
 <template>

@@ -25,84 +25,88 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "SquaresPlusIcon",
-};
+  export default {
+    name: "SquaresPlusIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const verticalVariants = {
-  normal: { opacity: 1, pathLength: 1, transition: { duration: 0.2 } },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      delay: 0.3,
-      duration: 0.2,
-      opacity: { duration: 0.1, delay: 0.3 },
+  const verticalVariants = {
+    normal: { opacity: 1, pathLength: 1, transition: { duration: 0.2 } },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        delay: 0.3,
+        duration: 0.2,
+        opacity: { duration: 0.1, delay: 0.3 },
+      },
     },
-  },
-};
+  };
 
-const horizontalVariants = {
-  normal: { opacity: 1, pathLength: 1, transition: { duration: 0.2 } },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      delay: 0.6,
-      duration: 0.2,
-      opacity: { duration: 0.1, delay: 0.6 },
+  const horizontalVariants = {
+    normal: { opacity: 1, pathLength: 1, transition: { duration: 0.2 } },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        delay: 0.6,
+        duration: 0.2,
+        opacity: { duration: 0.1, delay: 0.6 },
+      },
     },
-  },
-};
+  };
 
-const verticalRef = ref();
-const horizontalRef = ref();
-const verticalMotion = useMotion(verticalRef, {
-  initial: verticalVariants.normal,
-  enter: verticalVariants.normal,
-});
-const horizontalMotion = useMotion(horizontalRef, {
-  initial: horizontalVariants.normal,
-  enter: horizontalVariants.normal,
-});
+  const verticalRef = ref();
+  const horizontalRef = ref();
+  const verticalMotion = useMotion(verticalRef, {
+    initial: verticalVariants.normal,
+    enter: verticalVariants.normal,
+  });
+  const horizontalMotion = useMotion(horizontalRef, {
+    initial: horizontalVariants.normal,
+    enter: horizontalVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  verticalMotion.apply(verticalVariants.animate);
-  horizontalMotion.apply(horizontalVariants.animate);
-};
+  const startAnimation = () => {
+    verticalMotion.apply(verticalVariants.animate);
+    horizontalMotion.apply(horizontalVariants.animate);
+  };
 
-const stopAnimation = () => {
-  verticalMotion.apply(verticalVariants.normal);
-  horizontalMotion.apply(horizontalVariants.normal);
-};
+  const stopAnimation = () => {
+    verticalMotion.apply(verticalVariants.normal);
+    horizontalMotion.apply(horizontalVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

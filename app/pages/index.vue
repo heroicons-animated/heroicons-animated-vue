@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ICON_MANIFEST } from "~/lib/manifest";
-import { LINK } from "~/lib/constants";
-import CliBlock from "~/components/CliBlock.vue";
-import CommentBlock from "~/components/CommentBlock.vue";
-import IconsList from "~/components/IconsList.vue";
+  import { ICON_MANIFEST } from "~/lib/manifest";
+  import { LINK } from "~/lib/constants";
+  import CliBlock from "~/components/CliBlock.vue";
+  import CommentBlock from "~/components/CommentBlock.vue";
+  import IconsList from "~/components/IconsList.vue";
 
-const icons = ICON_MANIFEST;
+  const icons = ICON_MANIFEST;
 </script>
 
 <template>
@@ -25,7 +25,8 @@ const icons = ICON_MANIFEST;
         rel="noopener noreferrer"
         tabIndex="0"
         target="_blank"
-      >MIT License</a>) collection of smooth animated <br />
+        >MIT License</a
+      >) collection of smooth animated <br>
       316 icons for your projects. feel free to use them, share your feedback,
       and let's make this library awesome together!
     </p>
@@ -37,7 +38,8 @@ const icons = ICON_MANIFEST;
         rel="noopener noreferrer"
         tabIndex="0"
         target="_blank"
-      >Motion</a>
+        >Motion</a
+      >
       &
       <a
         class="bg-[#E5E5E5] px-2 py-0.5 text-primary focus-within:outline-offset-1 focus-visible:outline-1 focus-visible:outline-primary dark:bg-[#262626]"

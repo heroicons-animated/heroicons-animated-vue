@@ -27,96 +27,96 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "DocumentChartBarIcon",
-};
+  export default {
+    name: "DocumentChartBarIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-// Match React CREATE_BAR_VARIANTS: pathLength [0,1] pathOffset [1,0] opacity [0,1], delay 0/0.15/0.3s, 0.4s easeOut
-const createBarVariants = (delay: number) => ({
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-    pathOffset: 0,
-    transition: { duration: 0.4, opacity: { duration: 0.1 } },
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    pathOffset: [1, 0],
-    transition: {
-      delay,
-      duration: 0.4,
-      ease: "easeOut",
-      opacity: { duration: 0.1, delay },
+  // Match React CREATE_BAR_VARIANTS: pathLength [0,1] pathOffset [1,0] opacity [0,1], delay 0/0.15/0.3s, 0.4s easeOut
+  const createBarVariants = (delay: number) => ({
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+      pathOffset: 0,
+      transition: { duration: 0.4, opacity: { duration: 0.1 } },
     },
-  },
-});
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      pathOffset: [1, 0],
+      transition: {
+        delay,
+        duration: 0.4,
+        ease: "easeOut",
+        opacity: { duration: 0.1, delay },
+      },
+    },
+  });
 
-const bar1Ref = ref<SVGPathElement | null>();
-const bar2Ref = ref<SVGPathElement | null>();
-const bar3Ref = ref<SVGPathElement | null>();
+  const bar1Ref = ref<SVGPathElement | null>();
+  const bar2Ref = ref<SVGPathElement | null>();
+  const bar3Ref = ref<SVGPathElement | null>();
 
-const motion1 = useMotion(bar1Ref, {
-  initial: createBarVariants(0).normal,
-  enter: createBarVariants(0).normal,
-});
-const motion2 = useMotion(bar2Ref, {
-  initial: createBarVariants(0.15).normal,
-  enter: createBarVariants(0.15).normal,
-});
-const motion3 = useMotion(bar3Ref, {
-  initial: createBarVariants(0.3).normal,
-  enter: createBarVariants(0.3).normal,
-});
+  const motion1 = useMotion(bar1Ref, {
+    initial: createBarVariants(0).normal,
+    enter: createBarVariants(0).normal,
+  });
+  const motion2 = useMotion(bar2Ref, {
+    initial: createBarVariants(0.15).normal,
+    enter: createBarVariants(0.15).normal,
+  });
+  const motion3 = useMotion(bar3Ref, {
+    initial: createBarVariants(0.3).normal,
+    enter: createBarVariants(0.3).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motion1.apply(createBarVariants(0).animate);
-  motion2.apply(createBarVariants(0.15).animate);
-  motion3.apply(createBarVariants(0.3).animate);
-};
+  const startAnimation = () => {
+    motion1.apply(createBarVariants(0).animate);
+    motion2.apply(createBarVariants(0.15).animate);
+    motion3.apply(createBarVariants(0.3).animate);
+  };
 
-const stopAnimation = () => {
-  motion1.apply(createBarVariants(0).normal);
-  motion2.apply(createBarVariants(0.15).normal);
-  motion3.apply(createBarVariants(0.3).normal);
-};
+  const stopAnimation = () => {
+    motion1.apply(createBarVariants(0).normal);
+    motion2.apply(createBarVariants(0.15).normal);
+    motion3.apply(createBarVariants(0.3).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

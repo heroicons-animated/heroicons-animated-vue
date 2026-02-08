@@ -28,61 +28,65 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "UsersIcon",
-};
+  export default {
+    name: "UsersIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const pathVariants = {
-  normal: {
-    x: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 200, damping: 13 },
-  },
-  animate: {
-    x: [-6, 0],
-    opacity: [0, 0, 1],
-    transition: {
-      delay: 0.1,
-      x: { type: "spring", stiffness: 200, damping: 13 },
-      opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+  const pathVariants = {
+    normal: {
+      x: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 200, damping: 13 },
     },
-  },
-};
+    animate: {
+      x: [-6, 0],
+      opacity: [0, 0, 1],
+      transition: {
+        delay: 0.1,
+        x: { type: "spring", stiffness: 200, damping: 13 },
+        opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+      },
+    },
+  };
 
-const pathRef = ref();
-const motionInstance = useMotion(pathRef, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
+  const pathRef = ref();
+  const motionInstance = useMotion(pathRef, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => motionInstance.apply(pathVariants.animate);
-const stopAnimation = () => motionInstance.apply(pathVariants.normal);
+  const startAnimation = () => motionInstance.apply(pathVariants.animate);
+  const stopAnimation = () => motionInstance.apply(pathVariants.normal);
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

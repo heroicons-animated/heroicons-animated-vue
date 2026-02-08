@@ -40,92 +40,96 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Squares2X2Icon",
-};
+  export default {
+    name: "Squares2X2Icon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const createVariants = (index: number) => ({
-  normal: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    opacity: [0, 1],
-    scale: [0.6, 1],
-    transition: {
-      duration: 0.35,
-      delay: index * 0.08,
-      type: "spring",
-      stiffness: 260,
-      damping: 20,
+  const createVariants = (index: number) => ({
+    normal: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.2, ease: "easeOut" },
     },
-  },
-});
+    animate: {
+      opacity: [0, 1],
+      scale: [0.6, 1],
+      transition: {
+        duration: 0.35,
+        delay: index * 0.08,
+        type: "spring",
+        stiffness: 260,
+        damping: 20,
+      },
+    },
+  });
 
-const p0Ref = ref();
-const p1Ref = ref();
-const p2Ref = ref();
-const p3Ref = ref();
+  const p0Ref = ref();
+  const p1Ref = ref();
+  const p2Ref = ref();
+  const p3Ref = ref();
 
-const m0 = useMotion(p0Ref, {
-  initial: createVariants(0).normal,
-  enter: createVariants(0).normal,
-});
-const m1 = useMotion(p1Ref, {
-  initial: createVariants(1).normal,
-  enter: createVariants(1).normal,
-});
-const m2 = useMotion(p2Ref, {
-  initial: createVariants(3).normal,
-  enter: createVariants(3).normal,
-});
-const m3 = useMotion(p3Ref, {
-  initial: createVariants(4).normal,
-  enter: createVariants(4).normal,
-});
+  const m0 = useMotion(p0Ref, {
+    initial: createVariants(0).normal,
+    enter: createVariants(0).normal,
+  });
+  const m1 = useMotion(p1Ref, {
+    initial: createVariants(1).normal,
+    enter: createVariants(1).normal,
+  });
+  const m2 = useMotion(p2Ref, {
+    initial: createVariants(3).normal,
+    enter: createVariants(3).normal,
+  });
+  const m3 = useMotion(p3Ref, {
+    initial: createVariants(4).normal,
+    enter: createVariants(4).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  m0.apply(createVariants(0).animate);
-  m1.apply(createVariants(1).animate);
-  m2.apply(createVariants(3).animate);
-  m3.apply(createVariants(4).animate);
-};
+  const startAnimation = () => {
+    m0.apply(createVariants(0).animate);
+    m1.apply(createVariants(1).animate);
+    m2.apply(createVariants(3).animate);
+    m3.apply(createVariants(4).animate);
+  };
 
-const stopAnimation = () => {
-  m0.apply(createVariants(0).normal);
-  m1.apply(createVariants(1).normal);
-  m2.apply(createVariants(3).normal);
-  m3.apply(createVariants(4).normal);
-};
+  const stopAnimation = () => {
+    m0.apply(createVariants(0).normal);
+    m1.apply(createVariants(1).normal);
+    m2.apply(createVariants(3).normal);
+    m3.apply(createVariants(4).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

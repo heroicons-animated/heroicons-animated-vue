@@ -42,9 +42,15 @@ export const provideFramework = () => {
   );
 
   watch(framework, (value) => {
-    if (process.server) return;
-    const current = normalizeFramework(route.query.framework ?? DEFAULT_FRAMEWORK);
-    if (current === value) return;
+    if (process.server) {
+      return;
+    }
+    const current = normalizeFramework(
+      route.query.framework ?? DEFAULT_FRAMEWORK
+    );
+    if (current === value) {
+      return;
+    }
 
     const nextQuery: Record<string, string> = {};
     for (const [key, val] of Object.entries(route.query)) {

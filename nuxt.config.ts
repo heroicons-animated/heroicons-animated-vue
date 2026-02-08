@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   alias: {
-    "@heroicons-animated/vue": resolve(__dirname, "src/icons"),
+    "@heroicons-animated/vue": resolve(import.meta.dirname, "src/icons"),
   },
   vite: {
     plugins: [tailwindcss()],

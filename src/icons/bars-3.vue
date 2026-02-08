@@ -39,99 +39,99 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Bars3Icon",
-};
+  export default {
+    name: "Bars3Icon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const createBarVariants = (delay: number) => ({
-  normal: {
-    scaleX: 1,
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-    },
-  },
-  animate: {
-    scaleX: [1, 0.6, 1],
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-      delay,
-    },
-  },
-});
-
-const bar1Variants = createBarVariants(0);
-const bar2Variants = createBarVariants(0.1);
-const bar3Variants = createBarVariants(0.2);
-
-const bar1Ref = ref<SVGPathElement>();
-const bar2Ref = ref<SVGPathElement>();
-const bar3Ref = ref<SVGPathElement>();
-
-const bar1Motion = useMotion(bar1Ref, {
-  initial: bar1Variants.normal,
-  enter: bar1Variants.normal,
-});
-
-const bar2Motion = useMotion(bar2Ref, {
-  initial: bar2Variants.normal,
-  enter: bar2Variants.normal,
-});
-
-const bar3Motion = useMotion(bar3Ref, {
-  initial: bar3Variants.normal,
-  enter: bar3Variants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  bar1Motion.apply(bar1Variants.animate);
-  bar2Motion.apply(bar2Variants.animate);
-  bar3Motion.apply(bar3Variants.animate);
-};
-
-const stopAnimation = () => {
-  bar1Motion.apply(bar1Variants.normal);
-  bar2Motion.apply(bar2Variants.normal);
-  bar3Motion.apply(bar3Variants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const createBarVariants = (delay: number) => ({
+    normal: {
+      scaleX: 1,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+    animate: {
+      scaleX: [1, 0.6, 1],
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        delay,
+      },
+    },
+  });
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const bar1Variants = createBarVariants(0);
+  const bar2Variants = createBarVariants(0.1);
+  const bar3Variants = createBarVariants(0.2);
+
+  const bar1Ref = ref<SVGPathElement>();
+  const bar2Ref = ref<SVGPathElement>();
+  const bar3Ref = ref<SVGPathElement>();
+
+  const bar1Motion = useMotion(bar1Ref, {
+    initial: bar1Variants.normal,
+    enter: bar1Variants.normal,
+  });
+
+  const bar2Motion = useMotion(bar2Ref, {
+    initial: bar2Variants.normal,
+    enter: bar2Variants.normal,
+  });
+
+  const bar3Motion = useMotion(bar3Ref, {
+    initial: bar3Variants.normal,
+    enter: bar3Variants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    bar1Motion.apply(bar1Variants.animate);
+    bar2Motion.apply(bar2Variants.animate);
+    bar3Motion.apply(bar3Variants.animate);
+  };
+
+  const stopAnimation = () => {
+    bar1Motion.apply(bar1Variants.normal);
+    bar2Motion.apply(bar2Variants.normal);
+    bar3Motion.apply(bar3Variants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

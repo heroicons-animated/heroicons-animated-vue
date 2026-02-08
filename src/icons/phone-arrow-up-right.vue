@@ -29,73 +29,73 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "PhoneArrowUpRightIcon",
-};
+  export default {
+    name: "PhoneArrowUpRightIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const arrowVariants = {
-  normal: {
-    translateX: 0,
-    translateY: 0,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    translateX: [0, 3, 0],
-    translateY: [0, -3, 0],
-    transition: { duration: 0.5, ease: "easeInOut" },
-  },
-};
-
-const arrowRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(arrowRef, {
-  initial: arrowVariants.normal,
-  enter: arrowVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionInstance.apply(arrowVariants.animate);
-};
-
-const stopAnimation = () => {
-  motionInstance.apply(arrowVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const arrowVariants = {
+    normal: {
+      translateX: 0,
+      translateY: 0,
+      transition: { duration: 0.2, ease: "easeOut" },
+    },
+    animate: {
+      translateX: [0, 3, 0],
+      translateY: [0, -3, 0],
+      transition: { duration: 0.5, ease: "easeInOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const arrowRef = ref<SVGPathElement | null>();
+  const motionInstance = useMotion(arrowRef, {
+    initial: arrowVariants.normal,
+    enter: arrowVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionInstance.apply(arrowVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionInstance.apply(arrowVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

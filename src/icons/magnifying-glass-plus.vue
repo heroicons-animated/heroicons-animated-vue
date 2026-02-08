@@ -26,93 +26,93 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "MagnifyingGlassPlusIcon",
-};
+  export default {
+    name: "MagnifyingGlassPlusIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const verticalVariants = {
-  normal: { opacity: 1, pathLength: 1 },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      delay: 0.3,
-      duration: 0.2,
-      opacity: { duration: 0.1, delay: 0.3 },
-    },
-  },
-};
-
-const horizontalVariants = {
-  normal: { opacity: 1, pathLength: 1 },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      delay: 0.6,
-      duration: 0.2,
-      opacity: { duration: 0.1, delay: 0.6 },
-    },
-  },
-};
-
-const verticalRef = ref<SVGPathElement | null>();
-const horizontalRef = ref<SVGPathElement | null>();
-const verticalMotion = useMotion(verticalRef, {
-  initial: verticalVariants.normal,
-  enter: verticalVariants.normal,
-});
-const horizontalMotion = useMotion(horizontalRef, {
-  initial: horizontalVariants.normal,
-  enter: horizontalVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  verticalMotion.apply(verticalVariants.animate);
-  horizontalMotion.apply(horizontalVariants.animate);
-};
-
-const stopAnimation = () => {
-  verticalMotion.apply(verticalVariants.normal);
-  horizontalMotion.apply(horizontalVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const verticalVariants = {
+    normal: { opacity: 1, pathLength: 1 },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        delay: 0.3,
+        duration: 0.2,
+        opacity: { duration: 0.1, delay: 0.3 },
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const horizontalVariants = {
+    normal: { opacity: 1, pathLength: 1 },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        delay: 0.6,
+        duration: 0.2,
+        opacity: { duration: 0.1, delay: 0.6 },
+      },
+    },
+  };
+
+  const verticalRef = ref<SVGPathElement | null>();
+  const horizontalRef = ref<SVGPathElement | null>();
+  const verticalMotion = useMotion(verticalRef, {
+    initial: verticalVariants.normal,
+    enter: verticalVariants.normal,
+  });
+  const horizontalMotion = useMotion(horizontalRef, {
+    initial: horizontalVariants.normal,
+    enter: horizontalVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    verticalMotion.apply(verticalVariants.animate);
+    horizontalMotion.apply(horizontalVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    verticalMotion.apply(verticalVariants.normal);
+    horizontalMotion.apply(horizontalVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

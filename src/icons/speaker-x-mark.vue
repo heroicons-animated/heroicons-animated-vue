@@ -25,79 +25,79 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "SpeakerXMarkIcon",
-};
+  export default {
+    name: "SpeakerXMarkIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const lineVariants = {
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: { duration: 0.4 },
-  },
-};
-
-const line1Ref = ref();
-const line2Ref = ref();
-const motion1 = useMotion(line1Ref, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-const motion2 = useMotion(line2Ref, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motion1.apply(lineVariants.animate);
-  motion2.apply(lineVariants.animate);
-};
-
-const stopAnimation = () => {
-  motion1.apply(lineVariants.normal);
-  motion2.apply(lineVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const lineVariants = {
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+      transition: { duration: 0.2, ease: "easeOut" },
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: { duration: 0.4 },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const line1Ref = ref();
+  const line2Ref = ref();
+  const motion1 = useMotion(line1Ref, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+  const motion2 = useMotion(line2Ref, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motion1.apply(lineVariants.animate);
+    motion2.apply(lineVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    motion1.apply(lineVariants.normal);
+    motion2.apply(lineVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

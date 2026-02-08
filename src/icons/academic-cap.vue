@@ -35,97 +35,97 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "AcademicCapIcon",
-};
+  export default {
+    name: "AcademicCapIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const capVariants = {
-  normal: {
-    y: 0,
-    rotate: 0,
-  },
-  animate: {
-    y: [0, -3, 0],
-    rotate: [0, -5, 5, 0],
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const tasselVariants = {
-  normal: {
-    rotate: 0,
-  },
-  animate: {
-    rotate: [0, 10, -10, 5, 0],
-    transition: {
-      duration: 0.6,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const capGroupRef = ref();
-const tasselGroupRef = ref();
-
-const capMotion = useMotion(capGroupRef, {
-  initial: capVariants.normal,
-  enter: capVariants.normal,
-});
-
-const tasselMotion = useMotion(tasselGroupRef, {
-  initial: tasselVariants.normal,
-  enter: tasselVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  capMotion.apply(capVariants.animate);
-  tasselMotion.apply(tasselVariants.animate);
-};
-
-const stopAnimation = () => {
-  capMotion.apply(capVariants.normal);
-  tasselMotion.apply(tasselVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const capVariants = {
+    normal: {
+      y: 0,
+      rotate: 0,
+    },
+    animate: {
+      y: [0, -3, 0],
+      rotate: [0, -5, 5, 0],
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const tasselVariants = {
+    normal: {
+      rotate: 0,
+    },
+    animate: {
+      rotate: [0, 10, -10, 5, 0],
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const capGroupRef = ref();
+  const tasselGroupRef = ref();
+
+  const capMotion = useMotion(capGroupRef, {
+    initial: capVariants.normal,
+    enter: capVariants.normal,
+  });
+
+  const tasselMotion = useMotion(tasselGroupRef, {
+    initial: tasselVariants.normal,
+    enter: tasselVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    capMotion.apply(capVariants.animate);
+    tasselMotion.apply(tasselVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    capMotion.apply(capVariants.normal);
+    tasselMotion.apply(tasselVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

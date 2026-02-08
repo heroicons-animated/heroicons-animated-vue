@@ -29,111 +29,111 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "NewspaperIcon",
-};
+  export default {
+    name: "NewspaperIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const squareVariants = {
-  normal: { opacity: 1 },
-  animate: {
-    opacity: [0, 1],
-    transition: { duration: 0.3, ease: "easeOut" },
-  },
-};
-
-const createLineVariants = (delay: number) => ({
-  normal: { pathLength: 1, opacity: 1 },
-  animate: {
-    pathLength: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      duration: 0.2,
-      delay,
-      ease: "easeOut",
-      opacity: { duration: 0.1, delay },
+  const squareVariants = {
+    normal: { opacity: 1 },
+    animate: {
+      opacity: [0, 1],
+      transition: { duration: 0.3, ease: "easeOut" },
     },
-  },
-});
+  };
 
-const squareRef = ref<SVGPathElement | null>();
-const line1Ref = ref<SVGPathElement | null>();
-const line2Ref = ref<SVGPathElement | null>();
-const line3Ref = ref<SVGPathElement | null>();
-const line4Ref = ref<SVGPathElement | null>();
-const squareMotion = useMotion(squareRef, {
-  initial: squareVariants.normal,
-  enter: squareVariants.normal,
-});
-const line1Motion = useMotion(line1Ref, {
-  initial: createLineVariants(0.2).normal,
-  enter: createLineVariants(0.2).normal,
-});
-const line2Motion = useMotion(line2Ref, {
-  initial: createLineVariants(0.3).normal,
-  enter: createLineVariants(0.3).normal,
-});
-const line3Motion = useMotion(line3Ref, {
-  initial: createLineVariants(0.4).normal,
-  enter: createLineVariants(0.4).normal,
-});
-const line4Motion = useMotion(line4Ref, {
-  initial: createLineVariants(0.5).normal,
-  enter: createLineVariants(0.5).normal,
-});
+  const createLineVariants = (delay: number) => ({
+    normal: { pathLength: 1, opacity: 1 },
+    animate: {
+      pathLength: [0, 1],
+      opacity: [0, 1],
+      transition: {
+        duration: 0.2,
+        delay,
+        ease: "easeOut",
+        opacity: { duration: 0.1, delay },
+      },
+    },
+  });
 
-let isControlled = false;
+  const squareRef = ref<SVGPathElement | null>();
+  const line1Ref = ref<SVGPathElement | null>();
+  const line2Ref = ref<SVGPathElement | null>();
+  const line3Ref = ref<SVGPathElement | null>();
+  const line4Ref = ref<SVGPathElement | null>();
+  const squareMotion = useMotion(squareRef, {
+    initial: squareVariants.normal,
+    enter: squareVariants.normal,
+  });
+  const line1Motion = useMotion(line1Ref, {
+    initial: createLineVariants(0.2).normal,
+    enter: createLineVariants(0.2).normal,
+  });
+  const line2Motion = useMotion(line2Ref, {
+    initial: createLineVariants(0.3).normal,
+    enter: createLineVariants(0.3).normal,
+  });
+  const line3Motion = useMotion(line3Ref, {
+    initial: createLineVariants(0.4).normal,
+    enter: createLineVariants(0.4).normal,
+  });
+  const line4Motion = useMotion(line4Ref, {
+    initial: createLineVariants(0.5).normal,
+    enter: createLineVariants(0.5).normal,
+  });
 
-const startAnimation = () => {
-  squareMotion.apply(squareVariants.animate);
-  line1Motion.apply(createLineVariants(0.2).animate);
-  line2Motion.apply(createLineVariants(0.3).animate);
-  line3Motion.apply(createLineVariants(0.4).animate);
-  line4Motion.apply(createLineVariants(0.5).animate);
-};
+  let isControlled = false;
 
-const stopAnimation = () => {
-  squareMotion.apply(squareVariants.normal);
-  const lineNormal = { pathLength: 1, opacity: 1 };
-  line1Motion.apply(lineNormal);
-  line2Motion.apply(lineNormal);
-  line3Motion.apply(lineNormal);
-  line4Motion.apply(lineNormal);
-};
+  const startAnimation = () => {
+    squareMotion.apply(squareVariants.animate);
+    line1Motion.apply(createLineVariants(0.2).animate);
+    line2Motion.apply(createLineVariants(0.3).animate);
+    line3Motion.apply(createLineVariants(0.4).animate);
+    line4Motion.apply(createLineVariants(0.5).animate);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const stopAnimation = () => {
+    squareMotion.apply(squareVariants.normal);
+    const lineNormal = { pathLength: 1, opacity: 1 };
+    line1Motion.apply(lineNormal);
+    line2Motion.apply(lineNormal);
+    line3Motion.apply(lineNormal);
+    line4Motion.apply(lineNormal);
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

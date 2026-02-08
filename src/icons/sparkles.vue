@@ -36,91 +36,91 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "SparklesIcon",
-};
+  export default {
+    name: "SparklesIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const sparkleAnimate = (delay: number) => ({
-  opacity: [1, 0.3, 1, 0.3, 1],
-  scale: [1, 1.2, 1, 1.1, 1],
-  transition: {
-    duration: 1.5,
-    times: [0, 0.2, 0.4, 0.6, 1],
-    delay,
-    ease: "easeInOut",
-  },
-});
-
-const sparkleNormal = {
-  opacity: 1,
-  scale: 1,
-};
-
-const path0Ref = ref<SVGPathElement>();
-const path1Ref = ref<SVGPathElement>();
-const path2Ref = ref<SVGPathElement>();
-
-const motion0 = useMotion(path0Ref, {
-  initial: sparkleNormal,
-  enter: sparkleNormal,
-});
-const motion1 = useMotion(path1Ref, {
-  initial: sparkleNormal,
-  enter: sparkleNormal,
-});
-const motion2 = useMotion(path2Ref, {
-  initial: sparkleNormal,
-  enter: sparkleNormal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motion0.apply(sparkleAnimate(0));
-  motion1.apply(sparkleAnimate(0.15));
-  motion2.apply(sparkleAnimate(0.3));
-};
-
-const stopAnimation = () => {
-  motion0.apply(sparkleNormal);
-  motion1.apply(sparkleNormal);
-  motion2.apply(sparkleNormal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const sparkleAnimate = (delay: number) => ({
+    opacity: [1, 0.3, 1, 0.3, 1],
+    scale: [1, 1.2, 1, 1.1, 1],
+    transition: {
+      duration: 1.5,
+      times: [0, 0.2, 0.4, 0.6, 1],
+      delay,
+      ease: "easeInOut",
+    },
+  });
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const sparkleNormal = {
+    opacity: 1,
+    scale: 1,
+  };
+
+  const path0Ref = ref<SVGPathElement>();
+  const path1Ref = ref<SVGPathElement>();
+  const path2Ref = ref<SVGPathElement>();
+
+  const motion0 = useMotion(path0Ref, {
+    initial: sparkleNormal,
+    enter: sparkleNormal,
+  });
+  const motion1 = useMotion(path1Ref, {
+    initial: sparkleNormal,
+    enter: sparkleNormal,
+  });
+  const motion2 = useMotion(path2Ref, {
+    initial: sparkleNormal,
+    enter: sparkleNormal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motion0.apply(sparkleAnimate(0));
+    motion1.apply(sparkleAnimate(0.15));
+    motion2.apply(sparkleAnimate(0.3));
+  };
+
+  const stopAnimation = () => {
+    motion0.apply(sparkleNormal);
+    motion1.apply(sparkleNormal);
+    motion2.apply(sparkleNormal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

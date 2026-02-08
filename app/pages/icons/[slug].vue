@@ -1,34 +1,36 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { ArrowLeftIcon } from "@heroicons/vue/24/outline";
-import { createError, useRoute } from "#imports";
-import CliBlock from "~/components/CliBlock.vue";
-import IconCard from "~/components/IconCard.vue";
-import SimilarIcons from "~/components/SimilarIcons.vue";
-import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
-import { getFrameworkName } from "~/lib/cli";
-import { kebabToPascalCase } from "~/lib/kebab-to-pascal";
-import { ICON_MANIFEST } from "~/lib/manifest";
+  import { computed } from "vue";
+  import { ArrowLeftIcon } from "@heroicons/vue/24/outline";
+  import { createError, useRoute } from "#imports";
+  import CliBlock from "~/components/CliBlock.vue";
+  import IconCard from "~/components/IconCard.vue";
+  import SimilarIcons from "~/components/SimilarIcons.vue";
+  import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
+  import { getFrameworkName } from "~/lib/cli";
+  import { kebabToPascalCase } from "~/lib/kebab-to-pascal";
+  import { ICON_MANIFEST } from "~/lib/manifest";
 
-const route = useRoute();
-const { framework } = useFramework();
+  const route = useRoute();
+  const { framework } = useFramework();
 
-const slug = computed(() => String(route.params.slug || ""));
-const icon = computed(() =>
-  ICON_MANIFEST.find((item) => item.name === slug.value)
-);
+  const slug = computed(() => String(route.params.slug || ""));
+  const icon = computed(() =>
+    ICON_MANIFEST.find((item) => item.name === slug.value)
+  );
 
-if (!icon.value) {
-  throw createError({ statusCode: 404, statusMessage: "Icon Not Found" });
-}
+  if (!icon.value) {
+    throw createError({ statusCode: 404, statusMessage: "Icon Not Found" });
+  }
 
-const pascalName = computed(() => kebabToPascalCase(slug.value));
-const formattedName = computed(() => slug.value.replace(/-/g, " "));
+  const pascalName = computed(() => kebabToPascalCase(slug.value));
+  const formattedName = computed(() => slug.value.replace(/-/g, " "));
 
-const backHref = computed(() => {
-  if (framework.value === DEFAULT_FRAMEWORK) return "/";
-  return { path: "/", query: { framework: framework.value } };
-});
+  const backHref = computed(() => {
+    if (framework.value === DEFAULT_FRAMEWORK) {
+      return "/";
+    }
+    return { path: "/", query: { framework: framework.value } };
+  });
 </script>
 
 <template>
@@ -44,7 +46,9 @@ const backHref = computed(() => {
         Back to all icons
       </NuxtLink>
 
-      <div class="flex w-full flex-col gap-6 min-[880px]:flex-row min-[880px]:items-center">
+      <div
+        class="flex w-full flex-col gap-6 min-[880px]:flex-row min-[880px]:items-center"
+      >
         <IconCard
           v-if="icon"
           :name="icon.name"
@@ -70,10 +74,15 @@ const backHref = computed(() => {
         </div>
       </div>
 
-      <CliBlock class="mt-8 flex px-0 min-[880px]:hidden" :static-icon-name="slug" />
+      <CliBlock
+        class="mt-8 flex px-0 min-[880px]:hidden"
+        :static-icon-name="slug"
+      />
     </div>
 
-    <div class="view-container border-neutral-200 py-4 xl:border dark:border-neutral-800">
+    <div
+      class="view-container border-neutral-200 py-4 xl:border dark:border-neutral-800"
+    >
       <h2 class="mb-3 font-sans text-xl">Keywords</h2>
       <div class="flex flex-wrap gap-2">
         <span

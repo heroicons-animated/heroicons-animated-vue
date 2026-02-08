@@ -35,180 +35,180 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArchiveBoxXMarkIcon",
-};
+  export default {
+    name: "ArchiveBoxXMarkIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const springTransition = {
-  duration: 0.2,
-  type: "spring" as const,
-  stiffness: 200,
-  damping: 25,
-};
+  const springTransition = {
+    duration: 0.2,
+    type: "spring" as const,
+    stiffness: 200,
+    damping: 25,
+  };
 
-const lidVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: -1.5,
-    transition: springTransition,
-  },
-};
+  const lidVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: -1.5,
+      transition: springTransition,
+    },
+  };
 
-const pathVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: 1,
-    transition: springTransition,
-  },
-};
+  const pathVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: 1,
+      transition: springTransition,
+    },
+  };
 
-const path1Ref = ref<SVGPathElement>();
-const path2Ref = ref<SVGPathElement>();
-const path3Ref = ref<SVGPathElement>();
-const xMark1Ref = ref<SVGPathElement>();
-const xMark2Ref = ref<SVGPathElement>();
-const lidRef = ref<SVGPathElement>();
+  const path1Ref = ref<SVGPathElement>();
+  const path2Ref = ref<SVGPathElement>();
+  const path3Ref = ref<SVGPathElement>();
+  const xMark1Ref = ref<SVGPathElement>();
+  const xMark2Ref = ref<SVGPathElement>();
+  const lidRef = ref<SVGPathElement>();
 
-const path1Motion = useMotion(path1Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path2Motion = useMotion(path2Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path3Motion = useMotion(path3Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const lidMotion = useMotion(lidRef, {
-  initial: lidVariants.normal,
-  enter: lidVariants.normal,
-});
+  const path1Motion = useMotion(path1Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const path2Motion = useMotion(path2Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const path3Motion = useMotion(path3Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const lidMotion = useMotion(lidRef, {
+    initial: lidVariants.normal,
+    enter: lidVariants.normal,
+  });
 
-let isControlled = false;
-let xMark1Animation: Animation | null = null;
-let xMark2Animation: Animation | null = null;
+  let isControlled = false;
+  let xMark1Animation: Animation | null = null;
+  let xMark2Animation: Animation | null = null;
 
-const startAnimation = () => {
-  path1Motion.apply(pathVariants.animate);
-  path2Motion.apply(pathVariants.animate);
-  path3Motion.apply(pathVariants.animate);
-  lidMotion.apply(lidVariants.animate);
+  const startAnimation = () => {
+    path1Motion.apply(pathVariants.animate);
+    path2Motion.apply(pathVariants.animate);
+    path3Motion.apply(pathVariants.animate);
+    lidMotion.apply(lidVariants.animate);
 
-  // Use Web Animations API for pathLength and opacity; match React delays (0.2s first X, 0.4s second X)
-  setTimeout(() => {
+    // Use Web Animations API for pathLength and opacity; match React delays (0.2s first X, 0.4s second X)
+    setTimeout(() => {
+      if (xMark1Ref.value) {
+        const pathLength = xMark1Ref.value.getTotalLength();
+        xMark1Ref.value.style.strokeDasharray = `${pathLength}`;
+        xMark1Ref.value.style.strokeDashoffset = `${pathLength}`;
+        xMark1Ref.value.style.opacity = "0";
+
+        xMark1Animation = xMark1Ref.value.animate(
+          [
+            { strokeDashoffset: pathLength, opacity: 0 },
+            { strokeDashoffset: 0, opacity: 1 },
+          ],
+          {
+            duration: 300,
+            easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+            fill: "forwards",
+          }
+        );
+      }
+    }, 200);
+
+    setTimeout(() => {
+      if (xMark2Ref.value) {
+        const pathLength = xMark2Ref.value.getTotalLength();
+        xMark2Ref.value.style.strokeDasharray = `${pathLength}`;
+        xMark2Ref.value.style.strokeDashoffset = `${pathLength}`;
+        xMark2Ref.value.style.opacity = "0";
+
+        xMark2Animation = xMark2Ref.value.animate(
+          [
+            { strokeDashoffset: pathLength, opacity: 0 },
+            { strokeDashoffset: 0, opacity: 1 },
+          ],
+          {
+            duration: 300,
+            easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+            fill: "forwards",
+          }
+        );
+      }
+    }, 400);
+  };
+
+  const stopAnimation = () => {
+    path1Motion.apply(pathVariants.normal);
+    path2Motion.apply(pathVariants.normal);
+    path3Motion.apply(pathVariants.normal);
+    lidMotion.apply(lidVariants.normal);
+
+    // Stop and reset pathLength animations
+    if (xMark1Animation) {
+      xMark1Animation.cancel();
+      xMark1Animation = null;
+    }
+    if (xMark2Animation) {
+      xMark2Animation.cancel();
+      xMark2Animation = null;
+    }
+
+    // Reset to initial state
     if (xMark1Ref.value) {
-      const pathLength = xMark1Ref.value.getTotalLength();
-      xMark1Ref.value.style.strokeDasharray = `${pathLength}`;
-      xMark1Ref.value.style.strokeDashoffset = `${pathLength}`;
-      xMark1Ref.value.style.opacity = "0";
-
-      xMark1Animation = xMark1Ref.value.animate(
-        [
-          { strokeDashoffset: pathLength, opacity: 0 },
-          { strokeDashoffset: 0, opacity: 1 },
-        ],
-        {
-          duration: 300,
-          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-          fill: "forwards",
-        }
-      );
+      xMark1Ref.value.style.opacity = "1";
+      xMark1Ref.value.style.strokeDasharray = "none";
+      xMark1Ref.value.style.strokeDashoffset = "0";
     }
-  }, 200);
-
-  setTimeout(() => {
     if (xMark2Ref.value) {
-      const pathLength = xMark2Ref.value.getTotalLength();
-      xMark2Ref.value.style.strokeDasharray = `${pathLength}`;
-      xMark2Ref.value.style.strokeDashoffset = `${pathLength}`;
-      xMark2Ref.value.style.opacity = "0";
-
-      xMark2Animation = xMark2Ref.value.animate(
-        [
-          { strokeDashoffset: pathLength, opacity: 0 },
-          { strokeDashoffset: 0, opacity: 1 },
-        ],
-        {
-          duration: 300,
-          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-          fill: "forwards",
-        }
-      );
+      xMark2Ref.value.style.opacity = "1";
+      xMark2Ref.value.style.strokeDasharray = "none";
+      xMark2Ref.value.style.strokeDashoffset = "0";
     }
-  }, 400);
-};
+  };
 
-const stopAnimation = () => {
-  path1Motion.apply(pathVariants.normal);
-  path2Motion.apply(pathVariants.normal);
-  path3Motion.apply(pathVariants.normal);
-  lidMotion.apply(lidVariants.normal);
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-  // Stop and reset pathLength animations
-  if (xMark1Animation) {
-    xMark1Animation.cancel();
-    xMark1Animation = null;
-  }
-  if (xMark2Animation) {
-    xMark2Animation.cancel();
-    xMark2Animation = null;
-  }
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-  // Reset to initial state
-  if (xMark1Ref.value) {
-    xMark1Ref.value.style.opacity = "1";
-    xMark1Ref.value.style.strokeDasharray = "none";
-    xMark1Ref.value.style.strokeDashoffset = "0";
-  }
-  if (xMark2Ref.value) {
-    xMark2Ref.value.style.opacity = "1";
-    xMark2Ref.value.style.strokeDasharray = "none";
-    xMark2Ref.value.style.strokeDashoffset = "0";
-  }
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
-
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
-
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
-
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

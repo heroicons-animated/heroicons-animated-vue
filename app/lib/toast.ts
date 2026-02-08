@@ -34,7 +34,11 @@ const removeToast = (id: string) => {
   }
 };
 
-const addToast = (title: string, type: ToastType, options: ToastOptions = {}) => {
+const addToast = (
+  title: string,
+  type: ToastType,
+  options: ToastOptions = {}
+) => {
   const id = `${Date.now()}-${counter++}`;
   const duration = options.duration ?? DEFAULT_DURATION;
 
@@ -49,7 +53,7 @@ const addToast = (title: string, type: ToastType, options: ToastOptions = {}) =>
 
   toasts.value = [toast, ...toasts.value];
 
-  if (duration !== Infinity) {
+  if (duration !== Number.POSITIVE_INFINITY) {
     const timeout = setTimeout(() => {
       removeToast(id);
     }, duration);

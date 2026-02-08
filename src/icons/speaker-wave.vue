@@ -29,78 +29,78 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "SpeakerWaveIcon",
-};
+  export default {
+    name: "SpeakerWaveIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-// Match React: opacity/scale pulse with delay 0.2*(index-1), duration 0.2, repeat 1 reverse
-const normal = { opacity: 1, scale: 1 };
-const animateWave1 = {
-  opacity: [1, 0, 1],
-  scale: [1, 0, 1],
-  transition: { duration: 0.4, ease: "easeInOut", times: [0, 0.5, 1] },
-};
-const animateWave2 = {
-  opacity: [1, 0, 1],
-  scale: [1, 0, 1],
-  transition: {
-    duration: 0.4,
-    ease: "easeInOut",
-    times: [0, 0.5, 1],
-    delay: 0.2,
-  },
-};
-
-const wave1Ref = ref();
-const wave2Ref = ref();
-const motion1 = useMotion(wave1Ref, { initial: normal, enter: normal });
-const motion2 = useMotion(wave2Ref, { initial: normal, enter: normal });
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motion1.apply(animateWave1);
-  motion2.apply(animateWave2);
-};
-
-const stopAnimation = () => {
-  motion1.apply(normal);
-  motion2.apply(normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  // Match React: opacity/scale pulse with delay 0.2*(index-1), duration 0.2, repeat 1 reverse
+  const normal = { opacity: 1, scale: 1 };
+  const animateWave1 = {
+    opacity: [1, 0, 1],
+    scale: [1, 0, 1],
+    transition: { duration: 0.4, ease: "easeInOut", times: [0, 0.5, 1] },
+  };
+  const animateWave2 = {
+    opacity: [1, 0, 1],
+    scale: [1, 0, 1],
+    transition: {
+      duration: 0.4,
+      ease: "easeInOut",
+      times: [0, 0.5, 1],
+      delay: 0.2,
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const wave1Ref = ref();
+  const wave2Ref = ref();
+  const motion1 = useMotion(wave1Ref, { initial: normal, enter: normal });
+  const motion2 = useMotion(wave2Ref, { initial: normal, enter: normal });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motion1.apply(animateWave1);
+    motion2.apply(animateWave2);
+  };
+
+  const stopAnimation = () => {
+    motion1.apply(normal);
+    motion2.apply(normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Header from "~/components/Header.vue";
-import Toaster from "~/components/Toaster.vue";
-import { provideFramework } from "~/lib/framework";
-import { providePackageManager } from "~/lib/state";
+  import Header from "~/components/Header.vue";
+  import Toaster from "~/components/Toaster.vue";
+  import { provideFramework } from "~/lib/framework";
+  import { providePackageManager } from "~/lib/state";
 
-provideFramework();
-providePackageManager();
+  provideFramework();
+  providePackageManager();
 </script>
 
 <template>

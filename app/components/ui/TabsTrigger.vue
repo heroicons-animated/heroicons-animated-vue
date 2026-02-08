@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { computed, inject, useAttrs } from "vue";
-import { cn } from "~/lib/utils";
-import { tabsContextKey } from "./tabs-context";
+  import { computed, inject, useAttrs } from "vue";
+  import { cn } from "~/lib/utils";
+  import { tabsContextKey } from "./tabs-context";
 
-defineOptions({ inheritAttrs: false });
+  defineOptions({ inheritAttrs: false });
 
-const props = defineProps<{
-  value: string;
-}>();
+  const props = defineProps<{
+    value: string;
+  }>();
 
-const attrs = useAttrs();
-const ctx = inject(tabsContextKey);
+  const attrs = useAttrs();
+  const ctx = inject(tabsContextKey);
 
-const isActive = computed(() => ctx?.value.value === props.value);
+  const isActive = computed(() => ctx?.value.value === props.value);
 
-const handleClick = (event: MouseEvent) => {
-  ctx?.setValue(props.value);
-  const onClick = (attrs as any).onClick;
-  if (typeof onClick === "function") onClick(event);
-};
+  const handleClick = (event: MouseEvent) => {
+    ctx?.setValue(props.value);
+    const onClick = (attrs as any).onClick;
+    if (typeof onClick === "function") {
+      onClick(event);
+    }
+  };
 </script>
 
 <template>

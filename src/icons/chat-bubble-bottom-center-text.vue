@@ -26,75 +26,79 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ChatBubbleBottomCenterTextIcon",
-};
+  export default {
+    name: "ChatBubbleBottomCenterTextIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const visible = {
-  pathLength: 1,
-  opacity: 1,
-  transition: { duration: 0.4 },
-};
+  const visible = {
+    pathLength: 1,
+    opacity: 1,
+    transition: { duration: 0.4 },
+  };
 
-const hidden = (delay: number) => ({
-  pathLength: 0,
-  opacity: 0,
-  transition: { delay, duration: 0.3 },
-});
+  const hidden = (delay: number) => ({
+    pathLength: 0,
+    opacity: 0,
+    transition: { delay, duration: 0.3 },
+  });
 
-const toVisible = (delay: number) => ({
-  pathLength: 1,
-  opacity: 1,
-  transition: { delay, duration: 0.3 },
-});
+  const toVisible = (delay: number) => ({
+    pathLength: 1,
+    opacity: 1,
+    transition: { delay, duration: 0.3 },
+  });
 
-const line1Ref = ref<SVGPathElement | null>();
-const line2Ref = ref<SVGPathElement | null>();
+  const line1Ref = ref<SVGPathElement | null>();
+  const line2Ref = ref<SVGPathElement | null>();
 
-const motion1 = useMotion(line1Ref, { initial: visible, enter: visible });
-const motion2 = useMotion(line2Ref, { initial: visible, enter: visible });
+  const motion1 = useMotion(line1Ref, { initial: visible, enter: visible });
+  const motion2 = useMotion(line2Ref, { initial: visible, enter: visible });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = async () => {
-  await Promise.all([motion1.apply(hidden(0)), motion2.apply(hidden(0.1))]);
-  await Promise.all([
-    motion1.apply(toVisible(0)),
-    motion2.apply(toVisible(0.1)),
-  ]);
-};
+  const startAnimation = async () => {
+    await Promise.all([motion1.apply(hidden(0)), motion2.apply(hidden(0.1))]);
+    await Promise.all([
+      motion1.apply(toVisible(0)),
+      motion2.apply(toVisible(0.1)),
+    ]);
+  };
 
-const stopAnimation = () => {
-  motion1.apply(visible);
-  motion2.apply(visible);
-};
+  const stopAnimation = () => {
+    motion1.apply(visible);
+    motion2.apply(visible);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

@@ -25,75 +25,75 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "MagnifyingGlassMinusIcon",
-};
+  export default {
+    name: "MagnifyingGlassMinusIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const variants = {
-  normal: {
-    pathLength: 1,
-    pathOffset: 0,
-    opacity: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    pathLength: [0, 1],
-    pathOffset: [1, 0],
-    opacity: [0, 1],
-    transition: { duration: 0.4, ease: "easeInOut" },
-  },
-};
-
-const minusRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(minusRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionInstance.apply(variants.animate);
-};
-
-const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const variants = {
+    normal: {
+      pathLength: 1,
+      pathOffset: 0,
+      opacity: 1,
+      transition: { duration: 0.2, ease: "easeOut" },
+    },
+    animate: {
+      pathLength: [0, 1],
+      pathOffset: [1, 0],
+      opacity: [0, 1],
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const minusRef = ref<SVGPathElement | null>();
+  const motionInstance = useMotion(minusRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionInstance.apply(variants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionInstance.apply(variants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

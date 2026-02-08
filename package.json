@@ -107,8 +107,5 @@
       "confbox": "0.2.2"
     }
   },
-  "packageManager": "pnpm@10.28.0",
-  "volta": {
-    "node": "22.22.0"
-  }
+  "packageManager": "pnpm@10.28.0"
 }

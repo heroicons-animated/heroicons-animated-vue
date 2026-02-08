@@ -8,6 +8,5 @@ export type TooltipContext = {
   triggerRef: Ref<HTMLElement | null>;
 };
 
-export const tooltipContextKey: InjectionKey<TooltipContext> = Symbol(
-  "TooltipContext"
-);
+export const tooltipContextKey: InjectionKey<TooltipContext> =
+  Symbol("TooltipContext");

@@ -41,90 +41,90 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "SignalIcon",
-};
+  export default {
+    name: "SignalIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const createWaveVariants = (delay: number) => ({
-  normal: {
-    opacity: 1,
-    scale: 1,
-  },
-  animate: {
-    opacity: [1, 0, 1],
-    scale: [1, 0, 1],
-    transition: {
-      delay,
-      duration: 0.4,
-      ease: "easeInOut",
+  const createWaveVariants = (delay: number) => ({
+    normal: {
+      opacity: 1,
+      scale: 1,
     },
-  },
-});
+    animate: {
+      opacity: [1, 0, 1],
+      scale: [1, 0, 1],
+      transition: {
+        delay,
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    },
+  });
 
-const wave1Ref = ref();
-const wave2Ref = ref();
-const wave3Ref = ref();
+  const wave1Ref = ref();
+  const wave2Ref = ref();
+  const wave3Ref = ref();
 
-const motion1 = useMotion(wave1Ref, {
-  initial: createWaveVariants(0).normal,
-  enter: createWaveVariants(0).normal,
-});
-const motion2 = useMotion(wave2Ref, {
-  initial: createWaveVariants(0.2).normal,
-  enter: createWaveVariants(0.2).normal,
-});
-const motion3 = useMotion(wave3Ref, {
-  initial: createWaveVariants(0.4).normal,
-  enter: createWaveVariants(0.4).normal,
-});
+  const motion1 = useMotion(wave1Ref, {
+    initial: createWaveVariants(0).normal,
+    enter: createWaveVariants(0).normal,
+  });
+  const motion2 = useMotion(wave2Ref, {
+    initial: createWaveVariants(0.2).normal,
+    enter: createWaveVariants(0.2).normal,
+  });
+  const motion3 = useMotion(wave3Ref, {
+    initial: createWaveVariants(0.4).normal,
+    enter: createWaveVariants(0.4).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motion1.apply(createWaveVariants(0).animate);
-  motion2.apply(createWaveVariants(0.2).animate);
-  motion3.apply(createWaveVariants(0.4).animate);
-};
+  const startAnimation = () => {
+    motion1.apply(createWaveVariants(0).animate);
+    motion2.apply(createWaveVariants(0.2).animate);
+    motion3.apply(createWaveVariants(0.4).animate);
+  };
 
-const stopAnimation = () => {
-  motion1.apply(createWaveVariants(0).normal);
-  motion2.apply(createWaveVariants(0.2).normal);
-  motion3.apply(createWaveVariants(0.4).normal);
-};
+  const stopAnimation = () => {
+    motion1.apply(createWaveVariants(0).normal);
+    motion2.apply(createWaveVariants(0.2).normal);
+    motion3.apply(createWaveVariants(0.4).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

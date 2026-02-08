@@ -27,81 +27,81 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "BeakerIcon",
-};
+  export default {
+    name: "BeakerIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const pathVariants = {
-  normal: {
-    rotate: 0,
-    scale: 1,
-  },
-  animate: {
-    scale: 0.9,
-    rotate: [0, 6, -6, 3, -3, 0],
-    transition: {
-      duration: 0.8,
-      scale: {
-        duration: 0.3,
-        type: "spring",
-        bounce: 0.4,
-        stiffness: 150,
-        damping: 10,
+  const pathVariants = {
+    normal: {
+      rotate: 0,
+      scale: 1,
+    },
+    animate: {
+      scale: 0.9,
+      rotate: [0, 6, -6, 3, -3, 0],
+      transition: {
+        duration: 0.8,
+        scale: {
+          duration: 0.3,
+          type: "spring",
+          bounce: 0.4,
+          stiffness: 150,
+          damping: 10,
+        },
       },
     },
-  },
-};
+  };
 
-const svgRef = ref<SVGSVGElement>();
-const svgMotion = useMotion(svgRef, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
+  const svgRef = ref<SVGSVGElement>();
+  const svgMotion = useMotion(svgRef, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  svgMotion.apply(pathVariants.animate);
-};
+  const startAnimation = () => {
+    svgMotion.apply(pathVariants.animate);
+  };
 
-const stopAnimation = () => {
-  svgMotion.apply(pathVariants.normal);
-};
+  const stopAnimation = () => {
+    svgMotion.apply(pathVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

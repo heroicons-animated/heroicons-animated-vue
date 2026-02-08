@@ -22,99 +22,99 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "UnderlineIcon",
-};
+  export default {
+    name: "UnderlineIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const uVariants = {
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-    pathOffset: 0,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    pathOffset: [1, 0],
-    transition: { duration: 0.3, ease: "linear", opacity: { duration: 0.1 } },
-  },
-};
-
-const lineVariants = {
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      duration: 0.1,
-      ease: "linear",
-      delay: 0.3,
-      opacity: { duration: 0.1, delay: 0.3 },
+  const uVariants = {
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+      pathOffset: 0,
+      transition: { duration: 0.2, ease: "easeOut" },
     },
-  },
-};
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      pathOffset: [1, 0],
+      transition: { duration: 0.3, ease: "linear", opacity: { duration: 0.1 } },
+    },
+  };
 
-const uRef = ref();
-const lineRef = ref();
-const motionU = useMotion(uRef, {
-  initial: uVariants.normal,
-  enter: uVariants.normal,
-});
-const motionLine = useMotion(lineRef, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
+  const lineVariants = {
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+      transition: { duration: 0.2, ease: "easeOut" },
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        duration: 0.1,
+        ease: "linear",
+        delay: 0.3,
+        opacity: { duration: 0.1, delay: 0.3 },
+      },
+    },
+  };
 
-let isControlled = false;
+  const uRef = ref();
+  const lineRef = ref();
+  const motionU = useMotion(uRef, {
+    initial: uVariants.normal,
+    enter: uVariants.normal,
+  });
+  const motionLine = useMotion(lineRef, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
 
-const startAnimation = () => {
-  motionU.apply(uVariants.animate);
-  motionLine.apply(lineVariants.animate);
-};
+  let isControlled = false;
 
-const stopAnimation = () => {
-  motionU.apply(uVariants.normal);
-  motionLine.apply(lineVariants.normal);
-};
+  const startAnimation = () => {
+    motionU.apply(uVariants.animate);
+    motionLine.apply(lineVariants.animate);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const stopAnimation = () => {
+    motionU.apply(uVariants.normal);
+    motionLine.apply(lineVariants.normal);
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

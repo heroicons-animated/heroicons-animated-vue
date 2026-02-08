@@ -32,96 +32,96 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "AdjustmentsHorizontalIcon",
-};
+  export default {
+    name: "AdjustmentsHorizontalIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const defaultOptions = {
-  duration: 300,
-  easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)", // Approximate spring
-};
+  const defaultOptions = {
+    duration: 300,
+    easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)", // Approximate spring
+  };
 
-const line1Ref = ref<SVGLineElement>();
-const line2Ref = ref<SVGLineElement>();
-const circle1Ref = ref<SVGCircleElement>();
-const line3Ref = ref<SVGLineElement>();
-const line4Ref = ref<SVGLineElement>();
-const circle2Ref = ref<SVGCircleElement>();
-const line5Ref = ref<SVGLineElement>();
-const line6Ref = ref<SVGLineElement>();
-const circle3Ref = ref<SVGCircleElement>();
+  const line1Ref = ref<SVGLineElement>();
+  const line2Ref = ref<SVGLineElement>();
+  const circle1Ref = ref<SVGCircleElement>();
+  const line3Ref = ref<SVGLineElement>();
+  const line4Ref = ref<SVGLineElement>();
+  const circle2Ref = ref<SVGCircleElement>();
+  const line5Ref = ref<SVGLineElement>();
+  const line6Ref = ref<SVGLineElement>();
+  const circle3Ref = ref<SVGCircleElement>();
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  if (!isControlled) {
+  const startAnimation = () => {
+    if (!isControlled) {
+      // Row 1
+      line1Ref.value?.animate([{ x1: 10.5 }, { x1: 13.5 }], defaultOptions);
+      line2Ref.value?.animate([{ x2: 7.5 }, { x2: 10.5 }], defaultOptions);
+      circle1Ref.value?.animate([{ cx: 9 }, { cx: 12 }], defaultOptions);
+
+      // Row 2
+      line3Ref.value?.animate([{ x1: 16.5 }, { x1: 13.5 }], defaultOptions);
+      line4Ref.value?.animate([{ x2: 13.5 }, { x2: 10.5 }], defaultOptions);
+      circle2Ref.value?.animate([{ cx: 15 }, { cx: 12 }], defaultOptions);
+
+      // Row 3
+      line5Ref.value?.animate([{ x1: 10.5 }, { x1: 13.5 }], defaultOptions);
+      line6Ref.value?.animate([{ x2: 7.5 }, { x2: 10.5 }], defaultOptions);
+      circle3Ref.value?.animate([{ cx: 9 }, { cx: 12 }], defaultOptions);
+    }
+  };
+
+  const stopAnimation = () => {
     // Row 1
-    line1Ref.value?.animate([{ x1: 10.5 }, { x1: 13.5 }], defaultOptions);
-    line2Ref.value?.animate([{ x2: 7.5 }, { x2: 10.5 }], defaultOptions);
-    circle1Ref.value?.animate([{ cx: 9 }, { cx: 12 }], defaultOptions);
+    line1Ref.value?.animate([{ x1: 13.5 }, { x1: 10.5 }], defaultOptions);
+    line2Ref.value?.animate([{ x2: 10.5 }, { x2: 7.5 }], defaultOptions);
+    circle1Ref.value?.animate([{ cx: 12 }, { cx: 9 }], defaultOptions);
 
     // Row 2
-    line3Ref.value?.animate([{ x1: 16.5 }, { x1: 13.5 }], defaultOptions);
-    line4Ref.value?.animate([{ x2: 13.5 }, { x2: 10.5 }], defaultOptions);
-    circle2Ref.value?.animate([{ cx: 15 }, { cx: 12 }], defaultOptions);
+    line3Ref.value?.animate([{ x1: 13.5 }, { x1: 16.5 }], defaultOptions);
+    line4Ref.value?.animate([{ x2: 10.5 }, { x2: 13.5 }], defaultOptions);
+    circle2Ref.value?.animate([{ cx: 12 }, { cx: 15 }], defaultOptions);
 
     // Row 3
-    line5Ref.value?.animate([{ x1: 10.5 }, { x1: 13.5 }], defaultOptions);
-    line6Ref.value?.animate([{ x2: 7.5 }, { x2: 10.5 }], defaultOptions);
-    circle3Ref.value?.animate([{ cx: 9 }, { cx: 12 }], defaultOptions);
-  }
-};
+    line5Ref.value?.animate([{ x1: 13.5 }, { x1: 10.5 }], defaultOptions);
+    line6Ref.value?.animate([{ x2: 10.5 }, { x2: 7.5 }], defaultOptions);
+    circle3Ref.value?.animate([{ cx: 12 }, { cx: 9 }], defaultOptions);
+  };
 
-const stopAnimation = () => {
-  // Row 1
-  line1Ref.value?.animate([{ x1: 13.5 }, { x1: 10.5 }], defaultOptions);
-  line2Ref.value?.animate([{ x2: 10.5 }, { x2: 7.5 }], defaultOptions);
-  circle1Ref.value?.animate([{ cx: 12 }, { cx: 9 }], defaultOptions);
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-  // Row 2
-  line3Ref.value?.animate([{ x1: 13.5 }, { x1: 16.5 }], defaultOptions);
-  line4Ref.value?.animate([{ x2: 10.5 }, { x2: 13.5 }], defaultOptions);
-  circle2Ref.value?.animate([{ cx: 12 }, { cx: 15 }], defaultOptions);
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-  // Row 3
-  line5Ref.value?.animate([{ x1: 13.5 }, { x1: 10.5 }], defaultOptions);
-  line6Ref.value?.animate([{ x2: 10.5 }, { x2: 7.5 }], defaultOptions);
-  circle3Ref.value?.animate([{ cx: 12 }, { cx: 9 }], defaultOptions);
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
-
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
-
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
-
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

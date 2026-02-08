@@ -26,74 +26,74 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArrowPathRoundedSquareIcon",
-};
+  export default {
+    name: "ArrowPathRoundedSquareIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const rotateVariants = {
-  normal: {
-    rotate: 0,
-  },
-  animate: {
-    rotate: 180,
-    transition: {
-      type: "spring",
-      stiffness: 250,
-      damping: 25,
+  const rotateVariants = {
+    normal: {
+      rotate: 0,
     },
-  },
-};
+    animate: {
+      rotate: 180,
+      transition: {
+        type: "spring",
+        stiffness: 250,
+        damping: 25,
+      },
+    },
+  };
 
-const svgRef = ref<SVGSVGElement>();
-const svgMotion = useMotion(svgRef, {
-  initial: rotateVariants.normal,
-  enter: rotateVariants.normal,
-});
+  const svgRef = ref<SVGSVGElement>();
+  const svgMotion = useMotion(svgRef, {
+    initial: rotateVariants.normal,
+    enter: rotateVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  svgMotion.apply(rotateVariants.animate);
-};
+  const startAnimation = () => {
+    svgMotion.apply(rotateVariants.animate);
+  };
 
-const stopAnimation = () => {
-  svgMotion.apply(rotateVariants.normal);
-};
+  const stopAnimation = () => {
+    svgMotion.apply(rotateVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

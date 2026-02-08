@@ -33,133 +33,133 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArrowsPointingInIcon",
-};
+  export default {
+    name: "ArrowsPointingInIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const topLeftVariants = {
-  normal: { translateX: 0, translateY: 0 },
-  animate: {
-    translateX: [0, 2, 0],
-    translateY: [0, 2, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.4, 1],
-    },
-  },
-};
-
-const bottomLeftVariants = {
-  normal: { translateX: 0, translateY: 0 },
-  animate: {
-    translateX: [0, 2, 0],
-    translateY: [0, -2, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.4, 1],
-    },
-  },
-};
-
-const topRightVariants = {
-  normal: { translateX: 0, translateY: 0 },
-  animate: {
-    translateX: [0, -2, 0],
-    translateY: [0, 2, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.4, 1],
-    },
-  },
-};
-
-const bottomRightVariants = {
-  normal: { translateX: 0, translateY: 0 },
-  animate: {
-    translateX: [0, -2, 0],
-    translateY: [0, -2, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.4, 1],
-    },
-  },
-};
-
-const topLeftRef = ref();
-const bottomLeftRef = ref();
-const topRightRef = ref();
-const bottomRightRef = ref();
-
-const topLeftMotion = useMotion(topLeftRef, {
-  initial: topLeftVariants.normal,
-  enter: topLeftVariants.normal,
-});
-
-const bottomLeftMotion = useMotion(bottomLeftRef, {
-  initial: bottomLeftVariants.normal,
-  enter: bottomLeftVariants.normal,
-});
-
-const topRightMotion = useMotion(topRightRef, {
-  initial: topRightVariants.normal,
-  enter: topRightVariants.normal,
-});
-
-const bottomRightMotion = useMotion(bottomRightRef, {
-  initial: bottomRightVariants.normal,
-  enter: bottomRightVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  topLeftMotion.apply(topLeftVariants.animate);
-  bottomLeftMotion.apply(bottomLeftVariants.animate);
-  topRightMotion.apply(topRightVariants.animate);
-  bottomRightMotion.apply(bottomRightVariants.animate);
-};
-
-const stopAnimation = () => {
-  topLeftMotion.apply(topLeftVariants.normal);
-  bottomLeftMotion.apply(bottomLeftVariants.normal);
-  topRightMotion.apply(topRightVariants.normal);
-  bottomRightMotion.apply(bottomRightVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const topLeftVariants = {
+    normal: { translateX: 0, translateY: 0 },
+    animate: {
+      translateX: [0, 2, 0],
+      translateY: [0, 2, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.4, 1],
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const bottomLeftVariants = {
+    normal: { translateX: 0, translateY: 0 },
+    animate: {
+      translateX: [0, 2, 0],
+      translateY: [0, -2, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.4, 1],
+      },
+    },
+  };
+
+  const topRightVariants = {
+    normal: { translateX: 0, translateY: 0 },
+    animate: {
+      translateX: [0, -2, 0],
+      translateY: [0, 2, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.4, 1],
+      },
+    },
+  };
+
+  const bottomRightVariants = {
+    normal: { translateX: 0, translateY: 0 },
+    animate: {
+      translateX: [0, -2, 0],
+      translateY: [0, -2, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.4, 1],
+      },
+    },
+  };
+
+  const topLeftRef = ref();
+  const bottomLeftRef = ref();
+  const topRightRef = ref();
+  const bottomRightRef = ref();
+
+  const topLeftMotion = useMotion(topLeftRef, {
+    initial: topLeftVariants.normal,
+    enter: topLeftVariants.normal,
+  });
+
+  const bottomLeftMotion = useMotion(bottomLeftRef, {
+    initial: bottomLeftVariants.normal,
+    enter: bottomLeftVariants.normal,
+  });
+
+  const topRightMotion = useMotion(topRightRef, {
+    initial: topRightVariants.normal,
+    enter: topRightVariants.normal,
+  });
+
+  const bottomRightMotion = useMotion(bottomRightRef, {
+    initial: bottomRightVariants.normal,
+    enter: bottomRightVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    topLeftMotion.apply(topLeftVariants.animate);
+    bottomLeftMotion.apply(bottomLeftVariants.animate);
+    topRightMotion.apply(topRightVariants.animate);
+    bottomRightMotion.apply(bottomRightVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    topLeftMotion.apply(topLeftVariants.normal);
+    bottomLeftMotion.apply(bottomLeftVariants.normal);
+    topRightMotion.apply(topRightVariants.normal);
+    bottomRightMotion.apply(bottomRightVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

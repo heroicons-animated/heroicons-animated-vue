@@ -1,182 +1,211 @@
 <script setup lang="ts">
-import {
-  computed,
-  inject,
-  nextTick,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  useAttrs,
-  watch,
-} from "vue";
-import { cn } from "~/lib/utils";
-import { tooltipContextKey } from "./tooltip-context";
+  import {
+    computed,
+    inject,
+    nextTick,
+    onBeforeUnmount,
+    onMounted,
+    ref,
+    useAttrs,
+    watch,
+  } from "vue";
+  import { cn } from "~/lib/utils";
+  import { tooltipContextKey } from "./tooltip-context";
 
-defineOptions({ inheritAttrs: false });
+  defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(
-  defineProps<{
-    align?: "start" | "center" | "end";
-    side?: "top" | "bottom" | "left" | "right";
-    sideOffset?: number;
-  }>(),
-  {
-    align: "center",
-    side: "bottom",
-    sideOffset: 6,
-  }
-);
-
-const attrs = useAttrs();
-const ctx = inject(tooltipContextKey);
-const contentRef = ref<HTMLElement | null>(null);
-const isClient = ref(false);
-const position = ref({ top: 0, left: 0, transformOrigin: "center top" });
-const arrowPosition = ref({ top: 0, left: 0 });
-
-const ARROW_WIDTH = 20;
-const ARROW_HEIGHT = 10;
-const ARROW_OFFSET = 8;
-const ARROW_SIDE_OFFSET = 13;
-
-const getTransformOrigin = () => {
-  if (props.side === "top") return "center bottom";
-  if (props.side === "left") return "right center";
-  if (props.side === "right") return "left center";
-  return "center top";
-};
-
-const updatePosition = () => {
-  if (!ctx?.triggerRef.value || !contentRef.value || typeof window === "undefined") {
-    return;
-  }
-
-  const triggerRect = ctx.triggerRef.value.getBoundingClientRect();
-  const contentRect = contentRef.value.getBoundingClientRect();
-  const offset = props.sideOffset;
-
-  let top = 0;
-  let left = 0;
-
-  const alignHorizontal = () => {
-    if (props.align === "start") return triggerRect.left;
-    if (props.align === "end") return triggerRect.right - contentRect.width;
-    return triggerRect.left + triggerRect.width / 2 - contentRect.width / 2;
-  };
-
-  const alignVertical = () => {
-    if (props.align === "start") return triggerRect.top;
-    if (props.align === "end") return triggerRect.bottom - contentRect.height;
-    return triggerRect.top + triggerRect.height / 2 - contentRect.height / 2;
-  };
-
-  if (props.side === "top") {
-    top = triggerRect.top - offset - contentRect.height;
-    left = alignHorizontal();
-  } else if (props.side === "bottom") {
-    top = triggerRect.bottom + offset;
-    left = alignHorizontal();
-  } else if (props.side === "left") {
-    left = triggerRect.left - offset - contentRect.width;
-    top = alignVertical();
-  } else {
-    left = triggerRect.right + offset;
-    top = alignVertical();
-  }
-
-  const padding = 8;
-  left = Math.min(
-    Math.max(left, padding),
-    window.innerWidth - contentRect.width - padding
-  );
-  top = Math.min(
-    Math.max(top, padding),
-    window.innerHeight - contentRect.height - padding
+  const props = withDefaults(
+    defineProps<{
+      align?: "start" | "center" | "end";
+      side?: "top" | "bottom" | "left" | "right";
+      sideOffset?: number;
+    }>(),
+    {
+      align: "center",
+      side: "bottom",
+      sideOffset: 6,
+    }
   );
 
-  position.value = {
-    top,
-    left,
-    transformOrigin: getTransformOrigin(),
+  const attrs = useAttrs();
+  const ctx = inject(tooltipContextKey);
+  const contentRef = ref<HTMLElement | null>(null);
+  const isClient = ref(false);
+  const position = ref({ top: 0, left: 0, transformOrigin: "center top" });
+  const arrowPosition = ref({ top: 0, left: 0 });
+
+  const ARROW_WIDTH = 20;
+  const ARROW_HEIGHT = 10;
+  const ARROW_OFFSET = 8;
+  const ARROW_SIDE_OFFSET = 13;
+
+  const getTransformOrigin = () => {
+    if (props.side === "top") {
+      return "center bottom";
+    }
+    if (props.side === "left") {
+      return "right center";
+    }
+    if (props.side === "right") {
+      return "left center";
+    }
+    return "center top";
   };
 
-  const triggerCenterX = triggerRect.left + triggerRect.width / 2;
-  const triggerCenterY = triggerRect.top + triggerRect.height / 2;
-  const arrowPadding = 8;
+  const updatePosition = () => {
+    if (
+      !(ctx?.triggerRef.value && contentRef.value) ||
+      typeof window === "undefined"
+    ) {
+      return;
+    }
 
-  if (props.side === "top" || props.side === "bottom") {
-    const targetX = triggerCenterX - left;
-    const arrowLeft = Math.min(
-      Math.max(targetX - ARROW_WIDTH / 2, arrowPadding),
-      contentRect.width - ARROW_WIDTH - arrowPadding
+    const triggerRect = ctx.triggerRef.value.getBoundingClientRect();
+    const contentRect = contentRef.value.getBoundingClientRect();
+    const offset = props.sideOffset;
+
+    let top = 0;
+    let left = 0;
+
+    const alignHorizontal = () => {
+      if (props.align === "start") {
+        return triggerRect.left;
+      }
+      if (props.align === "end") {
+        return triggerRect.right - contentRect.width;
+      }
+      return triggerRect.left + triggerRect.width / 2 - contentRect.width / 2;
+    };
+
+    const alignVertical = () => {
+      if (props.align === "start") {
+        return triggerRect.top;
+      }
+      if (props.align === "end") {
+        return triggerRect.bottom - contentRect.height;
+      }
+      return triggerRect.top + triggerRect.height / 2 - contentRect.height / 2;
+    };
+
+    if (props.side === "top") {
+      top = triggerRect.top - offset - contentRect.height;
+      left = alignHorizontal();
+    } else if (props.side === "bottom") {
+      top = triggerRect.bottom + offset;
+      left = alignHorizontal();
+    } else if (props.side === "left") {
+      left = triggerRect.left - offset - contentRect.width;
+      top = alignVertical();
+    } else {
+      left = triggerRect.right + offset;
+      top = alignVertical();
+    }
+
+    const padding = 8;
+    left = Math.min(
+      Math.max(left, padding),
+      window.innerWidth - contentRect.width - padding
     );
-    const arrowTop =
-      props.side === "bottom"
-        ? -ARROW_OFFSET
-        : contentRect.height - (ARROW_HEIGHT - ARROW_OFFSET);
-    arrowPosition.value = { left: arrowLeft, top: arrowTop };
-  } else {
-    const targetY = triggerCenterY - top;
-    const arrowSpan = ARROW_WIDTH;
-    const arrowTop = Math.min(
-      Math.max(targetY - arrowSpan / 2, arrowPadding),
-      contentRect.height - arrowSpan - arrowPadding
+    top = Math.min(
+      Math.max(top, padding),
+      window.innerHeight - contentRect.height - padding
     );
-    const arrowLeft =
-      props.side === "left"
-        ? contentRect.width - (ARROW_WIDTH - ARROW_SIDE_OFFSET)
-        : -ARROW_SIDE_OFFSET;
-    arrowPosition.value = { left: arrowLeft, top: arrowTop };
-  }
-};
 
-const scheduleUpdate = () => {
-  if (!isClient.value) return;
-  nextTick(() => requestAnimationFrame(updatePosition));
-};
+    position.value = {
+      top,
+      left,
+      transformOrigin: getTransformOrigin(),
+    };
 
-const handleWindowUpdate = () => {
-  if (!ctx?.open.value) return;
-  updatePosition();
-};
+    const triggerCenterX = triggerRect.left + triggerRect.width / 2;
+    const triggerCenterY = triggerRect.top + triggerRect.height / 2;
+    const arrowPadding = 8;
 
-watch(
-  () => ctx?.open.value,
-  (open) => {
-    if (open) scheduleUpdate();
-  }
-);
+    if (props.side === "top" || props.side === "bottom") {
+      const targetX = triggerCenterX - left;
+      const arrowLeft = Math.min(
+        Math.max(targetX - ARROW_WIDTH / 2, arrowPadding),
+        contentRect.width - ARROW_WIDTH - arrowPadding
+      );
+      const arrowTop =
+        props.side === "bottom"
+          ? -ARROW_OFFSET
+          : contentRect.height - (ARROW_HEIGHT - ARROW_OFFSET);
+      arrowPosition.value = { left: arrowLeft, top: arrowTop };
+    } else {
+      const targetY = triggerCenterY - top;
+      const arrowSpan = ARROW_WIDTH;
+      const arrowTop = Math.min(
+        Math.max(targetY - arrowSpan / 2, arrowPadding),
+        contentRect.height - arrowSpan - arrowPadding
+      );
+      const arrowLeft =
+        props.side === "left"
+          ? contentRect.width - (ARROW_WIDTH - ARROW_SIDE_OFFSET)
+          : -ARROW_SIDE_OFFSET;
+      arrowPosition.value = { left: arrowLeft, top: arrowTop };
+    }
+  };
 
-watch(
-  () => [props.side, props.align, props.sideOffset],
-  () => {
-    if (ctx?.open.value) scheduleUpdate();
-  }
-);
+  const scheduleUpdate = () => {
+    if (!isClient.value) {
+      return;
+    }
+    nextTick(() => requestAnimationFrame(updatePosition));
+  };
 
-onMounted(() => {
-  isClient.value = true;
-  if (typeof window === "undefined") return;
-  window.addEventListener("resize", handleWindowUpdate);
-  window.addEventListener("scroll", handleWindowUpdate, true);
-});
+  const handleWindowUpdate = () => {
+    if (!ctx?.open.value) {
+      return;
+    }
+    updatePosition();
+  };
 
-onBeforeUnmount(() => {
-  if (typeof window === "undefined") return;
-  window.removeEventListener("resize", handleWindowUpdate);
-  window.removeEventListener("scroll", handleWindowUpdate, true);
-});
+  watch(
+    () => ctx?.open.value,
+    (open) => {
+      if (open) {
+        scheduleUpdate();
+      }
+    }
+  );
 
-const contentStyle = computed(() => ({
-  top: `${position.value.top}px`,
-  left: `${position.value.left}px`,
-  "--transform-origin": position.value.transformOrigin,
-}));
+  watch(
+    () => [props.side, props.align, props.sideOffset],
+    () => {
+      if (ctx?.open.value) {
+        scheduleUpdate();
+      }
+    }
+  );
 
-const arrowStyle = computed(() => ({
-  top: `${arrowPosition.value.top}px`,
-  left: `${arrowPosition.value.left}px`,
-}));
+  onMounted(() => {
+    isClient.value = true;
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.addEventListener("resize", handleWindowUpdate);
+    window.addEventListener("scroll", handleWindowUpdate, true);
+  });
+
+  onBeforeUnmount(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    window.removeEventListener("resize", handleWindowUpdate);
+    window.removeEventListener("scroll", handleWindowUpdate, true);
+  });
+
+  const contentStyle = computed(() => ({
+    top: `${position.value.top}px`,
+    left: `${position.value.left}px`,
+    "--transform-origin": position.value.transformOrigin,
+  }));
+
+  const arrowStyle = computed(() => ({
+    top: `${arrowPosition.value.top}px`,
+    left: `${arrowPosition.value.left}px`,
+  }));
 </script>
 
 <template>

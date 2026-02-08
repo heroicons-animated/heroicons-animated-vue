@@ -28,109 +28,109 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ClipboardDocumentListIcon",
-};
+  export default {
+    name: "ClipboardDocumentListIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { onMounted, ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { onMounted, ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const DOT_DURATION = 0.1;
-const LINE_DURATION = 0.3;
-
-const LIST_ITEMS = [
-  { y: 12, dotPath: "M6.75 12h.008v.008H6.75V12Z", linePath: "M9 12h3.75" },
-  { y: 15, dotPath: "M6.75 15h.008v.008H6.75V15Z", linePath: "M9 15h3.75" },
-  { y: 18, dotPath: "M6.75 18h.008v.008H6.75V18Z", linePath: "M9 18h3.75" },
-];
-
-const dotRefs = ref<SVGPathElement[]>([]);
-const lineRefs = ref<SVGPathElement[]>([]);
-
-const dotMotions: any[] = [];
-const lineMotions: any[] = [];
-
-onMounted(() => {
-  dotRefs.value.forEach((el, index) => {
-    dotMotions[index] = useMotion(el, {
-      initial: { opacity: 1 },
-    });
-  });
-  lineRefs.value.forEach((el, index) => {
-    lineMotions[index] = useMotion(el, {
-      initial: { pathLength: 1, opacity: 1 },
-    });
-  });
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  LIST_ITEMS.forEach((_, index) => {
-    const dotDelay = index * (DOT_DURATION + LINE_DURATION);
-    const lineDelay = dotDelay + DOT_DURATION;
-
-    dotMotions[index]?.apply({
-      opacity: [0, 1],
-      transition: {
-        duration: DOT_DURATION,
-        delay: dotDelay,
-        ease: "easeInOut",
-      },
-    });
-
-    lineMotions[index]?.apply({
-      pathLength: [0, 1],
-      opacity: [0, 1],
-      transition: {
-        duration: LINE_DURATION,
-        delay: lineDelay,
-        ease: "easeInOut",
-      },
-    });
-  });
-};
-
-const stopAnimation = () => {
-  dotMotions.forEach((m) => {
-    m?.apply({ opacity: 1 });
-  });
-  lineMotions.forEach((m) => {
-    m?.apply({ pathLength: 1, opacity: 1 });
-  });
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const DOT_DURATION = 0.1;
+  const LINE_DURATION = 0.3;
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const LIST_ITEMS = [
+    { y: 12, dotPath: "M6.75 12h.008v.008H6.75V12Z", linePath: "M9 12h3.75" },
+    { y: 15, dotPath: "M6.75 15h.008v.008H6.75V15Z", linePath: "M9 15h3.75" },
+    { y: 18, dotPath: "M6.75 18h.008v.008H6.75V18Z", linePath: "M9 18h3.75" },
+  ];
+
+  const dotRefs = ref<SVGPathElement[]>([]);
+  const lineRefs = ref<SVGPathElement[]>([]);
+
+  const dotMotions: any[] = [];
+  const lineMotions: any[] = [];
+
+  onMounted(() => {
+    dotRefs.value.forEach((el, index) => {
+      dotMotions[index] = useMotion(el, {
+        initial: { opacity: 1 },
+      });
+    });
+    lineRefs.value.forEach((el, index) => {
+      lineMotions[index] = useMotion(el, {
+        initial: { pathLength: 1, opacity: 1 },
+      });
+    });
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    LIST_ITEMS.forEach((_, index) => {
+      const dotDelay = index * (DOT_DURATION + LINE_DURATION);
+      const lineDelay = dotDelay + DOT_DURATION;
+
+      dotMotions[index]?.apply({
+        opacity: [0, 1],
+        transition: {
+          duration: DOT_DURATION,
+          delay: dotDelay,
+          ease: "easeInOut",
+        },
+      });
+
+      lineMotions[index]?.apply({
+        pathLength: [0, 1],
+        opacity: [0, 1],
+        transition: {
+          duration: LINE_DURATION,
+          delay: lineDelay,
+          ease: "easeInOut",
+        },
+      });
+    });
+  };
+
+  const stopAnimation = () => {
+    dotMotions.forEach((m) => {
+      m?.apply({ opacity: 1 });
+    });
+    lineMotions.forEach((m) => {
+      m?.apply({ pathLength: 1, opacity: 1 });
+    });
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

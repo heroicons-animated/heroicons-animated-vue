@@ -74,87 +74,87 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "RadioIcon",
-};
+  export default {
+    name: "RadioIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const antennaVariants = {
-  normal: { rotate: 0, transition: { duration: 0.3, ease: "easeOut" } },
-  animate: {
-    rotate: [0, -10],
-    transition: { duration: 0.4, ease: "easeOut" },
-  },
-};
-
-const speakerVariants = {
-  normal: {
-    scale: 1,
-    opacity: 1,
-    transition: { duration: 0.3, ease: "easeOut" },
-  },
-  animate: {
-    scale: [1, 1.15, 1, 1.1, 1],
-    opacity: [1, 0.7, 1, 0.8, 1],
-    transition: { duration: 0.5, ease: "easeInOut" },
-  },
-};
-
-const antennaRef = ref();
-const speakerRef = ref();
-const antennaMotion = useMotion(antennaRef, {
-  initial: antennaVariants.normal,
-  enter: antennaVariants.normal,
-});
-const speakerMotion = useMotion(speakerRef, {
-  initial: speakerVariants.normal,
-  enter: speakerVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  antennaMotion.apply(antennaVariants.animate);
-  speakerMotion.apply(speakerVariants.animate);
-};
-
-const stopAnimation = () => {
-  antennaMotion.apply(antennaVariants.normal);
-  speakerMotion.apply(speakerVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const antennaVariants = {
+    normal: { rotate: 0, transition: { duration: 0.3, ease: "easeOut" } },
+    animate: {
+      rotate: [0, -10],
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const speakerVariants = {
+    normal: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 0.3, ease: "easeOut" },
+    },
+    animate: {
+      scale: [1, 1.15, 1, 1.1, 1],
+      opacity: [1, 0.7, 1, 0.8, 1],
+      transition: { duration: 0.5, ease: "easeInOut" },
+    },
+  };
+
+  const antennaRef = ref();
+  const speakerRef = ref();
+  const antennaMotion = useMotion(antennaRef, {
+    initial: antennaVariants.normal,
+    enter: antennaVariants.normal,
+  });
+  const speakerMotion = useMotion(speakerRef, {
+    initial: speakerVariants.normal,
+    enter: speakerVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    antennaMotion.apply(antennaVariants.animate);
+    speakerMotion.apply(speakerVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    antennaMotion.apply(antennaVariants.normal);
+    speakerMotion.apply(speakerVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

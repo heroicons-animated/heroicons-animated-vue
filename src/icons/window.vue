@@ -26,72 +26,76 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "WindowIcon",
-};
+  export default {
+    name: "WindowIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const createButtonVariants = (delay: number) => ({
-  normal: { scale: 1, opacity: 1, transition: { duration: 0.2 } },
-  animate: {
-    scale: [0, 1.3, 1],
-    opacity: [0, 1, 1],
-    transition: { delay, duration: 0.3, ease: "easeOut" },
-  },
-});
+  const createButtonVariants = (delay: number) => ({
+    normal: { scale: 1, opacity: 1, transition: { duration: 0.2 } },
+    animate: {
+      scale: [0, 1.3, 1],
+      opacity: [0, 1, 1],
+      transition: { delay, duration: 0.3, ease: "easeOut" },
+    },
+  });
 
-const b0Ref = ref();
-const b1Ref = ref();
-const b2Ref = ref();
-const m0 = useMotion(b0Ref, {
-  initial: createButtonVariants(0).normal,
-  enter: createButtonVariants(0).normal,
-});
-const m1 = useMotion(b1Ref, {
-  initial: createButtonVariants(0.1).normal,
-  enter: createButtonVariants(0.1).normal,
-});
-const m2 = useMotion(b2Ref, {
-  initial: createButtonVariants(0.2).normal,
-  enter: createButtonVariants(0.2).normal,
-});
+  const b0Ref = ref();
+  const b1Ref = ref();
+  const b2Ref = ref();
+  const m0 = useMotion(b0Ref, {
+    initial: createButtonVariants(0).normal,
+    enter: createButtonVariants(0).normal,
+  });
+  const m1 = useMotion(b1Ref, {
+    initial: createButtonVariants(0.1).normal,
+    enter: createButtonVariants(0.1).normal,
+  });
+  const m2 = useMotion(b2Ref, {
+    initial: createButtonVariants(0.2).normal,
+    enter: createButtonVariants(0.2).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  m0.apply(createButtonVariants(0).animate);
-  m1.apply(createButtonVariants(0.1).animate);
-  m2.apply(createButtonVariants(0.2).animate);
-};
+  const startAnimation = () => {
+    m0.apply(createButtonVariants(0).animate);
+    m1.apply(createButtonVariants(0.1).animate);
+    m2.apply(createButtonVariants(0.2).animate);
+  };
 
-const stopAnimation = () => {
-  m0.apply(createButtonVariants(0).normal);
-  m1.apply(createButtonVariants(0.1).normal);
-  m2.apply(createButtonVariants(0.2).normal);
-};
+  const stopAnimation = () => {
+    m0.apply(createButtonVariants(0).normal);
+    m1.apply(createButtonVariants(0.1).normal);
+    m2.apply(createButtonVariants(0.2).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

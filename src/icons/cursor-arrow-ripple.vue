@@ -36,86 +36,90 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CursorArrowRippleIcon",
-};
+  export default {
+    name: "CursorArrowRippleIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-// Match React CURSOR_VARIANTS: x [0,0,-3,0] y [0,-4,0,0] duration 1 bounce 0.3
-const cursorVariants = {
-  normal: { x: 0, y: 0 },
-  animate: {
-    x: [0, 0, -3, 0],
-    y: [0, -4, 0, 0],
-    transition: { duration: 1, ease: [0.34, 1.56, 0.64, 1] }, // approx bounce
-  },
-};
+  // Match React CURSOR_VARIANTS: x [0,0,-3,0] y [0,-4,0,0] duration 1 bounce 0.3
+  const cursorVariants = {
+    normal: { x: 0, y: 0 },
+    animate: {
+      x: [0, 0, -3, 0],
+      y: [0, -4, 0, 0],
+      transition: { duration: 1, ease: [0.34, 1.56, 0.64, 1] }, // approx bounce
+    },
+  };
 
-// Match React RIPPLE_VARIANTS: opacity [0,1] duration 0.3 delay 1+custom*0.3 easeOut
-const rippleVariants = (delay: number) => ({
-  normal: { opacity: 1 },
-  ripple: {
-    opacity: [0, 1],
-    transition: { duration: 0.3, delay, ease: "easeOut" },
-  },
-});
+  // Match React RIPPLE_VARIANTS: opacity [0,1] duration 0.3 delay 1+custom*0.3 easeOut
+  const rippleVariants = (delay: number) => ({
+    normal: { opacity: 1 },
+    ripple: {
+      opacity: [0, 1],
+      transition: { duration: 0.3, delay, ease: "easeOut" },
+    },
+  });
 
-const cursorRef = ref<SVGPathElement | null>();
-const ripple0Ref = ref<SVGPathElement | null>();
-const ripple1Ref = ref<SVGPathElement | null>();
+  const cursorRef = ref<SVGPathElement | null>();
+  const ripple0Ref = ref<SVGPathElement | null>();
+  const ripple1Ref = ref<SVGPathElement | null>();
 
-const cursorMotion = useMotion(cursorRef, {
-  initial: cursorVariants.normal,
-  enter: cursorVariants.normal,
-});
-const ripple0Motion = useMotion(ripple0Ref, {
-  initial: rippleVariants(1).normal,
-  enter: rippleVariants(1).normal,
-});
-const ripple1Motion = useMotion(ripple1Ref, {
-  initial: rippleVariants(1.3).normal,
-  enter: rippleVariants(1.3).normal,
-});
+  const cursorMotion = useMotion(cursorRef, {
+    initial: cursorVariants.normal,
+    enter: cursorVariants.normal,
+  });
+  const ripple0Motion = useMotion(ripple0Ref, {
+    initial: rippleVariants(1).normal,
+    enter: rippleVariants(1).normal,
+  });
+  const ripple1Motion = useMotion(ripple1Ref, {
+    initial: rippleVariants(1.3).normal,
+    enter: rippleVariants(1.3).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  cursorMotion.apply(cursorVariants.animate);
-  ripple0Motion.apply(rippleVariants(1).ripple);
-  ripple1Motion.apply(rippleVariants(1.3).ripple);
-};
+  const startAnimation = () => {
+    cursorMotion.apply(cursorVariants.animate);
+    ripple0Motion.apply(rippleVariants(1).ripple);
+    ripple1Motion.apply(rippleVariants(1.3).ripple);
+  };
 
-const stopAnimation = () => {
-  cursorMotion.apply(cursorVariants.normal);
-  ripple0Motion.apply(rippleVariants(1).normal);
-  ripple1Motion.apply(rippleVariants(1.3).normal);
-};
+  const stopAnimation = () => {
+    cursorMotion.apply(cursorVariants.normal);
+    ripple0Motion.apply(rippleVariants(1).normal);
+    ripple1Motion.apply(rippleVariants(1.3).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

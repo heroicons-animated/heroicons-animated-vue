@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useAttrs } from "vue";
-import { cn } from "~/lib/utils";
+  import { useAttrs } from "vue";
+  import { cn } from "~/lib/utils";
 
-defineOptions({ inheritAttrs: false });
+  defineOptions({ inheritAttrs: false });
 
-const attrs = useAttrs();
+  const attrs = useAttrs();
 </script>
 
 <template>

@@ -23,83 +23,83 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ChevronUpDownIcon",
-};
+  export default {
+    name: "ChevronUpDownIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const upVariants = {
-  normal: { translateY: 0 },
-  animate: {
-    translateY: [0, -2, 0],
-    transition: { duration: 0.5, times: [0, 0.4, 1] },
-  },
-};
-
-const downVariants = {
-  normal: { translateY: 0 },
-  animate: {
-    translateY: [0, 2, 0],
-    transition: { duration: 0.5, times: [0, 0.4, 1] },
-  },
-};
-
-const upRef = ref<SVGPathElement | null>();
-const downRef = ref<SVGPathElement | null>();
-const motionUp = useMotion(upRef, {
-  initial: upVariants.normal,
-  enter: upVariants.normal,
-});
-const motionDown = useMotion(downRef, {
-  initial: downVariants.normal,
-  enter: downVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionUp.apply(upVariants.animate);
-  motionDown.apply(downVariants.animate);
-};
-
-const stopAnimation = () => {
-  motionUp.apply(upVariants.normal);
-  motionDown.apply(downVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const upVariants = {
+    normal: { translateY: 0 },
+    animate: {
+      translateY: [0, -2, 0],
+      transition: { duration: 0.5, times: [0, 0.4, 1] },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const downVariants = {
+    normal: { translateY: 0 },
+    animate: {
+      translateY: [0, 2, 0],
+      transition: { duration: 0.5, times: [0, 0.4, 1] },
+    },
+  };
+
+  const upRef = ref<SVGPathElement | null>();
+  const downRef = ref<SVGPathElement | null>();
+  const motionUp = useMotion(upRef, {
+    initial: upVariants.normal,
+    enter: upVariants.normal,
+  });
+  const motionDown = useMotion(downRef, {
+    initial: downVariants.normal,
+    enter: downVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionUp.apply(upVariants.animate);
+    motionDown.apply(downVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionUp.apply(upVariants.normal);
+    motionDown.apply(downVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

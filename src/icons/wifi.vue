@@ -36,81 +36,81 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "WifiIcon",
-};
+  export default {
+    name: "WifiIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const normal = {
-  opacity: 1,
-  scale: 1,
-  transition: { duration: 0.2, ease: "easeOut" },
-};
-const createPulse = (delay: number) => ({
-  opacity: [1, 0, 0, 1],
-  scale: [1, 0, 0, 1],
-  transition: {
-    duration: 0.6,
-    ease: "easeInOut",
-    delay,
-    opacity: { duration: 0.6, times: [0, 0.333, 0.666, 1], delay },
-    scale: { duration: 0.6, times: [0, 0.333, 0.666, 1], delay },
-  },
-});
-
-const arc1Ref = ref();
-const arc2Ref = ref();
-const arc3Ref = ref();
-const motion1 = useMotion(arc1Ref, { initial: normal, enter: normal });
-const motion2 = useMotion(arc2Ref, { initial: normal, enter: normal });
-const motion3 = useMotion(arc3Ref, { initial: normal, enter: normal });
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motion1.apply(createPulse(0));
-  motion2.apply(createPulse(0.2));
-  motion3.apply(createPulse(0.4));
-};
-
-const stopAnimation = () => {
-  motion1.apply(normal);
-  motion2.apply(normal);
-  motion3.apply(normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const normal = {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.2, ease: "easeOut" },
+  };
+  const createPulse = (delay: number) => ({
+    opacity: [1, 0, 0, 1],
+    scale: [1, 0, 0, 1],
+    transition: {
+      duration: 0.6,
+      ease: "easeInOut",
+      delay,
+      opacity: { duration: 0.6, times: [0, 0.333, 0.666, 1], delay },
+      scale: { duration: 0.6, times: [0, 0.333, 0.666, 1], delay },
+    },
+  });
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const arc1Ref = ref();
+  const arc2Ref = ref();
+  const arc3Ref = ref();
+  const motion1 = useMotion(arc1Ref, { initial: normal, enter: normal });
+  const motion2 = useMotion(arc2Ref, { initial: normal, enter: normal });
+  const motion3 = useMotion(arc3Ref, { initial: normal, enter: normal });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motion1.apply(createPulse(0));
+    motion2.apply(createPulse(0.2));
+    motion3.apply(createPulse(0.4));
+  };
+
+  const stopAnimation = () => {
+    motion1.apply(normal);
+    motion2.apply(normal);
+    motion3.apply(normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

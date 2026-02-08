@@ -25,73 +25,73 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "DocumentCheckIcon",
-};
+  export default {
+    name: "DocumentCheckIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-// Match React PATH_VARIANTS: check path pathLength [0,1] opacity [0,1] 0.4s easeInOut
-const variants = {
-  normal: { pathLength: 1, opacity: 1, transition: { duration: 0.3 } },
-  animate: {
-    pathLength: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      pathLength: { duration: 0.4, ease: "easeInOut" },
-      opacity: { duration: 0.4, ease: "easeInOut" },
+  // Match React PATH_VARIANTS: check path pathLength [0,1] opacity [0,1] 0.4s easeInOut
+  const variants = {
+    normal: { pathLength: 1, opacity: 1, transition: { duration: 0.3 } },
+    animate: {
+      pathLength: [0, 1],
+      opacity: [0, 1],
+      transition: {
+        pathLength: { duration: 0.4, ease: "easeInOut" },
+        opacity: { duration: 0.4, ease: "easeInOut" },
+      },
     },
-  },
-};
+  };
 
-const checkRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(checkRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
+  const checkRef = ref<SVGPathElement | null>();
+  const motionInstance = useMotion(checkRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motionInstance.apply(variants.animate);
-};
+  const startAnimation = () => {
+    motionInstance.apply(variants.animate);
+  };
 
-const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
-};
+  const stopAnimation = () => {
+    motionInstance.apply(variants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

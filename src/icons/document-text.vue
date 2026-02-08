@@ -26,82 +26,82 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "DocumentTextIcon",
-};
+  export default {
+    name: "DocumentTextIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-// Match React: 2 lines hide (pathLength 0, opacity 0, delay i*0.1, 0.3s) then show (pathLength 1, opacity 1, same)
-const hidden = (i: number) => ({
-  pathLength: 0,
-  opacity: 0,
-  transition: { delay: i * 0.1, duration: 0.3 },
-});
-const visible = (i: number) => ({
-  pathLength: 1,
-  opacity: 1,
-  transition: { delay: i * 0.1, duration: 0.3 },
-});
-
-const line0Ref = ref<SVGPathElement | null>();
-const line1Ref = ref<SVGPathElement | null>();
-const motion0 = useMotion(line0Ref, {
-  initial: { pathLength: 1, opacity: 1 },
-  enter: { pathLength: 1, opacity: 1 },
-});
-const motion1 = useMotion(line1Ref, {
-  initial: { pathLength: 1, opacity: 1 },
-  enter: { pathLength: 1, opacity: 1 },
-});
-
-let isControlled = false;
-
-const startAnimation = async () => {
-  motion0.apply(hidden(0));
-  motion1.apply(hidden(1));
-  await new Promise((r) => setTimeout(r, 400));
-  motion0.apply(visible(0));
-  motion1.apply(visible(1));
-};
-
-const stopAnimation = () => {
-  motion0.apply({ pathLength: 1, opacity: 1 });
-  motion1.apply({ pathLength: 1, opacity: 1 });
-};
-
-const handleMouseEnter = async () => {
-  if (!isControlled) {
-    await startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  // Match React: 2 lines hide (pathLength 0, opacity 0, delay i*0.1, 0.3s) then show (pathLength 1, opacity 1, same)
+  const hidden = (i: number) => ({
+    pathLength: 0,
+    opacity: 0,
+    transition: { delay: i * 0.1, duration: 0.3 },
+  });
+  const visible = (i: number) => ({
+    pathLength: 1,
+    opacity: 1,
+    transition: { delay: i * 0.1, duration: 0.3 },
+  });
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const line0Ref = ref<SVGPathElement | null>();
+  const line1Ref = ref<SVGPathElement | null>();
+  const motion0 = useMotion(line0Ref, {
+    initial: { pathLength: 1, opacity: 1 },
+    enter: { pathLength: 1, opacity: 1 },
+  });
+  const motion1 = useMotion(line1Ref, {
+    initial: { pathLength: 1, opacity: 1 },
+    enter: { pathLength: 1, opacity: 1 },
+  });
+
+  let isControlled = false;
+
+  const startAnimation = async () => {
+    motion0.apply(hidden(0));
+    motion1.apply(hidden(1));
+    await new Promise((r) => setTimeout(r, 400));
+    motion0.apply(visible(0));
+    motion1.apply(visible(1));
+  };
+
+  const stopAnimation = () => {
+    motion0.apply({ pathLength: 1, opacity: 1 });
+    motion1.apply({ pathLength: 1, opacity: 1 });
+  };
+
+  const handleMouseEnter = async () => {
+    if (!isControlled) {
+      await startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

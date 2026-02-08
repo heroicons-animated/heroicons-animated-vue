@@ -36,143 +36,143 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArchiveBoxArrowDownIcon",
-};
+  export default {
+    name: "ArchiveBoxArrowDownIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const springTransition = {
-  duration: 0.2,
-  type: "spring" as const,
-  stiffness: 200,
-  damping: 25,
-};
-
-const lidVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: -1.5,
-    transition: springTransition,
-  },
-};
-
-const pathVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: 1,
-    transition: springTransition,
-  },
-};
-
-const arrowVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: 2,
-    transition: springTransition,
-  },
-};
-
-const path1Ref = ref();
-const path2Ref = ref();
-const path3Ref = ref();
-const arrow1Ref = ref();
-const arrow2Ref = ref();
-const arrow3Ref = ref();
-const lidRef = ref();
-
-const path1Motion = useMotion(path1Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path2Motion = useMotion(path2Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path3Motion = useMotion(path3Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const arrow1Motion = useMotion(arrow1Ref, {
-  initial: arrowVariants.normal,
-  enter: arrowVariants.normal,
-});
-const arrow2Motion = useMotion(arrow2Ref, {
-  initial: arrowVariants.normal,
-  enter: arrowVariants.normal,
-});
-const arrow3Motion = useMotion(arrow3Ref, {
-  initial: arrowVariants.normal,
-  enter: arrowVariants.normal,
-});
-const lidMotion = useMotion(lidRef, {
-  initial: lidVariants.normal,
-  enter: lidVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  path1Motion.apply(pathVariants.animate);
-  path2Motion.apply(pathVariants.animate);
-  path3Motion.apply(pathVariants.animate);
-  arrow1Motion.apply(arrowVariants.animate);
-  arrow2Motion.apply(arrowVariants.animate);
-  arrow3Motion.apply(arrowVariants.animate);
-  lidMotion.apply(lidVariants.animate);
-};
-
-const stopAnimation = () => {
-  path1Motion.apply(pathVariants.normal);
-  path2Motion.apply(pathVariants.normal);
-  path3Motion.apply(pathVariants.normal);
-  arrow1Motion.apply(arrowVariants.normal);
-  arrow2Motion.apply(arrowVariants.normal);
-  arrow3Motion.apply(arrowVariants.normal);
-  lidMotion.apply(lidVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any; // Allow all HTMLAttributes
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const springTransition = {
+    duration: 0.2,
+    type: "spring" as const,
+    stiffness: 200,
+    damping: 25,
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const lidVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: -1.5,
+      transition: springTransition,
+    },
+  };
+
+  const pathVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: 1,
+      transition: springTransition,
+    },
+  };
+
+  const arrowVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: 2,
+      transition: springTransition,
+    },
+  };
+
+  const path1Ref = ref();
+  const path2Ref = ref();
+  const path3Ref = ref();
+  const arrow1Ref = ref();
+  const arrow2Ref = ref();
+  const arrow3Ref = ref();
+  const lidRef = ref();
+
+  const path1Motion = useMotion(path1Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const path2Motion = useMotion(path2Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const path3Motion = useMotion(path3Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const arrow1Motion = useMotion(arrow1Ref, {
+    initial: arrowVariants.normal,
+    enter: arrowVariants.normal,
+  });
+  const arrow2Motion = useMotion(arrow2Ref, {
+    initial: arrowVariants.normal,
+    enter: arrowVariants.normal,
+  });
+  const arrow3Motion = useMotion(arrow3Ref, {
+    initial: arrowVariants.normal,
+    enter: arrowVariants.normal,
+  });
+  const lidMotion = useMotion(lidRef, {
+    initial: lidVariants.normal,
+    enter: lidVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    path1Motion.apply(pathVariants.animate);
+    path2Motion.apply(pathVariants.animate);
+    path3Motion.apply(pathVariants.animate);
+    arrow1Motion.apply(arrowVariants.animate);
+    arrow2Motion.apply(arrowVariants.animate);
+    arrow3Motion.apply(arrowVariants.animate);
+    lidMotion.apply(lidVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    path1Motion.apply(pathVariants.normal);
+    path2Motion.apply(pathVariants.normal);
+    path3Motion.apply(pathVariants.normal);
+    arrow1Motion.apply(arrowVariants.normal);
+    arrow2Motion.apply(arrowVariants.normal);
+    arrow3Motion.apply(arrowVariants.normal);
+    lidMotion.apply(lidVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

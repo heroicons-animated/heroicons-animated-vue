@@ -36,89 +36,97 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CpuChipIcon",
-};
+  export default {
+    name: "CpuChipIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "@vueuse/motion";
-import { ref } from "vue";
+  import { useMotion } from "@vueuse/motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  [key: string]: any;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-});
-
-const transition = { duration: 0.5, ease: "easeInOut", repeat: 1 };
-const yVariants = {
-  normal: { scale: 1, rotate: 0, opacity: 1 },
-  animate: { scaleY: [1, 1.5, 1], opacity: [1, 0.8, 1], transition },
-};
-const xVariants = {
-  normal: { scale: 1, rotate: 0, opacity: 1 },
-  animate: { scaleX: [1, 1.5, 1], opacity: [1, 0.8, 1], transition },
-};
-
-const p0 = ref<SVGPathElement | null>();
-const p1 = ref<SVGPathElement | null>();
-const p2 = ref<SVGPathElement | null>();
-const p3 = ref<SVGPathElement | null>();
-const p4 = ref<SVGPathElement | null>();
-const p5 = ref<SVGPathElement | null>();
-const p6 = ref<SVGPathElement | null>();
-const p7 = ref<SVGPathElement | null>();
-const p8 = ref<SVGPathElement | null>();
-const p9 = ref<SVGPathElement | null>();
-const p10 = ref<SVGPathElement | null>();
-const p11 = ref<SVGPathElement | null>();
-
-const motions = [
-  useMotion(p0, { initial: yVariants.normal, enter: yVariants.normal }),
-  useMotion(p1, { initial: yVariants.normal, enter: yVariants.normal }),
-  useMotion(p2, { initial: yVariants.normal, enter: yVariants.normal }),
-  useMotion(p3, { initial: xVariants.normal, enter: xVariants.normal }),
-  useMotion(p4, { initial: xVariants.normal, enter: xVariants.normal }),
-  useMotion(p5, { initial: xVariants.normal, enter: xVariants.normal }),
-  useMotion(p6, { initial: xVariants.normal, enter: xVariants.normal }),
-  useMotion(p7, { initial: xVariants.normal, enter: xVariants.normal }),
-  useMotion(p8, { initial: xVariants.normal, enter: xVariants.normal }),
-  useMotion(p9, { initial: yVariants.normal, enter: yVariants.normal }),
-  useMotion(p10, { initial: yVariants.normal, enter: yVariants.normal }),
-  useMotion(p11, { initial: yVariants.normal, enter: yVariants.normal }),
-];
-
-let isControlled = false;
-
-const startAnimation = () => {
-  for (const i of [0, 1, 2, 9, 10, 11]) motions[i].apply(yVariants.animate);
-  for (const i of [3, 4, 5, 6, 7, 8]) motions[i].apply(xVariants.animate);
-};
-
-const stopAnimation = () => {
-  for (let i = 0; i < motions.length; i++) {
-    motions[i].apply(
-      [0, 1, 2, 9, 10, 11].includes(i) ? yVariants.normal : xVariants.normal
-    );
+  export interface Props {
+    size?: number;
+    class?: string;
+    [key: string]: any;
   }
-};
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+  });
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const transition = { duration: 0.5, ease: "easeInOut", repeat: 1 };
+  const yVariants = {
+    normal: { scale: 1, rotate: 0, opacity: 1 },
+    animate: { scaleY: [1, 1.5, 1], opacity: [1, 0.8, 1], transition },
+  };
+  const xVariants = {
+    normal: { scale: 1, rotate: 0, opacity: 1 },
+    animate: { scaleX: [1, 1.5, 1], opacity: [1, 0.8, 1], transition },
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const p0 = ref<SVGPathElement | null>();
+  const p1 = ref<SVGPathElement | null>();
+  const p2 = ref<SVGPathElement | null>();
+  const p3 = ref<SVGPathElement | null>();
+  const p4 = ref<SVGPathElement | null>();
+  const p5 = ref<SVGPathElement | null>();
+  const p6 = ref<SVGPathElement | null>();
+  const p7 = ref<SVGPathElement | null>();
+  const p8 = ref<SVGPathElement | null>();
+  const p9 = ref<SVGPathElement | null>();
+  const p10 = ref<SVGPathElement | null>();
+  const p11 = ref<SVGPathElement | null>();
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  const motions = [
+    useMotion(p0, { initial: yVariants.normal, enter: yVariants.normal }),
+    useMotion(p1, { initial: yVariants.normal, enter: yVariants.normal }),
+    useMotion(p2, { initial: yVariants.normal, enter: yVariants.normal }),
+    useMotion(p3, { initial: xVariants.normal, enter: xVariants.normal }),
+    useMotion(p4, { initial: xVariants.normal, enter: xVariants.normal }),
+    useMotion(p5, { initial: xVariants.normal, enter: xVariants.normal }),
+    useMotion(p6, { initial: xVariants.normal, enter: xVariants.normal }),
+    useMotion(p7, { initial: xVariants.normal, enter: xVariants.normal }),
+    useMotion(p8, { initial: xVariants.normal, enter: xVariants.normal }),
+    useMotion(p9, { initial: yVariants.normal, enter: yVariants.normal }),
+    useMotion(p10, { initial: yVariants.normal, enter: yVariants.normal }),
+    useMotion(p11, { initial: yVariants.normal, enter: yVariants.normal }),
+  ];
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    for (const i of [0, 1, 2, 9, 10, 11]) {
+      motions[i].apply(yVariants.animate);
+    }
+    for (const i of [3, 4, 5, 6, 7, 8]) {
+      motions[i].apply(xVariants.animate);
+    }
+  };
+
+  const stopAnimation = () => {
+    for (let i = 0; i < motions.length; i++) {
+      motions[i].apply(
+        [0, 1, 2, 9, 10, 11].includes(i) ? yVariants.normal : xVariants.normal
+      );
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

@@ -1,56 +1,61 @@
 <script setup lang="ts">
-import { ArrowPathIcon, CheckIcon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { computed, onBeforeUnmount, ref, watch } from "vue";
+  import {
+    ArrowPathIcon,
+    CheckIcon,
+    XMarkIcon,
+  } from "@heroicons/vue/24/outline";
+  import { computed, onBeforeUnmount, ref, watch } from "vue";
 
-type IconStatus = "idle" | "loading" | "done" | "error";
+  type IconStatus = "idle" | "loading" | "done" | "error";
 
-const DEFAULT_LOADING_DELAY = 150;
+  const DEFAULT_LOADING_DELAY = 150;
 
-const props = withDefaults(
-  defineProps<{
-    status?: IconStatus;
-    loadingDelay?: number;
-  }>(),
-  {
-    status: "idle",
-    loadingDelay: DEFAULT_LOADING_DELAY,
-  }
-);
-
-const showLoading = ref(false);
-let loadingTimer: number | undefined;
-
-const clearLoadingTimer = () => {
-  if (loadingTimer) {
-    clearTimeout(loadingTimer);
-    loadingTimer = undefined;
-  }
-};
-
-watch(
-  () => props.status,
-  (status) => {
-    clearLoadingTimer();
-    if (status === "loading") {
-      loadingTimer = setTimeout(() => {
-        showLoading.value = true;
-      }, props.loadingDelay);
-    } else {
-      showLoading.value = false;
+  const props = withDefaults(
+    defineProps<{
+      status?: IconStatus;
+      loadingDelay?: number;
+    }>(),
+    {
+      status: "idle",
+      loadingDelay: DEFAULT_LOADING_DELAY,
     }
-  },
-  { immediate: true }
-);
+  );
 
-onBeforeUnmount(() => {
-  clearLoadingTimer();
-});
+  const showLoading = ref(false);
+  let loadingTimer: number | undefined;
 
-const displayStatus = computed(() => {
-  if (props.status === "loading" && !showLoading.value) return "idle";
-  return props.status;
-});
+  const clearLoadingTimer = () => {
+    if (loadingTimer) {
+      clearTimeout(loadingTimer);
+      loadingTimer = undefined;
+    }
+  };
 
+  watch(
+    () => props.status,
+    (status) => {
+      clearLoadingTimer();
+      if (status === "loading") {
+        loadingTimer = setTimeout(() => {
+          showLoading.value = true;
+        }, props.loadingDelay);
+      } else {
+        showLoading.value = false;
+      }
+    },
+    { immediate: true }
+  );
+
+  onBeforeUnmount(() => {
+    clearLoadingTimer();
+  });
+
+  const displayStatus = computed(() => {
+    if (props.status === "loading" && !showLoading.value) {
+      return "idle";
+    }
+    return props.status;
+  });
 </script>
 
 <template>
