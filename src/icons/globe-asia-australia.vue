@@ -19,8 +19,7 @@
       <path
         d="M12.75 3.031a9 9 0 0 0-8.862 12.872M12.75 3.031a9 9 0 0 1 6.69 14.036M19.44 17.067a9.012 9.012 0 0 1-5.277 3.671M14.163 20.738a9 9 0 0 1-10.275-4.835"
       />
-      <Motion
-        is="path"
+      <path
         ref="landRef"
         d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 0 1-1.161.886l-.143.048a1.107 1.107 0 0 0-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 0 1-1.652.928l-.679-.906a1.125 1.125 0 0 0-1.906.172L4.5 15.75l-.612.153"
       />
@@ -33,74 +32,74 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "GlobeAsiaAustraliaIcon",
-  };
+export default {
+  name: "GlobeAsiaAustraliaIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any; // Allow all HTMLAttributes
-  }
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
 
-  const variants = {
-    normal: { opacity: 1 },
-    animate: {
-      opacity: [0, 1],
-      pathLength: [0, 1],
-      pathOffset: [1, 0],
-      transition: {
-        duration: 0.6,
-        ease: "linear",
-        opacity: { duration: 0.1 },
-      },
+const variants = {
+  normal: { opacity: 1 },
+  animate: {
+    opacity: [0, 1],
+    pathLength: [0, 1],
+    pathOffset: [1, 0],
+    transition: {
+      duration: 0.6,
+      ease: "linear",
+      opacity: { duration: 0.1 },
     },
-  };
+  },
+};
 
-  const landRef = ref<SVGPathElement | null>();
-  const motionInstance = useMotion(landRef, {
-    initial: variants.normal,
-    enter: variants.normal,
-  });
+const landRef = ref<SVGPathElement | null>();
+const motionInstance = useMotion(landRef, {
+  initial: variants.normal,
+  enter: variants.normal,
+});
 
-  let isControlled = false;
+let isControlled = false;
 
-  const startAnimation = () => {
-    motionInstance.apply(variants.animate);
-  };
+const startAnimation = () => {
+  motionInstance.apply(variants.animate);
+};
 
-  const stopAnimation = () => {
-    motionInstance.apply(variants.normal);
-  };
+const stopAnimation = () => {
+  motionInstance.apply(variants.normal);
+};
 
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
+  }
+};
 
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

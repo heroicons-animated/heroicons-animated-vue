@@ -16,8 +16,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <Motion
-        is="path"
+      <path
         ref="pathRef"
         d="M18 14V18.75C18 19.9926 16.9926 21 15.75 21H5.25C4.00736 21 3 19.9926 3 18.75V8.24999C3 7.00735 4.00736 5.99999 5.25 5.99999H10"
       />
@@ -29,77 +28,77 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "PencilSquareIcon",
-  };
+export default {
+  name: "PencilSquareIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any; // Allow all HTMLAttributes
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const variants = {
+  normal: {
+    rotate: 0,
+    x: 0,
+    y: 0,
+  },
+  animate: {
+    rotate: [-0.5, 0.5, -0.5],
+    x: [0, -1, 1, 0],
+    y: [0, 1, -1, 0],
+    transition: {
+      duration: 0.6,
+      ease: "easeInOut",
+    },
+  },
+};
+
+const penRef = ref<SVGPathElement | null>();
+const motionInstance = useMotion(penRef, {
+  initial: variants.normal,
+  enter: variants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  motionInstance.apply(variants.animate);
+};
+
+const stopAnimation = () => {
+  motionInstance.apply(variants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const variants = {
-    normal: {
-      rotate: 0,
-      x: 0,
-      y: 0,
-    },
-    animate: {
-      rotate: [-0.5, 0.5, -0.5],
-      x: [0, -1, 1, 0],
-      y: [0, 1, -1, 0],
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut",
-      },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const penRef = ref<SVGPathElement | null>();
-  const motionInstance = useMotion(penRef, {
-    initial: variants.normal,
-    enter: variants.normal,
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    motionInstance.apply(variants.animate);
-  };
-
-  const stopAnimation = () => {
-    motionInstance.apply(variants.normal);
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

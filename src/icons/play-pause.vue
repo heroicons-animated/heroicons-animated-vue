@@ -16,8 +16,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <Motion
-        is="path"
+      <path
         ref="pathRef"
         d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811Z"
       />
@@ -26,76 +25,76 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "PlayPauseIcon",
-  };
+export default {
+  name: "PlayPauseIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any;
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const pathVariants = {
+  normal: {
+    x: 0,
+    rotate: 0,
+  },
+  animate: {
+    x: [0, -1, 2, 0],
+    rotate: [0, -10, 0, 0],
+    transition: {
+      duration: 0.5,
+      times: [0, 0.2, 0.5, 1],
+      ease: "easeInOut",
+    },
+  },
+};
+
+const pathRef = ref<SVGPathElement>();
+const motionInstance = useMotion(pathRef, {
+  initial: pathVariants.normal,
+  enter: pathVariants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  motionInstance.apply(pathVariants.animate);
+};
+
+const stopAnimation = () => {
+  motionInstance.apply(pathVariants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const pathVariants = {
-    normal: {
-      x: 0,
-      rotate: 0,
-    },
-    animate: {
-      x: [0, -1, 2, 0],
-      rotate: [0, -10, 0, 0],
-      transition: {
-        duration: 0.5,
-        times: [0, 0.2, 0.5, 1],
-        ease: "easeInOut",
-      },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const pathRef = ref<SVGPathElement>();
-  const motionInstance = useMotion(pathRef, {
-    initial: pathVariants.normal,
-    enter: pathVariants.normal,
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    motionInstance.apply(pathVariants.animate);
-  };
-
-  const stopAnimation = () => {
-    motionInstance.apply(pathVariants.normal);
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

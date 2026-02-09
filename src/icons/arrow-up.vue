@@ -16,102 +16,98 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <Motion is="path" ref="headRef" d="M4.5 10.5 12 3m0 0 7.5 7.5" />
+      <path ref="headRef" d="M4.5 10.5 12 3m0 0 7.5 7.5" />
       <path ref="lineRef" d="M12 3v18" />
     </svg>
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: "ArrowUpIcon",
-  };
+export default {
+  name: "ArrowUpIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any; // Allow all HTMLAttributes
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const headVariants = {
+  normal: {
+    translateY: 0,
+  },
+  animate: {
+    translateY: [0, 3, 0],
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
+
+const lineVariants = {
+  normal: {
+    d: "M12 3v18",
+  },
+  animate: {
+    d: ["M12 3v18", "M12 6v15", "M12 3v18"],
+    transition: {
+      duration: 0.4,
+    },
+  },
+};
+
+const headRef = ref<SVGPathElement>();
+const lineRef = ref<SVGPathElement>();
+const headMotion = useMotion(headRef, {
+  initial: headVariants.normal,
+  enter: headVariants.normal,
+});
+const lineMotion = useMotion(lineRef, {
+  initial: lineVariants.normal,
+  enter: lineVariants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  headMotion.apply(headVariants.animate);
+  lineMotion.apply(lineVariants.animate);
+};
+
+const stopAnimation = () => {
+  headMotion.apply(headVariants.normal);
+  lineMotion.apply(lineVariants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const headVariants = {
-    normal: {
-      translateY: 0,
-    },
-    animate: {
-      translateY: [0, 3, 0],
-      transition: {
-        duration: 0.4,
-      },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const headRef = ref<SVGPathElement>();
-  const lineRef = ref<SVGPathElement>();
-  const headMotion = useMotion(headRef, {
-    initial: headVariants.normal,
-    enter: headVariants.normal,
-  });
-
-  let isControlled = false;
-  let lineAnimation: Animation | null = null;
-
-  const startAnimation = () => {
-    headMotion.apply(headVariants.animate);
-
-    // Animate line path morphing using Web Animations API
-    if (lineRef.value) {
-      lineAnimation = lineRef.value.animate(
-        [{ d: "M12 3v18" }, { d: "M12 6v15" }, { d: "M12 3v18" }],
-        {
-          duration: 400,
-          easing: "ease-in-out",
-          fill: "forwards",
-        }
-      );
-    }
-  };
-
-  const stopAnimation = () => {
-    headMotion.apply(headVariants.normal);
-
-    if (lineAnimation) {
-      lineAnimation.cancel();
-      lineAnimation = null;
-    }
-
-    if (lineRef.value) {
-      lineRef.value.setAttribute("d", "M12 3v18");
-    }
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

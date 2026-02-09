@@ -15,8 +15,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <Motion
-        is="path"
+      <path
         ref="pathRef"
         d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
       />
@@ -25,63 +24,59 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "UserCircleIcon",
-  };
+export default {
+  name: "UserCircleIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-  }
+export interface Props {
+  size?: number;
+  class?: string;
+}
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
 
-  const pathVariants = {
-    normal: {
-      pathLength: 1,
-      opacity: 1,
-      pathOffset: 0,
-      transition: { duration: 0.2 },
-    },
-    animate: {
-      pathLength: [0, 1],
-      opacity: [0, 1],
-      pathOffset: [1, 0],
-      transition: { duration: 0.4, ease: "easeOut" },
-    },
-  };
+const pathVariants = {
+  normal: {
+    pathLength: 1,
+    opacity: 1,
+    pathOffset: 0,
+    transition: { duration: 0.2 },
+  },
+  animate: {
+    pathLength: [0, 1],
+    opacity: [0, 1],
+    pathOffset: [1, 0],
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
 
-  const pathRef = ref();
-  const motionInstance = useMotion(pathRef, {
-    initial: pathVariants.normal,
-    enter: pathVariants.normal,
-  });
+const pathRef = ref();
+const motionInstance = useMotion(pathRef, {
+  initial: pathVariants.normal,
+  enter: pathVariants.normal,
+});
 
-  let isControlled = false;
+let isControlled = false;
 
-  const startAnimation = () => motionInstance.apply(pathVariants.animate);
-  const stopAnimation = () => motionInstance.apply(pathVariants.normal);
+const startAnimation = () => motionInstance.apply(pathVariants.animate);
+const stopAnimation = () => motionInstance.apply(pathVariants.normal);
 
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
+const handleMouseEnter = () => {
+  if (!isControlled) startAnimation();
+};
+const handleMouseLeave = () => {
+  if (!isControlled) stopAnimation();
+};
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  defineExpose({ startAnimation, stopAnimation, setControlled });
+defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

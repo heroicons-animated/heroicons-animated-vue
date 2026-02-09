@@ -1,10 +1,17 @@
 <script setup lang="ts">
   import { computed } from "vue";
   import { ArrowLeftIcon } from "@heroicons/vue/24/outline";
-  import { createError, useRoute } from "#imports";
+  import {
+    createError,
+    useHead,
+    useRoute,
+    useSchemaOrg,
+    useSeoMeta,
+  } from "#imports";
   import CliBlock from "~/components/CliBlock.vue";
   import IconCard from "~/components/IconCard.vue";
   import SimilarIcons from "~/components/SimilarIcons.vue";
+  import { LINK, SITE } from "~/lib/constants";
   import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
   import { getFrameworkName } from "~/lib/cli";
   import { kebabToPascalCase } from "~/lib/kebab-to-pascal";
@@ -31,6 +38,86 @@
     }
     return { path: "/", query: { framework: framework.value } };
   });
+
+  const canonicalUrl = computed(() => `${SITE.URL}/icons/${slug.value}`);
+
+  const pageTitle = computed(() => {
+    const keyword = pascalName.value.replace(/Icon$/u, "").trim();
+    return `${keyword} Icon - Animated Icon for Vue`;
+  });
+
+  const pageDescription = computed(() => {
+    const keywordList = icon.value?.keywords.slice(0, 5).join(", ") ?? "";
+    return `Free animated ${slug.value} icon for Vue. Smooth Motion for Vue-powered Heroicons component, copy-paste ready. Keywords: ${keywordList}.`;
+  });
+
+  const pageKeywords = computed(() => {
+    const iconName = icon.value?.name ?? slug.value;
+    return [
+      ...(icon.value?.keywords ?? []),
+      "animated icon",
+      "vue icon",
+      "motion icon",
+      `${iconName} animation`,
+      `${iconName} vue`,
+    ];
+  });
+
+  useSeoMeta({
+    title: () => pageTitle.value,
+    description: () => pageDescription.value,
+    keywords: () => pageKeywords.value.join(", "),
+    ogTitle: () => `${pascalName.value} | ${SITE.NAME}`,
+    ogDescription: () => pageDescription.value,
+    ogUrl: () => canonicalUrl.value,
+    ogType: "website",
+    twitterTitle: () => `${pascalName.value} | ${SITE.NAME}`,
+    twitterDescription: () => pageDescription.value,
+  });
+
+  useHead(() => ({
+    link: [{ rel: "canonical", href: canonicalUrl.value }],
+  }));
+
+  useSchemaOrg([
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: SITE.URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Icons",
+          item: `${SITE.URL}/icons`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: pascalName.value,
+          item: canonicalUrl.value,
+        },
+      ],
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      name: pascalName.value,
+      description: `Animated ${slug.value} icon component for Vue`,
+      codeRepository: LINK.GITHUB,
+      programmingLanguage: ["TypeScript", "Vue", "JavaScript"],
+      license: LINK.LICENSE,
+      isPartOf: {
+        "@type": "SoftwareSourceCode",
+        name: SITE.NAME,
+        url: SITE.URL,
+      },
+      keywords: icon.value?.keywords.join(", ") ?? "",
+    },
+  ]);
 </script>
 
 <template>

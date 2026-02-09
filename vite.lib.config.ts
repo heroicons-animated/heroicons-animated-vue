@@ -31,13 +31,13 @@ export default defineConfig({
       fileName: (_format, entryName) => `${entryName}.js`,
     },
     rollupOptions: {
-      external: ["vue", "@vueuse/motion"],
+      external: ["vue", "motion-v"],
       output: {
         preserveModules: true,
         preserveModulesRoot: "src",
         globals: {
           vue: "Vue",
-          "@vueuse/motion": "VueUseMotion",
+          "motion-v": "MotionVue",
         },
       },
     },

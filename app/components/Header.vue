@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { useMotion } from "@vueuse/motion";
+  import { useMotion } from "../../src/motion";
   import GithubStarsButton from "~/components/GithubStarsButton.vue";
   import Logo from "~/components/Logo.vue";
   import ThemeToggle from "~/components/ThemeToggle.vue";

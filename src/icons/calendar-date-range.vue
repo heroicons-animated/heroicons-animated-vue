@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -36,136 +37,159 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "CalendarDateRangeIcon",
-  };
+export default {
+  name: "CalendarDateRangeIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { onMounted, ref } from "vue";
+import { useMotion } from "../motion";
+import { onMounted, ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const FIRST_DOT_VARIANTS = {
+  normal: {
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+    },
+  },
+  animate: {
+    opacity: [1, 0.3, 1],
+    transition: {
+      delay: 0,
+      duration: 0.4,
+      times: [0, 0.5, 1],
+    },
+  },
+};
+
+const lineVariants = (custom: number) => ({
+  normal: {
+    pathLength: 1,
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+    },
+  },
+  animate: {
+    pathLength: [0, 1],
+    opacity: [0, 1],
+    transition: {
+      delay: 0.4 + custom * 0.15,
+      duration: 0.3,
+      ease: "easeOut",
+    },
+  },
+});
+
+const dotVariants = (custom: number) => ({
+  normal: {
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+    },
+  },
+  animate: {
+    opacity: [1, 0.3, 1],
+    transition: {
+      delay: 0.7 + custom * 0.1,
+      duration: 0.4,
+      times: [0, 0.5, 1],
+    },
+  },
+});
+
+const RANGE_LINES = [
+  { d: "M14.25 12.75h2.25", index: 0 },
+  { d: "M7.5 15h4.5", index: 1 },
+];
+
+const FIRST_DOT = { d: "M12 12.75h.005v.006H12v-.006Z" };
+
+const DOTS = [
+  { d: "M14.25 15h.005v.005h-.005v-.005Z", index: 0 },
+  { d: "M16.5 15h.006v.005H16.5v-.005Z", index: 1 },
+  { d: "M7.5 17.25h.005v.005h-.006v-.005Z", index: 2 },
+  { d: "M9.75 17.25h.005v.006H9.75v-.006Z", index: 3 },
+  { d: "M12 17.25h.006v.006h-.006v-.005Z", index: 4 },
+  { d: "M14.25 17.25h.006v.006h-.006v-.006Z", index: 5 },
+];
+
+const firstDotRef = ref<SVGPathElement>();
+const lineRefs = ref<SVGPathElement[]>([]);
+const dotRefs = ref<SVGPathElement[]>([]);
+
+const firstDotMotion = useMotion(firstDotRef, {
+  initial: FIRST_DOT_VARIANTS.normal,
+  enter: FIRST_DOT_VARIANTS.normal,
+});
+const lineMotions: any[] = [];
+const dotMotions: any[] = [];
+
+onMounted(() => {
+  lineRefs.value.forEach((el, index) => {
+    lineMotions[index] = useMotion(el, {
+      initial: lineVariants(index).normal,
+    });
+  });
+  dotRefs.value.forEach((el, index) => {
+    dotMotions[index] = useMotion(el, {
+      initial: dotVariants(index).normal,
+    });
+  });
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  firstDotMotion.apply(FIRST_DOT_VARIANTS.animate);
+  lineRefs.value.forEach((_, index) => {
+    lineMotions[index]?.apply(lineVariants(index).animate);
+  });
+  dotRefs.value.forEach((_, index) => {
+    dotMotions[index]?.apply(dotVariants(index).animate);
+  });
+};
+
+const stopAnimation = () => {
+  firstDotMotion.apply(FIRST_DOT_VARIANTS.normal);
+  lineRefs.value.forEach((_, index) => {
+    lineMotions[index]?.apply(lineVariants(index).normal);
+  });
+  dotRefs.value.forEach((_, index) => {
+    dotMotions[index]?.apply(dotVariants(index).normal);
+  });
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const FIRST_DOT_VARIANTS = {
-    normal: { opacity: 1 },
-    animate: {
-      opacity: [1, 0.3, 1],
-      transition: { duration: 400 },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const lineVariants = (custom: number) => ({
-    normal: { pathLength: 1, opacity: 1 },
-    animate: {
-      pathLength: [0, 1],
-      opacity: [0, 1],
-      transition: {
-        delay: 400 + custom * 150,
-        duration: 300,
-        ease: "easeOut",
-      },
-    },
-  });
-
-  const dotVariants = (custom: number) => ({
-    normal: { opacity: 1 },
-    animate: {
-      opacity: [1, 0.3, 1],
-      transition: {
-        delay: 700 + custom * 100,
-        duration: 400,
-      },
-    },
-  });
-
-  const RANGE_LINES = [
-    { d: "M14.25 12.75h2.25", index: 0 },
-    { d: "M7.5 15h4.5", index: 1 },
-  ];
-
-  const FIRST_DOT = { d: "M12 12.75h.005v.006H12v-.006Z" };
-
-  const DOTS = [
-    { d: "M14.25 15h.005v.005h-.005v-.005Z", index: 0 },
-    { d: "M16.5 15h.006v.005H16.5v-.005Z", index: 1 },
-    { d: "M7.5 17.25h.005v.005h-.006v-.005Z", index: 2 },
-    { d: "M9.75 17.25h.005v.006H9.75v-.006Z", index: 3 },
-    { d: "M12 17.25h.006v.006h-.006v-.005Z", index: 4 },
-    { d: "M14.25 17.25h.006v.006h-.006v-.006Z", index: 5 },
-  ];
-
-  const firstDotRef = ref();
-  const lineRefs = ref<SVGPathElement[]>([]);
-  const dotRefs = ref<SVGPathElement[]>([]);
-
-  const firstDotMotion = useMotion(firstDotRef, {
-    initial: FIRST_DOT_VARIANTS.normal,
-  });
-  const lineMotions: any[] = [];
-  const dotMotions: any[] = [];
-
-  onMounted(() => {
-    lineRefs.value.forEach((el, index) => {
-      lineMotions[index] = useMotion(el, {
-        initial: lineVariants(index).normal,
-      });
-    });
-    dotRefs.value.forEach((el, index) => {
-      dotMotions[index] = useMotion(el, {
-        initial: dotVariants(index).normal,
-      });
-    });
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    firstDotMotion.apply(FIRST_DOT_VARIANTS.animate);
-    lineRefs.value.forEach((_, index) => {
-      lineMotions[index]?.apply(lineVariants(index).animate);
-    });
-    dotRefs.value.forEach((_, index) => {
-      dotMotions[index]?.apply(dotVariants(index).animate);
-    });
-  };
-
-  const stopAnimation = () => {
-    firstDotMotion.apply(FIRST_DOT_VARIANTS.normal);
-    lineRefs.value.forEach((_, index) => {
-      lineMotions[index]?.apply(lineVariants(index).normal);
-    });
-    dotRefs.value.forEach((_, index) => {
-      dotMotions[index]?.apply(dotVariants(index).normal);
-    });
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

@@ -15,8 +15,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <Motion
-        is="path"
+      <path
         ref="antennaRef"
         d="M3.75 7.5L20.25 3.375"
         :style="{ transformOrigin: '3.75px 7.5px' }"
@@ -27,7 +26,7 @@
       <path
         d="M17.25 12.75C16.8358 12.75 16.5 12.4142 16.5 12C16.5 11.5858 16.8358 11.25 17.25 11.25C17.6642 11.25 18 11.5858 18 12C18 12.4142 17.6642 12.75 17.25 12.75ZM17.25 17.25C16.8358 17.25 16.5 16.9142 16.5 16.5C16.5 16.0858 16.8358 15.75 17.25 15.75C17.6642 15.75 18 16.0858 18 16.5C18 16.9142 17.6642 17.25 17.25 17.25Z"
       />
-      <Motion is="g" ref="speakerRef">
+      <g ref="speakerRef">
         <path
           d="M10.3169 13.1931L10.3116 13.1984L10.3063 13.1931L10.3116 13.1878L10.3169 13.1931Z"
         />
@@ -68,93 +67,93 @@
           d="M6.00513 12.3838L5.99863 12.38L6.00238 12.3735L6.00888 12.3773L6.00513 12.3838Z"
         />
         <path d="M5.50488 14.2573H5.49738V14.2498H5.50488V14.2573Z" />
-      </Motion>
+      </g>
     </svg>
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: "RadioIcon",
-  };
+export default {
+  name: "RadioIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
+export interface Props {
+  size?: number;
+  class?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const antennaVariants = {
+  normal: { rotate: 0, transition: { duration: 0.3, ease: "easeOut" } },
+  animate: {
+    rotate: [0, -10],
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
+
+const speakerVariants = {
+  normal: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.3, ease: "easeOut" },
+  },
+  animate: {
+    scale: [1, 1.15, 1, 1.1, 1],
+    opacity: [1, 0.7, 1, 0.8, 1],
+    transition: { duration: 0.5, ease: "easeInOut" },
+  },
+};
+
+const antennaRef = ref();
+const speakerRef = ref();
+const antennaMotion = useMotion(antennaRef, {
+  initial: antennaVariants.normal,
+  enter: antennaVariants.normal,
+});
+const speakerMotion = useMotion(speakerRef, {
+  initial: speakerVariants.normal,
+  enter: speakerVariants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  antennaMotion.apply(antennaVariants.animate);
+  speakerMotion.apply(speakerVariants.animate);
+};
+
+const stopAnimation = () => {
+  antennaMotion.apply(antennaVariants.normal);
+  speakerMotion.apply(speakerVariants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const antennaVariants = {
-    normal: { rotate: 0, transition: { duration: 0.3, ease: "easeOut" } },
-    animate: {
-      rotate: [0, -10],
-      transition: { duration: 0.4, ease: "easeOut" },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const speakerVariants = {
-    normal: {
-      scale: 1,
-      opacity: 1,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
-    animate: {
-      scale: [1, 1.15, 1, 1.1, 1],
-      opacity: [1, 0.7, 1, 0.8, 1],
-      transition: { duration: 0.5, ease: "easeInOut" },
-    },
-  };
-
-  const antennaRef = ref();
-  const speakerRef = ref();
-  const antennaMotion = useMotion(antennaRef, {
-    initial: antennaVariants.normal,
-    enter: antennaVariants.normal,
-  });
-  const speakerMotion = useMotion(speakerRef, {
-    initial: speakerVariants.normal,
-    enter: speakerVariants.normal,
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    antennaMotion.apply(antennaVariants.animate);
-    speakerMotion.apply(speakerVariants.animate);
-  };
-
-  const stopAnimation = () => {
-    antennaMotion.apply(antennaVariants.normal);
-    speakerMotion.apply(speakerVariants.normal);
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

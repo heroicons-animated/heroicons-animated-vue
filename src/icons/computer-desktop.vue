@@ -16,8 +16,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <Motion
-        is="path"
+      <path
         ref="pathRef"
         d="M21 5.25V12C21 13.2426 19.9926 14.25 18.75 14.25H5.25C4.00736 14.25 3 13.2426 3 12V5.25C3 4.00736 4.00736 3 5.25 3H18.75C19.9926 3 21 4.00736 21 5.25Z"
       />
@@ -29,72 +28,72 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "ComputerDesktopIcon",
-  };
+export default {
+  name: "ComputerDesktopIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any; // Allow all HTMLAttributes
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+// Match React SCREEN_VARIANTS: fill opacity pulse on screen path
+const screenVariants = {
+  normal: {
+    fillOpacity: 0,
+    fill: "currentColor",
+  },
+  animate: {
+    fillOpacity: [0, 1, 0, 1, 0],
+    fill: "currentColor",
+    transition: {
+      duration: 0.6,
+      ease: "easeInOut",
+      times: [0, 0.25, 0.5, 0.75, 1],
+    },
+  },
+};
+
+const pathRef = ref<SVGPathElement | null>();
+const motionInstance = useMotion(pathRef, {
+  initial: screenVariants.normal,
+  enter: screenVariants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => motionInstance.apply(screenVariants.animate);
+const stopAnimation = () => motionInstance.apply(screenVariants.normal);
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  // Match React SCREEN_VARIANTS: fill opacity pulse on screen path
-  const screenVariants = {
-    normal: {
-      fillOpacity: 0,
-      fill: "currentColor",
-    },
-    animate: {
-      fillOpacity: [0, 1, 0, 1, 0],
-      fill: "currentColor",
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut",
-        times: [0, 0.25, 0.5, 0.75, 1],
-      },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const pathRef = ref<SVGPathElement | null>();
-  const motionInstance = useMotion(pathRef, {
-    initial: screenVariants.normal,
-    enter: screenVariants.normal,
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => motionInstance.apply(screenVariants.animate);
-  const stopAnimation = () => motionInstance.apply(screenVariants.normal);
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

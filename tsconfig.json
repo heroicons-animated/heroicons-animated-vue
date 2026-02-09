@@ -2,8 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*"],
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "#imports": ["./.nuxt/imports.d.ts"]
     },
     "strictNullChecks": true
   },

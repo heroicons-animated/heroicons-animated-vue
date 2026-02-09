@@ -1,11 +1,28 @@
 <script setup lang="ts">
+  import { useHead, useSeoMeta } from "#imports";
   import { ICON_MANIFEST } from "~/lib/manifest";
-  import { LINK } from "~/lib/constants";
+  import { LINK, SITE } from "~/lib/constants";
   import CliBlock from "~/components/CliBlock.vue";
   import CommentBlock from "~/components/CommentBlock.vue";
   import IconsList from "~/components/IconsList.vue";
 
   const icons = ICON_MANIFEST;
+  const homeTitle = "Free Animated Heroicons for Vue";
+
+  useSeoMeta({
+    title: homeTitle,
+    description: SITE.DESCRIPTION.LONG,
+    keywords: SITE.KEYWORDS.join(", "),
+    ogTitle: `${SITE.NAME} | ${homeTitle}`,
+    ogDescription: SITE.DESCRIPTION.SHORT,
+    ogUrl: SITE.URL,
+    twitterTitle: `${SITE.NAME} | ${homeTitle}`,
+    twitterDescription: SITE.DESCRIPTION.SHORT,
+  });
+
+  useHead({
+    link: [{ rel: "canonical", href: SITE.URL }],
+  });
 </script>
 
 <template>
@@ -38,7 +55,7 @@
         rel="noopener noreferrer"
         tabIndex="0"
         target="_blank"
-        >Motion</a
+        >Motion for Vue</a
       >
       &
       <a

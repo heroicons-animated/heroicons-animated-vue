@@ -5,8 +5,7 @@
     @mouseleave="handleMouseLeave"
     v-bind="$attrs"
   >
-    <Motion
-      is="svg"
+    <svg
       ref="svgRef"
       xmlns="http://www.w3.org/2000/svg"
       :width="props.size"
@@ -19,77 +18,77 @@
       stroke-linejoin="round"
     >
       <path d="m16.49 12 3.75-3.751m0 0-3.75-3.75m3.75 3.75H3.74V19.5" />
-    </Motion>
+    </svg>
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: "ArrowTurnUpRightIcon",
-  };
+export default {
+  name: "ArrowTurnUpRightIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any;
-  }
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any;
+}
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
 
-  const stretchVariants = {
-    normal: { scaleX: 1, x: 0 },
-    animate: {
-      scaleX: [1, 1.15, 1],
-      x: [0, 2, 0],
-      transition: {
-        duration: 0.45,
-        ease: "easeInOut",
-      },
+const stretchVariants = {
+  normal: { scaleX: 1, x: 0 },
+  animate: {
+    scaleX: [1, 1.15, 1],
+    x: [0, 2, 0],
+    transition: {
+      duration: 0.45,
+      ease: "easeInOut",
     },
-  };
+  },
+};
 
-  const svgRef = ref<SVGSVGElement>();
-  const motionInstance = useMotion(svgRef, {
-    initial: stretchVariants.normal,
-    enter: stretchVariants.normal,
-  });
+const svgRef = ref<SVGSVGElement>();
+const motionInstance = useMotion(svgRef, {
+  initial: stretchVariants.normal,
+  enter: stretchVariants.normal,
+});
 
-  let isControlled = false;
+let isControlled = false;
 
-  const startAnimation = () => {
-    motionInstance.apply(stretchVariants.animate);
-  };
+const startAnimation = () => {
+  motionInstance.apply(stretchVariants.animate);
+};
 
-  const stopAnimation = () => {
-    motionInstance.apply(stretchVariants.normal);
-  };
+const stopAnimation = () => {
+  motionInstance.apply(stretchVariants.normal);
+};
 
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
+  }
+};
 
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

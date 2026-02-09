@@ -18,8 +18,7 @@
       <path
         d="M12 3V20.25M12 20.25C10.528 20.25 9.1179 20.515 7.81483 21M12 20.25C13.472 20.25 14.8821 20.515 16.1852 21"
       />
-      <Motion
-        is="g"
+      <g
         ref="balanceRef"
         :style="{ transformOrigin: '12px 4.5px' }"
       >
@@ -32,76 +31,76 @@
         <path
           d="M5.25 4.97089L7.87036 15.6961C7.9922 16.1948 7.76419 16.7237 7.28114 16.8975C6.6468 17.1257 5.96292 17.25 5.25 17.25C4.53708 17.25 3.8532 17.1257 3.21886 16.8975C2.73581 16.7237 2.5078 16.1948 2.62964 15.6961L5.25 4.97089Z"
         />
-      </Motion>
+      </g>
     </svg>
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: "ScaleIcon",
-  };
+export default {
+  name: "ScaleIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
+export interface Props {
+  size?: number;
+  class?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const variants = {
+  normal: {
+    rotate: 0,
+    transition: { duration: 0.3, ease: "easeOut" },
+  },
+  animate: {
+    rotate: [0, 8, -8, 4, -4, 0],
+    transition: { duration: 1.2, ease: "easeInOut" },
+  },
+};
+
+const balanceRef = ref();
+const motionInstance = useMotion(balanceRef, {
+  initial: variants.normal,
+  enter: variants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  motionInstance.apply(variants.animate);
+};
+
+const stopAnimation = () => {
+  motionInstance.apply(variants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const variants = {
-    normal: {
-      rotate: 0,
-      transition: { duration: 0.3, ease: "easeOut" },
-    },
-    animate: {
-      rotate: [0, 8, -8, 4, -4, 0],
-      transition: { duration: 1.2, ease: "easeInOut" },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const balanceRef = ref();
-  const motionInstance = useMotion(balanceRef, {
-    initial: variants.normal,
-    enter: variants.normal,
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    motionInstance.apply(variants.animate);
-  };
-
-  const stopAnimation = () => {
-    motionInstance.apply(variants.normal);
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

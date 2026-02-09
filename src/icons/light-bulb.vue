@@ -16,8 +16,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <Motion
-        is="path"
+      <path
         ref="pathRef"
         d="M14.25 18V17.8083C14.25 16.8254 14.9083 15.985 15.7585 15.4917C17.9955 14.1938 19.5 11.7726 19.5 9C19.5 4.85786 16.1421 1.5 12 1.5C7.85786 1.5 4.5 4.85786 4.5 9C4.5 11.7726 6.00446 14.1938 8.24155 15.4917C9.09173 15.985 9.75 16.8254 9.75 17.8083V18"
       />
@@ -35,77 +34,77 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "LightBulbIcon",
-  };
+export default {
+  name: "LightBulbIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any; // Allow all HTMLAttributes
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const variants = {
+  normal: {
+    fillOpacity: 0,
+    fill: "currentColor",
+    transition: { duration: 0.2, ease: "easeOut" },
+  },
+  animate: {
+    fillOpacity: [0, 1, 0, 1, 0],
+    fill: "currentColor",
+    transition: {
+      duration: 0.6,
+      ease: "easeInOut",
+      times: [0, 0.25, 0.5, 0.75, 1],
+    },
+  },
+};
+
+const pathRef = ref<SVGPathElement | null>();
+const motionInstance = useMotion(pathRef, {
+  initial: variants.normal,
+  enter: variants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  motionInstance.apply(variants.animate);
+};
+
+const stopAnimation = () => {
+  motionInstance.apply(variants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const variants = {
-    normal: {
-      fillOpacity: 0,
-      fill: "currentColor",
-      transition: { duration: 0.2, ease: "easeOut" },
-    },
-    animate: {
-      fillOpacity: [0, 1, 0, 1, 0],
-      fill: "currentColor",
-      transition: {
-        duration: 0.6,
-        ease: "easeInOut",
-        times: [0, 0.25, 0.5, 0.75, 1],
-      },
-    },
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const pathRef = ref<SVGPathElement | null>();
-  const motionInstance = useMotion(pathRef, {
-    initial: variants.normal,
-    enter: variants.normal,
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    motionInstance.apply(variants.animate);
-  };
-
-  const stopAnimation = () => {
-    motionInstance.apply(variants.normal);
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

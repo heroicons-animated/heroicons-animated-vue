@@ -32,96 +32,161 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "AdjustmentsVerticalIcon",
-  };
+export default {
+  name: "AdjustmentsVerticalIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any; // Allow all HTMLAttributes
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const defaultTransition = {
+  type: "spring" as const,
+  stiffness: 100,
+  damping: 12,
+  mass: 0.4,
+};
+
+const line1Ref = ref<SVGLineElement>();
+const line2Ref = ref<SVGLineElement>();
+const circle1Ref = ref<SVGCircleElement>();
+const line3Ref = ref<SVGLineElement>();
+const line4Ref = ref<SVGLineElement>();
+const circle2Ref = ref<SVGCircleElement>();
+const line5Ref = ref<SVGLineElement>();
+const line6Ref = ref<SVGLineElement>();
+const circle3Ref = ref<SVGCircleElement>();
+
+const line1Variants = {
+  normal: { y2: 13.5, transition: defaultTransition },
+  animate: { y2: 10.5, transition: defaultTransition },
+};
+const line2Variants = {
+  normal: { y1: 16.5, transition: defaultTransition },
+  animate: { y1: 13.5, transition: defaultTransition },
+};
+const circle1Variants = {
+  normal: { cy: 15, transition: defaultTransition },
+  animate: { cy: 12, transition: defaultTransition },
+};
+const line3Variants = {
+  normal: { y2: 7.5, transition: defaultTransition },
+  animate: { y2: 10.5, transition: defaultTransition },
+};
+const line4Variants = {
+  normal: { y1: 10.5, transition: defaultTransition },
+  animate: { y1: 13.5, transition: defaultTransition },
+};
+const circle2Variants = {
+  normal: { cy: 9, transition: defaultTransition },
+  animate: { cy: 12, transition: defaultTransition },
+};
+const line5Variants = {
+  normal: { y2: 13.5, transition: defaultTransition },
+  animate: { y2: 10.5, transition: defaultTransition },
+};
+const line6Variants = {
+  normal: { y1: 16.5, transition: defaultTransition },
+  animate: { y1: 13.5, transition: defaultTransition },
+};
+const circle3Variants = {
+  normal: { cy: 15, transition: defaultTransition },
+  animate: { cy: 12, transition: defaultTransition },
+};
+
+const line1Motion = useMotion(line1Ref, {
+  initial: line1Variants.normal,
+  enter: line1Variants.normal,
+});
+const line2Motion = useMotion(line2Ref, {
+  initial: line2Variants.normal,
+  enter: line2Variants.normal,
+});
+const circle1Motion = useMotion(circle1Ref, {
+  initial: circle1Variants.normal,
+  enter: circle1Variants.normal,
+});
+const line3Motion = useMotion(line3Ref, {
+  initial: line3Variants.normal,
+  enter: line3Variants.normal,
+});
+const line4Motion = useMotion(line4Ref, {
+  initial: line4Variants.normal,
+  enter: line4Variants.normal,
+});
+const circle2Motion = useMotion(circle2Ref, {
+  initial: circle2Variants.normal,
+  enter: circle2Variants.normal,
+});
+const line5Motion = useMotion(line5Ref, {
+  initial: line5Variants.normal,
+  enter: line5Variants.normal,
+});
+const line6Motion = useMotion(line6Ref, {
+  initial: line6Variants.normal,
+  enter: line6Variants.normal,
+});
+const circle3Motion = useMotion(circle3Ref, {
+  initial: circle3Variants.normal,
+  enter: circle3Variants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  line1Motion.apply(line1Variants.animate);
+  line2Motion.apply(line2Variants.animate);
+  circle1Motion.apply(circle1Variants.animate);
+  line3Motion.apply(line3Variants.animate);
+  line4Motion.apply(line4Variants.animate);
+  circle2Motion.apply(circle2Variants.animate);
+  line5Motion.apply(line5Variants.animate);
+  line6Motion.apply(line6Variants.animate);
+  circle3Motion.apply(circle3Variants.animate);
+};
+
+const stopAnimation = () => {
+  line1Motion.apply(line1Variants.normal);
+  line2Motion.apply(line2Variants.normal);
+  circle1Motion.apply(circle1Variants.normal);
+  line3Motion.apply(line3Variants.normal);
+  line4Motion.apply(line4Variants.normal);
+  circle2Motion.apply(circle2Variants.normal);
+  line5Motion.apply(line5Variants.normal);
+  line6Motion.apply(line6Variants.normal);
+  circle3Motion.apply(circle3Variants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const defaultOptions = {
-    duration: 300,
-    easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)", // Approximate spring
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const line1Ref = ref<SVGLineElement>();
-  const line2Ref = ref<SVGLineElement>();
-  const circle1Ref = ref<SVGCircleElement>();
-  const line3Ref = ref<SVGLineElement>();
-  const line4Ref = ref<SVGLineElement>();
-  const circle2Ref = ref<SVGCircleElement>();
-  const line5Ref = ref<SVGLineElement>();
-  const line6Ref = ref<SVGLineElement>();
-  const circle3Ref = ref<SVGCircleElement>();
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    if (!isControlled) {
-      // Column 1
-      line1Ref.value?.animate([{ y2: 13.5 }, { y2: 10.5 }], defaultOptions);
-      line2Ref.value?.animate([{ y1: 16.5 }, { y1: 13.5 }], defaultOptions);
-      circle1Ref.value?.animate([{ cy: 15 }, { cy: 12 }], defaultOptions);
-
-      // Column 2
-      line3Ref.value?.animate([{ y2: 7.5 }, { y2: 10.5 }], defaultOptions);
-      line4Ref.value?.animate([{ y1: 10.5 }, { y1: 13.5 }], defaultOptions);
-      circle2Ref.value?.animate([{ cy: 9 }, { cy: 12 }], defaultOptions);
-
-      // Column 3
-      line5Ref.value?.animate([{ y2: 13.5 }, { y2: 10.5 }], defaultOptions);
-      line6Ref.value?.animate([{ y1: 16.5 }, { y1: 13.5 }], defaultOptions);
-      circle3Ref.value?.animate([{ cy: 15 }, { cy: 12 }], defaultOptions);
-    }
-  };
-
-  const stopAnimation = () => {
-    // Column 1
-    line1Ref.value?.animate([{ y2: 10.5 }, { y2: 13.5 }], defaultOptions);
-    line2Ref.value?.animate([{ y1: 13.5 }, { y1: 16.5 }], defaultOptions);
-    circle1Ref.value?.animate([{ cy: 12 }, { cy: 15 }], defaultOptions);
-
-    // Column 2
-    line3Ref.value?.animate([{ y2: 10.5 }, { y2: 7.5 }], defaultOptions);
-    line4Ref.value?.animate([{ y1: 13.5 }, { y1: 10.5 }], defaultOptions);
-    circle2Ref.value?.animate([{ cy: 12 }, { cy: 9 }], defaultOptions);
-
-    // Column 3
-    line5Ref.value?.animate([{ y2: 10.5 }, { y2: 13.5 }], defaultOptions);
-    line6Ref.value?.animate([{ y1: 13.5 }, { y1: 16.5 }], defaultOptions);
-    circle3Ref.value?.animate([{ cy: 12 }, { cy: 15 }], defaultOptions);
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

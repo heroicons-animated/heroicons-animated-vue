@@ -1,0 +1,3 @@
+User-Agent: *
+Allow: /
+Sitemap: https://vue.heroicons-animated.com/sitemap.xml

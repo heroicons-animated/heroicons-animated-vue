@@ -5,9 +5,8 @@
     @mouseleave="handleMouseLeave"
     v-bind="$attrs"
   >
-    <Motion
+    <svg
       ref="svgRef"
-      tag="svg"
       xmlns="http://www.w3.org/2000/svg"
       :width="props.size"
       :height="props.size"
@@ -21,64 +20,60 @@
       <path
         d="M20.25 6.375C20.25 8.65317 16.5563 10.5 12 10.5C7.44365 10.5 3.75 8.65317 3.75 6.375M20.25 6.375C20.25 4.09683 16.5563 2.25 12 2.25C7.44365 2.25 3.75 4.09683 3.75 6.375M20.25 6.375V17.625C20.25 19.9032 16.5563 21.75 12 21.75C7.44365 21.75 3.75 19.9032 3.75 17.625V6.375M20.25 6.375V10.125M3.75 6.375V10.125M20.25 10.125V13.875C20.25 16.1532 16.5563 18 12 18C7.44365 18 3.75 16.1532 3.75 13.875V10.125M20.25 10.125C20.25 12.4032 16.5563 14.25 12 14.25C7.44365 14.25 3.75 12.4032 3.75 10.125"
       />
-    </Motion>
+    </svg>
   </div>
 </template>
 
 <script lang="ts">
-  export default {
-    name: "CircleStackIcon",
-  };
+export default {
+  name: "CircleStackIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any;
-  }
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any;
+}
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
 
-  const variants = {
-    normal: { scaleY: 1 },
-    animate: {
-      scaleY: [1, 1.08, 1],
-      transition: { duration: 0.4, ease: "easeInOut" },
-    },
-  };
+const variants = {
+  normal: { scaleY: 1 },
+  animate: {
+    scaleY: [1, 1.08, 1],
+    transition: { duration: 0.4, ease: "easeInOut" },
+  },
+};
 
-  const svgRef = ref<SVGSVGElement | null>();
-  const motionInstance = useMotion(svgRef, {
-    initial: variants.normal,
-    enter: variants.normal,
-  });
+const svgRef = ref<SVGSVGElement | null>();
+const motionInstance = useMotion(svgRef, {
+  initial: variants.normal,
+  enter: variants.normal,
+});
 
-  let isControlled = false;
+let isControlled = false;
 
-  const startAnimation = () => motionInstance.apply(variants.animate);
-  const stopAnimation = () => motionInstance.apply(variants.normal);
+const startAnimation = () => motionInstance.apply(variants.animate);
+const stopAnimation = () => motionInstance.apply(variants.normal);
 
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
+const handleMouseEnter = () => {
+  if (!isControlled) startAnimation();
+};
 
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
+const handleMouseLeave = () => {
+  if (!isControlled) stopAnimation();
+};
 
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  defineExpose({ startAnimation, stopAnimation, setControlled });
+defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

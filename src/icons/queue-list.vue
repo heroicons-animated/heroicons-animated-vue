@@ -29,87 +29,87 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "QueueListIcon",
-  };
+export default {
+  name: "QueueListIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { useMotion } from "@vueuse/motion";
-  import { onMounted, ref } from "vue";
+import { useMotion } from "../motion";
+import { onMounted, ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
+export interface Props {
+  size?: number;
+  class?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const ITEM_DURATION = 0.2;
+const INITIAL_DELAY = 0.1;
+const STAGGER_DELAY = 0.15;
+
+const LIST_ITEMS = [
+  { y: 19.5, path: "M3.75 19.5H20.25" },
+  { y: 15.75, path: "M3.75 15.75H20.25" },
+  { y: 12, path: "M3.75 12H20.25" },
+];
+
+const itemRefs = ref<SVGPathElement[]>([]);
+const itemMotions: any[] = [];
+
+onMounted(() => {
+  itemRefs.value.forEach((el, index) => {
+    itemMotions[index] = useMotion(el, {
+      initial: { opacity: 1 },
+    });
+  });
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  LIST_ITEMS.forEach((_, index) => {
+    const delay =
+      INITIAL_DELAY + (LIST_ITEMS.length - 1 - index) * STAGGER_DELAY;
+    itemMotions[index]?.apply({
+      opacity: [0, 1],
+      transition: {
+        duration: ITEM_DURATION,
+        delay,
+        ease: "easeOut",
+      },
+    });
+  });
+};
+
+const stopAnimation = () => {
+  itemMotions.forEach((m) => {
+    m?.apply({ opacity: 1 });
+  });
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const ITEM_DURATION = 0.2;
-  const INITIAL_DELAY = 0.1;
-  const STAGGER_DELAY = 0.15;
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  const LIST_ITEMS = [
-    { y: 19.5, path: "M3.75 19.5H20.25" },
-    { y: 15.75, path: "M3.75 15.75H20.25" },
-    { y: 12, path: "M3.75 12H20.25" },
-  ];
-
-  const itemRefs = ref<SVGPathElement[]>([]);
-  const itemMotions: any[] = [];
-
-  onMounted(() => {
-    itemRefs.value.forEach((el, index) => {
-      itemMotions[index] = useMotion(el, {
-        initial: { opacity: 1 },
-      });
-    });
-  });
-
-  let isControlled = false;
-
-  const startAnimation = () => {
-    LIST_ITEMS.forEach((_, index) => {
-      const delay =
-        INITIAL_DELAY + (LIST_ITEMS.length - 1 - index) * STAGGER_DELAY;
-      itemMotions[index]?.apply({
-        opacity: [0, 1],
-        transition: {
-          duration: ITEM_DURATION,
-          delay,
-          ease: "easeOut",
-        },
-      });
-    });
-  };
-
-  const stopAnimation = () => {
-    itemMotions.forEach((m) => {
-      m?.apply({ opacity: 1 });
-    });
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>

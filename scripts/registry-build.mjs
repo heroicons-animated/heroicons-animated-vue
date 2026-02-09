@@ -12,7 +12,7 @@ const registryIndexPath = path.join(registryPath, "registry.json");
 const schemaUrl = "https://shadcn-vue.com/schema/registry-item.json";
 const registrySchemaUrl = "https://shadcn-vue.com/schema/registry.json";
 
-const dependencies = ["@vueuse/motion"];
+const dependencies = ["motion-v"];
 
 const stripContent = (schema) => ({
   ...schema,

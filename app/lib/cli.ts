@@ -7,7 +7,7 @@ export const getFileExtension = (): string => "vue";
 
 export const getFrameworkName = (): string => "Vue";
 
-export const getShadcnCLI = (): string => "shadcn-vue";
+export const getShadcnCLI = (): string => "shadcn-vue@latest";
 
 export const getRegistryPathPrefix = (): string => "/vue/";
 

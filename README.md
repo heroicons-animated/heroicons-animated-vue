@@ -1,13 +1,23 @@
 # @heroicons-animated/vue
 
-Beautifully animated [Heroicons](https://heroicons.com) for Vue, built with [@vueuse/motion](https://motion.vueuse.org).
+Beautifully animated [Heroicons](https://heroicons.com) for Vue, built with [Motion for Vue (`motion-v`)](https://motion.dev/docs/vue).
 
 ## Installation
 
 ```bash
-npm install @heroicons-animated/vue @vueuse/motion
-# or
-pnpm add @heroicons-animated/vue @vueuse/motion
+npm install @heroicons-animated/vue motion-v
+pnpm add @heroicons-animated/vue motion-v
+yarn add @heroicons-animated/vue motion-v
+bun add @heroicons-animated/vue motion-v
+```
+
+## Add Icons with shadcn-vue CLI
+
+```bash
+npx shadcn-vue@latest add @heroicons-animated/vue/beaker
+pnpm dlx shadcn-vue@latest add @heroicons-animated/vue/beaker
+yarn dlx shadcn-vue@latest add @heroicons-animated/vue/beaker
+bunx shadcn-vue@latest add @heroicons-animated/vue/beaker
 ```
 
 ## Usage
@@ -35,7 +45,7 @@ import BeakerIcon from "@heroicons-animated/vue/beaker";
 ## Requirements
 
 - Vue 3.0+
-- @vueuse/motion 2.0+
+- motion-v 1.10+
 
 ## Documentation
 

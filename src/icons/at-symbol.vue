@@ -26,120 +26,109 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: "AtSymbolIcon",
-  };
+export default {
+  name: "AtSymbolIcon",
+};
 </script>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+import { useMotion } from "../motion";
+import { ref } from "vue";
 
-  export interface Props {
-    size?: number;
-    class?: string;
-    [key: string]: any; // Allow all HTMLAttributes
+export interface Props {
+  size?: number;
+  class?: string;
+  [key: string]: any; // Allow all HTMLAttributes
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  size: 28,
+});
+
+const circleVariants = {
+  normal: {
+    opacity: 1,
+    pathLength: 1,
+    pathOffset: 0,
+    transition: {
+      duration: 0.4,
+      opacity: { duration: 0.1 },
+    },
+  },
+  animate: {
+    opacity: [0, 1],
+    pathLength: [0, 1],
+    pathOffset: [1, 0],
+    transition: {
+      duration: 0.3,
+      opacity: { duration: 0.1 },
+    },
+  },
+};
+
+const pathVariants = {
+  normal: {
+    opacity: 1,
+    pathLength: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.3,
+      opacity: { duration: 0.1, delay: 0.3 },
+    },
+  },
+  animate: {
+    opacity: [0, 1],
+    pathLength: [0, 1],
+    transition: {
+      delay: 0.3,
+      duration: 0.3,
+      opacity: { duration: 0.1, delay: 0.3 },
+    },
+  },
+};
+
+const circleRef = ref<SVGCircleElement>();
+const pathRef = ref<SVGPathElement>();
+const circleMotion = useMotion(circleRef, {
+  initial: circleVariants.normal,
+  enter: circleVariants.normal,
+});
+const pathMotion = useMotion(pathRef, {
+  initial: pathVariants.normal,
+  enter: pathVariants.normal,
+});
+
+let isControlled = false;
+
+const startAnimation = () => {
+  circleMotion.apply(circleVariants.animate);
+  pathMotion.apply(pathVariants.animate);
+};
+
+const stopAnimation = () => {
+  circleMotion.apply(circleVariants.normal);
+  pathMotion.apply(pathVariants.normal);
+};
+
+const handleMouseEnter = () => {
+  if (!isControlled) {
+    startAnimation();
   }
+};
 
-  const props = withDefaults(defineProps<Props>(), {
-    size: 28,
-  });
+const handleMouseLeave = () => {
+  if (!isControlled) {
+    stopAnimation();
+  }
+};
 
-  const circleRef = ref<SVGCircleElement>();
-  const pathRef = ref<SVGPathElement>();
+const setControlled = (value: boolean) => {
+  isControlled = value;
+};
 
-  let isControlled = false;
-  let circleAnimation: Animation | null = null;
-  let pathAnimation: Animation | null = null;
-
-  const startAnimation = () => {
-    // Animate circle path drawing using Web Animations API
-    if (circleRef.value) {
-      const circleLength = circleRef.value.getTotalLength();
-      circleRef.value.style.strokeDasharray = `${circleLength}`;
-      circleRef.value.style.strokeDashoffset = `${circleLength}`;
-      circleRef.value.style.opacity = "0";
-
-      circleAnimation = circleRef.value.animate(
-        [
-          { strokeDashoffset: circleLength, opacity: 0 },
-          { strokeDashoffset: 0, opacity: 1 },
-        ],
-        {
-          duration: 300,
-          easing: "ease-in-out",
-          fill: "forwards",
-        }
-      );
-    }
-
-    // Animate path drawing with delay
-    if (pathRef.value) {
-      const pathLength = pathRef.value.getTotalLength();
-      pathRef.value.style.strokeDasharray = `${pathLength}`;
-      pathRef.value.style.strokeDashoffset = `${pathLength}`;
-      pathRef.value.style.opacity = "0";
-
-      setTimeout(() => {
-        if (pathRef.value) {
-          pathAnimation = pathRef.value.animate(
-            [
-              { strokeDashoffset: pathLength, opacity: 0 },
-              { strokeDashoffset: 0, opacity: 1 },
-            ],
-            {
-              duration: 300,
-              easing: "ease-in-out",
-              fill: "forwards",
-            }
-          );
-        }
-      }, 300);
-    }
-  };
-
-  const stopAnimation = () => {
-    if (circleAnimation) {
-      circleAnimation.cancel();
-      circleAnimation = null;
-    }
-
-    if (pathAnimation) {
-      pathAnimation.cancel();
-      pathAnimation = null;
-    }
-
-    if (circleRef.value) {
-      circleRef.value.style.strokeDasharray = "";
-      circleRef.value.style.strokeDashoffset = "";
-      circleRef.value.style.opacity = "1";
-    }
-
-    if (pathRef.value) {
-      pathRef.value.style.strokeDasharray = "";
-      pathRef.value.style.strokeDashoffset = "";
-      pathRef.value.style.opacity = "1";
-    }
-  };
-
-  const handleMouseEnter = () => {
-    if (!isControlled) {
-      startAnimation();
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isControlled) {
-      stopAnimation();
-    }
-  };
-
-  const setControlled = (value: boolean) => {
-    isControlled = value;
-  };
-
-  defineExpose({
-    startAnimation,
-    stopAnimation,
-    setControlled,
-  });
+defineExpose({
+  startAnimation,
+  stopAnimation,
+  setControlled,
+});
 </script>
