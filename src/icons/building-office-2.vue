@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -45,11 +45,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createWindowVariants = (custom: number) => ({
@@ -70,77 +73,56 @@ const window0Variants = createWindowVariants(0);
 const window1Variants = createWindowVariants(1);
 const window2Variants = createWindowVariants(2);
 
-const window1Ref = ref<SVGPathElement>();
-const window2Ref = ref<SVGPathElement>();
-const window3Ref = ref<SVGPathElement>();
-const window4Ref = ref<SVGPathElement>();
-const window5Ref = ref<SVGPathElement>();
-const window6Ref = ref<SVGPathElement>();
-const window7Ref = ref<SVGPathElement>();
-const window8Ref = ref<SVGPathElement>();
-const window9Ref = ref<SVGPathElement>();
-
-const window1Motion = useMotion(window1Ref, {
-  initial: window0Variants.normal,
-  enter: window0Variants.normal,
-});
-const window2Motion = useMotion(window2Ref, {
-  initial: window1Variants.normal,
-  enter: window1Variants.normal,
-});
-const window3Motion = useMotion(window3Ref, {
-  initial: window2Variants.normal,
-  enter: window2Variants.normal,
-});
-const window4Motion = useMotion(window4Ref, {
-  initial: window0Variants.normal,
-  enter: window0Variants.normal,
-});
-const window5Motion = useMotion(window5Ref, {
-  initial: window1Variants.normal,
-  enter: window1Variants.normal,
-});
-const window6Motion = useMotion(window6Ref, {
-  initial: window2Variants.normal,
-  enter: window2Variants.normal,
-});
-const window7Motion = useMotion(window7Ref, {
-  initial: window0Variants.normal,
-  enter: window0Variants.normal,
-});
-const window8Motion = useMotion(window8Ref, {
-  initial: window1Variants.normal,
-  enter: window1Variants.normal,
-});
-const window9Motion = useMotion(window9Ref, {
-  initial: window2Variants.normal,
-  enter: window2Variants.normal,
-});
+const window1Ref = ref<SVGPathElement | null>(null);
+const window2Ref = ref<SVGPathElement | null>(null);
+const window3Ref = ref<SVGPathElement | null>(null);
+const window4Ref = ref<SVGPathElement | null>(null);
+const window5Ref = ref<SVGPathElement | null>(null);
+const window6Ref = ref<SVGPathElement | null>(null);
+const window7Ref = ref<SVGPathElement | null>(null);
+const window8Ref = ref<SVGPathElement | null>(null);
+const window9Ref = ref<SVGPathElement | null>(null);
+const windowRefs = [
+  window1Ref,
+  window2Ref,
+  window3Ref,
+  window4Ref,
+  window5Ref,
+  window6Ref,
+  window7Ref,
+  window8Ref,
+  window9Ref,
+] as const;
+const windowVariants = [
+  window0Variants,
+  window1Variants,
+  window2Variants,
+  window0Variants,
+  window1Variants,
+  window2Variants,
+  window0Variants,
+  window1Variants,
+  window2Variants,
+] as const;
+const windowMotions = windowRefs.map((windowRef, index) =>
+  useMotion(windowRef, {
+    initial: windowVariants[index].normal,
+    enter: windowVariants[index].normal,
+  })
+);
 
 let isControlled = false;
 
 const startAnimation = () => {
-  window1Motion.apply(window0Variants.animate);
-  window2Motion.apply(window1Variants.animate);
-  window3Motion.apply(window2Variants.animate);
-  window4Motion.apply(window0Variants.animate);
-  window5Motion.apply(window1Variants.animate);
-  window6Motion.apply(window2Variants.animate);
-  window7Motion.apply(window0Variants.animate);
-  window8Motion.apply(window1Variants.animate);
-  window9Motion.apply(window2Variants.animate);
+  for (const [index, windowMotion] of windowMotions.entries()) {
+    windowMotion.apply(windowVariants[index].animate);
+  }
 };
 
 const stopAnimation = () => {
-  window1Motion.apply(window0Variants.normal);
-  window2Motion.apply(window1Variants.normal);
-  window3Motion.apply(window2Variants.normal);
-  window4Motion.apply(window0Variants.normal);
-  window5Motion.apply(window1Variants.normal);
-  window6Motion.apply(window2Variants.normal);
-  window7Motion.apply(window0Variants.normal);
-  window8Motion.apply(window1Variants.normal);
-  window9Motion.apply(window2Variants.normal);
+  for (const [index, windowMotion] of windowMotions.entries()) {
+    windowMotion.apply(windowVariants[index].normal);
+  }
 };
 
 const handleMouseEnter = () => {

@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -39,10 +40,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const lineVariants = {
@@ -74,10 +79,10 @@ const createNodeVariants = (delay: number) => ({
   },
 });
 
-const pathRef = ref();
-const circleRef0 = ref();
-const circleRef1 = ref();
-const circleRef2 = ref();
+const pathRef = ref<SVGPathElement | null>(null);
+const circleRef0 = ref<SVGCircleElement | null>(null);
+const circleRef1 = ref<SVGCircleElement | null>(null);
+const circleRef2 = ref<SVGCircleElement | null>(null);
 
 const pathMotion = useMotion(pathRef, {
   initial: lineVariants.normal,

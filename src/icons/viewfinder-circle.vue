@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -53,11 +53,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const cornerNormal = {
@@ -83,11 +86,11 @@ const circleAnimate = {
   transition: { duration: 0.3, delay: 0.1 },
 };
 
-const corner1Ref = ref();
-const corner2Ref = ref();
-const corner3Ref = ref();
-const corner4Ref = ref();
-const circleRef = ref();
+const corner1Ref = ref<SVGPathElement | null>(null);
+const corner2Ref = ref<SVGPathElement | null>(null);
+const corner3Ref = ref<SVGPathElement | null>(null);
+const corner4Ref = ref<SVGPathElement | null>(null);
+const circleRef = ref<SVGPathElement | null>(null);
 const corner1 = useMotion(corner1Ref, {
   initial: cornerNormal,
   enter: cornerNormal,
@@ -110,22 +113,32 @@ const circleMotion = useMotion(circleRef, {
 });
 
 let isControlled = false;
+let animationTimeout: number | null = null;
 
-const startAnimation = async () => {
+const startAnimation = () => {
+  if (animationTimeout !== null) {
+    clearTimeout(animationTimeout);
+  }
   corner1.apply(cornerAnimate);
   corner2.apply(cornerAnimate);
   corner3.apply(cornerAnimate);
   corner4.apply(cornerAnimate);
   circleMotion.apply(circleAnimate);
-  await new Promise((r) => setTimeout(r, 400));
-  corner1.apply(cornerNormal);
-  corner2.apply(cornerNormal);
-  corner3.apply(cornerNormal);
-  corner4.apply(cornerNormal);
-  circleMotion.apply(circleNormal);
+  animationTimeout = window.setTimeout(() => {
+    corner1.apply(cornerNormal);
+    corner2.apply(cornerNormal);
+    corner3.apply(cornerNormal);
+    corner4.apply(cornerNormal);
+    circleMotion.apply(circleNormal);
+    animationTimeout = null;
+  }, 400);
 };
 
 const stopAnimation = () => {
+  if (animationTimeout !== null) {
+    clearTimeout(animationTimeout);
+    animationTimeout = null;
+  }
   corner1.apply(cornerNormal);
   corner2.apply(cornerNormal);
   corner3.apply(cornerNormal);

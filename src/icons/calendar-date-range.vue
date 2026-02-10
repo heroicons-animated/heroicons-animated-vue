@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -49,11 +49,14 @@ import { onMounted, ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const FIRST_DOT_VARIANTS = {

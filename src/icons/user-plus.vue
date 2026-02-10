@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -37,17 +38,19 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const vertVariants = {
   normal: {
     opacity: 1,
-    pathLength: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
   },
   animate: {
     opacity: [0, 1],
@@ -62,8 +65,6 @@ const vertVariants = {
 const horizVariants = {
   normal: {
     opacity: 1,
-    pathLength: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
   },
   animate: {
     opacity: [0, 1],
@@ -76,8 +77,8 @@ const horizVariants = {
   },
 };
 
-const vertRef = ref();
-const horizRef = ref();
+const vertRef = ref<SVGPathElement | null>(null);
+const horizRef = ref<SVGPathElement | null>(null);
 const motionVert = useMotion(vertRef, {
   initial: vertVariants.normal,
   enter: vertVariants.normal,

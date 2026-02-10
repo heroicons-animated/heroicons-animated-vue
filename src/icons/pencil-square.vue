@@ -1,9 +1,9 @@
 <template>
   <div
-    v-bind="$attrs"
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,16 +11,17 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
+      style="overflow: visible"
     >
       <path
-        ref="pathRef"
         d="M18 14V18.75C18 19.9926 16.9926 21 15.75 21H5.25C4.00736 21 3 19.9926 3 18.75V8.24999C3 7.00735 4.00736 5.99999 5.25 5.99999H10"
       />
       <path
+        ref="penRef"
         d="M16.8617 4.48667L18.5492 2.79917C19.2814 2.06694 20.4686 2.06694 21.2008 2.79917C21.9331 3.53141 21.9331 4.71859 21.2008 5.45083L10.5822 16.0695C10.0535 16.5981 9.40144 16.9868 8.68489 17.2002L6 18L6.79978 15.3151C7.01323 14.5986 7.40185 13.9465 7.93052 13.4178L16.8617 4.48667ZM16.8617 4.48667L19.5 7.12499"
       />
     </svg>
@@ -40,11 +41,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const variants = {
@@ -64,7 +68,7 @@ const variants = {
   },
 };
 
-const penRef = ref<SVGPathElement | null>();
+const penRef = ref<SVGPathElement | null>(null);
 const motionInstance = useMotion(penRef, {
   initial: variants.normal,
   enter: variants.normal,

@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -42,11 +42,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createFloorVariants = (custom: number) => ({
@@ -67,56 +70,47 @@ const floor0Variants = createFloorVariants(0);
 const floor1Variants = createFloorVariants(1);
 const floor2Variants = createFloorVariants(2);
 
-const floor1Ref = ref<SVGPathElement>();
-const floor2Ref = ref<SVGPathElement>();
-const floor3Ref = ref<SVGPathElement>();
-const floor4Ref = ref<SVGPathElement>();
-const floor5Ref = ref<SVGPathElement>();
-const floor6Ref = ref<SVGPathElement>();
-
-const floor1Motion = useMotion(floor1Ref, {
-  initial: floor0Variants.normal,
-  enter: floor0Variants.normal,
-});
-const floor2Motion = useMotion(floor2Ref, {
-  initial: floor0Variants.normal,
-  enter: floor0Variants.normal,
-});
-const floor3Motion = useMotion(floor3Ref, {
-  initial: floor1Variants.normal,
-  enter: floor1Variants.normal,
-});
-const floor4Motion = useMotion(floor4Ref, {
-  initial: floor1Variants.normal,
-  enter: floor1Variants.normal,
-});
-const floor5Motion = useMotion(floor5Ref, {
-  initial: floor2Variants.normal,
-  enter: floor2Variants.normal,
-});
-const floor6Motion = useMotion(floor6Ref, {
-  initial: floor2Variants.normal,
-  enter: floor2Variants.normal,
-});
+const floor1Ref = ref<SVGPathElement | null>(null);
+const floor2Ref = ref<SVGPathElement | null>(null);
+const floor3Ref = ref<SVGPathElement | null>(null);
+const floor4Ref = ref<SVGPathElement | null>(null);
+const floor5Ref = ref<SVGPathElement | null>(null);
+const floor6Ref = ref<SVGPathElement | null>(null);
+const floorRefs = [
+  floor1Ref,
+  floor2Ref,
+  floor3Ref,
+  floor4Ref,
+  floor5Ref,
+  floor6Ref,
+] as const;
+const floorVariants = [
+  floor0Variants,
+  floor0Variants,
+  floor1Variants,
+  floor1Variants,
+  floor2Variants,
+  floor2Variants,
+] as const;
+const floorMotions = floorRefs.map((floorRef, index) =>
+  useMotion(floorRef, {
+    initial: floorVariants[index].normal,
+    enter: floorVariants[index].normal,
+  })
+);
 
 let isControlled = false;
 
 const startAnimation = () => {
-  floor1Motion.apply(floor0Variants.animate);
-  floor2Motion.apply(floor0Variants.animate);
-  floor3Motion.apply(floor1Variants.animate);
-  floor4Motion.apply(floor1Variants.animate);
-  floor5Motion.apply(floor2Variants.animate);
-  floor6Motion.apply(floor2Variants.animate);
+  for (const [index, floorMotion] of floorMotions.entries()) {
+    floorMotion.apply(floorVariants[index].animate);
+  }
 };
 
 const stopAnimation = () => {
-  floor1Motion.apply(floor0Variants.normal);
-  floor2Motion.apply(floor0Variants.normal);
-  floor3Motion.apply(floor1Variants.normal);
-  floor4Motion.apply(floor1Variants.normal);
-  floor5Motion.apply(floor2Variants.normal);
-  floor6Motion.apply(floor2Variants.normal);
+  for (const [index, floorMotion] of floorMotions.entries()) {
+    floorMotion.apply(floorVariants[index].normal);
+  }
 };
 
 const handleMouseEnter = () => {

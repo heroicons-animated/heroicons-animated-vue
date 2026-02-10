@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -45,11 +45,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const springTransition = {
@@ -98,33 +101,27 @@ const createXMarkVariants = (delay: number) => ({
 const xMark1Variants = createXMarkVariants(0.2);
 const xMark2Variants = createXMarkVariants(0.4);
 
-const path1Ref = ref();
-const path2Ref = ref();
-const path3Ref = ref();
-const xMark1Ref = ref();
-const xMark2Ref = ref();
-const lidRef = ref();
-
-const path1Motion = useMotion(path1Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path2Motion = useMotion(path2Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path3Motion = useMotion(path3Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const xMark1Motion = useMotion(xMark1Ref, {
-  initial: xMark1Variants.normal,
-  enter: xMark1Variants.normal,
-});
-const xMark2Motion = useMotion(xMark2Ref, {
-  initial: xMark2Variants.normal,
-  enter: xMark2Variants.normal,
-});
+const path1Ref = ref<SVGPathElement | null>(null);
+const path2Ref = ref<SVGPathElement | null>(null);
+const path3Ref = ref<SVGPathElement | null>(null);
+const xMark1Ref = ref<SVGPathElement | null>(null);
+const xMark2Ref = ref<SVGPathElement | null>(null);
+const lidRef = ref<SVGPathElement | null>(null);
+const pathRefs = [path1Ref, path2Ref, path3Ref] as const;
+const pathMotions = pathRefs.map((pathRef) =>
+  useMotion(pathRef, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  })
+);
+const xMarkRefs = [xMark1Ref, xMark2Ref] as const;
+const xMarkVariants = [xMark1Variants, xMark2Variants] as const;
+const xMarkMotions = xMarkRefs.map((xMarkRef, index) =>
+  useMotion(xMarkRef, {
+    initial: xMarkVariants[index].normal,
+    enter: xMarkVariants[index].normal,
+  })
+);
 const lidMotion = useMotion(lidRef, {
   initial: lidVariants.normal,
   enter: lidVariants.normal,
@@ -133,20 +130,22 @@ const lidMotion = useMotion(lidRef, {
 let isControlled = false;
 
 const startAnimation = () => {
-  path1Motion.apply(pathVariants.animate);
-  path2Motion.apply(pathVariants.animate);
-  path3Motion.apply(pathVariants.animate);
-  xMark1Motion.apply(xMark1Variants.animate);
-  xMark2Motion.apply(xMark2Variants.animate);
+  for (const pathMotion of pathMotions) {
+    pathMotion.apply(pathVariants.animate);
+  }
+  for (const [index, xMarkMotion] of xMarkMotions.entries()) {
+    xMarkMotion.apply(xMarkVariants[index].animate);
+  }
   lidMotion.apply(lidVariants.animate);
 };
 
 const stopAnimation = () => {
-  path1Motion.apply(pathVariants.normal);
-  path2Motion.apply(pathVariants.normal);
-  path3Motion.apply(pathVariants.normal);
-  xMark1Motion.apply(xMark1Variants.normal);
-  xMark2Motion.apply(xMark2Variants.normal);
+  for (const pathMotion of pathMotions) {
+    pathMotion.apply(pathVariants.normal);
+  }
+  for (const [index, xMarkMotion] of xMarkMotions.entries()) {
+    xMarkMotion.apply(xMarkVariants[index].normal);
+  }
   lidMotion.apply(lidVariants.normal);
 };
 

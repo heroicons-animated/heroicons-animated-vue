@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -40,11 +40,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const dotVariants = {
@@ -76,10 +79,10 @@ const createPillarVariants = (custom: number) => ({
   },
 });
 
-const dotRef = ref<SVGPathElement>();
-const pillar1Ref = ref<SVGPathElement>();
-const pillar2Ref = ref<SVGPathElement>();
-const pillar3Ref = ref<SVGPathElement>();
+const dotRef = ref<SVGPathElement | null>(null);
+const pillar1Ref = ref<SVGPathElement | null>(null);
+const pillar2Ref = ref<SVGPathElement | null>(null);
+const pillar3Ref = ref<SVGPathElement | null>(null);
 
 const pillar1Variants = createPillarVariants(0);
 const pillar2Variants = createPillarVariants(1);
@@ -89,33 +92,29 @@ const dotMotion = useMotion(dotRef, {
   initial: dotVariants.normal,
   enter: dotVariants.normal,
 });
-const pillar1Motion = useMotion(pillar1Ref, {
-  initial: pillar1Variants.normal,
-  enter: pillar1Variants.normal,
-});
-const pillar2Motion = useMotion(pillar2Ref, {
-  initial: pillar2Variants.normal,
-  enter: pillar2Variants.normal,
-});
-const pillar3Motion = useMotion(pillar3Ref, {
-  initial: pillar3Variants.normal,
-  enter: pillar3Variants.normal,
-});
+const pillarRefs = [pillar1Ref, pillar2Ref, pillar3Ref] as const;
+const pillarVariants = [pillar1Variants, pillar2Variants, pillar3Variants] as const;
+const pillarMotions = pillarRefs.map((pillarRef, index) =>
+  useMotion(pillarRef, {
+    initial: pillarVariants[index].normal,
+    enter: pillarVariants[index].normal,
+  })
+);
 
 let isControlled = false;
 
 const startAnimation = () => {
   dotMotion.apply(dotVariants.animate);
-  pillar1Motion.apply(pillar1Variants.animate);
-  pillar2Motion.apply(pillar2Variants.animate);
-  pillar3Motion.apply(pillar3Variants.animate);
+  for (const [index, pillarMotion] of pillarMotions.entries()) {
+    pillarMotion.apply(pillarVariants[index].animate);
+  }
 };
 
 const stopAnimation = () => {
   dotMotion.apply(dotVariants.normal);
-  pillar1Motion.apply(pillar1Variants.normal);
-  pillar2Motion.apply(pillar2Variants.normal);
-  pillar3Motion.apply(pillar3Variants.normal);
+  for (const [index, pillarMotion] of pillarMotions.entries()) {
+    pillarMotion.apply(pillarVariants[index].normal);
+  }
 };
 
 const handleMouseEnter = () => {

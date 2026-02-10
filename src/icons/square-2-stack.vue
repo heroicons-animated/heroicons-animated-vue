@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -40,10 +41,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const backVariants = {
@@ -51,7 +56,6 @@ const backVariants = {
     x: 0,
     y: 0,
     opacity: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
   },
   animate: {
     x: [-4, 0],
@@ -62,7 +66,7 @@ const backVariants = {
 };
 
 const frontVariants = {
-  normal: { x: 0, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  normal: { x: 0, y: 0 },
   animate: {
     x: [0, 1, 0],
     y: [0, 1, 0],
@@ -70,8 +74,8 @@ const frontVariants = {
   },
 };
 
-const backRef = ref();
-const frontRef = ref();
+const backRef = ref<SVGPathElement | null>(null);
+const frontRef = ref<SVGPathElement | null>(null);
 const backMotion = useMotion(backRef, {
   initial: backVariants.normal,
   enter: backVariants.normal,
@@ -94,11 +98,11 @@ const stopAnimation = () => {
 };
 
 const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
+  if (!isControlled) { startAnimation(); }
 };
 
 const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
+  if (!isControlled) { stopAnimation(); }
 };
 
 const setControlled = (value: boolean) => {

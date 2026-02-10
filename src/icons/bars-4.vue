@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -53,11 +53,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createBarVariants = (delay: number) => ({
@@ -83,45 +86,31 @@ const bar2Variants = createBarVariants(0.1);
 const bar3Variants = createBarVariants(0.2);
 const bar4Variants = createBarVariants(0.3);
 
-const bar1Ref = ref<SVGPathElement>();
-const bar2Ref = ref<SVGPathElement>();
-const bar3Ref = ref<SVGPathElement>();
-const bar4Ref = ref<SVGPathElement>();
-
-const bar1Motion = useMotion(bar1Ref, {
-  initial: bar1Variants.normal,
-  enter: bar1Variants.normal,
-});
-
-const bar2Motion = useMotion(bar2Ref, {
-  initial: bar2Variants.normal,
-  enter: bar2Variants.normal,
-});
-
-const bar3Motion = useMotion(bar3Ref, {
-  initial: bar3Variants.normal,
-  enter: bar3Variants.normal,
-});
-
-const bar4Motion = useMotion(bar4Ref, {
-  initial: bar4Variants.normal,
-  enter: bar4Variants.normal,
-});
+const bar1Ref = ref<SVGPathElement | null>(null);
+const bar2Ref = ref<SVGPathElement | null>(null);
+const bar3Ref = ref<SVGPathElement | null>(null);
+const bar4Ref = ref<SVGPathElement | null>(null);
+const barRefs = [bar1Ref, bar2Ref, bar3Ref, bar4Ref] as const;
+const barVariants = [bar1Variants, bar2Variants, bar3Variants, bar4Variants] as const;
+const barMotions = barRefs.map((barRef, index) =>
+  useMotion(barRef, {
+    initial: barVariants[index].normal,
+    enter: barVariants[index].normal,
+  })
+);
 
 let isControlled = false;
 
 const startAnimation = () => {
-  bar1Motion.apply(bar1Variants.animate);
-  bar2Motion.apply(bar2Variants.animate);
-  bar3Motion.apply(bar3Variants.animate);
-  bar4Motion.apply(bar4Variants.animate);
+  for (const [index, barMotion] of barMotions.entries()) {
+    barMotion.apply(barVariants[index].animate);
+  }
 };
 
 const stopAnimation = () => {
-  bar1Motion.apply(bar1Variants.normal);
-  bar2Motion.apply(bar2Variants.normal);
-  bar3Motion.apply(bar3Variants.normal);
-  bar4Motion.apply(bar4Variants.normal);
+  for (const [index, barMotion] of barMotions.entries()) {
+    barMotion.apply(barVariants[index].normal);
+  }
 };
 
 const handleMouseEnter = () => {

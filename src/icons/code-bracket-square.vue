@@ -11,17 +11,16 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
       <path
-        ref="pathRef"
         d="M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
       />
-      <path :custom="-1" d="M9.75 9.75L7.5 12l2.25 2.25" />
-      <path :custom="1" d="M14.25 9.75 16.5 12l-2.25 2.25" />
+      <path ref="leftBracketRef" d="M9.75 9.75L7.5 12l2.25 2.25" />
+      <path ref="rightBracketRef" d="M14.25 9.75 16.5 12l-2.25 2.25" />
     </svg>
   </div>
 </template>
@@ -39,44 +38,58 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
-const variants = {
+const createCodeVariants = (direction: number) => ({
   normal: {
-    scale: 1,
-    transition: {
-      duration: 0.2,
-      ease: "easeOut",
-    },
+    x: 0,
+    rotate: 0,
+    opacity: 1,
   },
   animate: {
-    scale: [1, 1.08, 1],
+    x: [0, direction * 1.5, 0],
+    rotate: [0, direction * -6, 0],
+    opacity: 1,
     transition: {
-      duration: 0.45,
+      duration: 0.5,
       ease: "easeInOut",
     },
   },
-};
+});
 
-const pathRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(pathRef, {
-  initial: variants.normal,
-  enter: variants.normal,
+const leftBracketVariants = createCodeVariants(-1);
+const rightBracketVariants = createCodeVariants(1);
+
+const leftBracketRef = ref<SVGPathElement | null>(null);
+const rightBracketRef = ref<SVGPathElement | null>(null);
+
+const leftBracketMotion = useMotion(leftBracketRef, {
+  initial: leftBracketVariants.normal,
+  enter: leftBracketVariants.normal,
+});
+const rightBracketMotion = useMotion(rightBracketRef, {
+  initial: rightBracketVariants.normal,
+  enter: rightBracketVariants.normal,
 });
 
 let isControlled = false;
 
 const startAnimation = () => {
-  motionInstance.apply(variants.animate);
+  leftBracketMotion.apply(leftBracketVariants.animate);
+  rightBracketMotion.apply(rightBracketVariants.animate);
 };
 
 const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
+  leftBracketMotion.apply(leftBracketVariants.normal);
+  rightBracketMotion.apply(rightBracketVariants.normal);
 };
 
 const handleMouseEnter = () => {

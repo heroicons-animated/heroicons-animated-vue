@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -70,11 +70,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createButtonVariants = (delay: number) => ({
@@ -123,49 +126,42 @@ const screenVariants = {
   },
 };
 
-const screenRef = ref<SVGPathElement>();
-const button0Ref = ref<SVGPathElement>();
-const button1Ref = ref<SVGPathElement>();
-const button2Ref = ref<SVGPathElement>();
-const button3Ref = ref<SVGPathElement>();
-const button4Ref = ref<SVGPathElement>();
-const button5Ref = ref<SVGPathElement>();
-const enterRef = ref<SVGPathElement>();
+const screenRef = ref<SVGPathElement | null>(null);
+const button0Ref = ref<SVGPathElement | null>(null);
+const button1Ref = ref<SVGPathElement | null>(null);
+const button2Ref = ref<SVGPathElement | null>(null);
+const button3Ref = ref<SVGPathElement | null>(null);
+const button4Ref = ref<SVGPathElement | null>(null);
+const button5Ref = ref<SVGPathElement | null>(null);
+const enterRef = ref<SVGPathElement | null>(null);
 
 const screenMotion = useMotion(screenRef, {
   initial: screenVariants.normal,
   enter: screenVariants.normal,
 });
 
-const button0Motion = useMotion(button0Ref, {
-  initial: createButtonVariants(0).normal,
-  enter: createButtonVariants(0).normal,
-});
-
-const button1Motion = useMotion(button1Ref, {
-  initial: createButtonVariants(1).normal,
-  enter: createButtonVariants(1).normal,
-});
-
-const button2Motion = useMotion(button2Ref, {
-  initial: createButtonVariants(2).normal,
-  enter: createButtonVariants(2).normal,
-});
-
-const button3Motion = useMotion(button3Ref, {
-  initial: createButtonVariants(3).normal,
-  enter: createButtonVariants(3).normal,
-});
-
-const button4Motion = useMotion(button4Ref, {
-  initial: createButtonVariants(4).normal,
-  enter: createButtonVariants(4).normal,
-});
-
-const button5Motion = useMotion(button5Ref, {
-  initial: createButtonVariants(5).normal,
-  enter: createButtonVariants(5).normal,
-});
+const buttonRefs = [
+  button0Ref,
+  button1Ref,
+  button2Ref,
+  button3Ref,
+  button4Ref,
+  button5Ref,
+] as const;
+const buttonVariants = [
+  createButtonVariants(0),
+  createButtonVariants(1),
+  createButtonVariants(2),
+  createButtonVariants(3),
+  createButtonVariants(4),
+  createButtonVariants(5),
+] as const;
+const buttonMotions = buttonRefs.map((buttonRef, index) =>
+  useMotion(buttonRef, {
+    initial: buttonVariants[index].normal,
+    enter: buttonVariants[index].normal,
+  })
+);
 
 const enterMotion = useMotion(enterRef, {
   initial: enterVariants.normal,
@@ -176,23 +172,17 @@ let isControlled = false;
 
 const startAnimation = () => {
   screenMotion.apply(screenVariants.animate);
-  button0Motion.apply(createButtonVariants(0).animate);
-  button1Motion.apply(createButtonVariants(1).animate);
-  button2Motion.apply(createButtonVariants(2).animate);
-  button3Motion.apply(createButtonVariants(3).animate);
-  button4Motion.apply(createButtonVariants(4).animate);
-  button5Motion.apply(createButtonVariants(5).animate);
+  for (const [index, buttonMotion] of buttonMotions.entries()) {
+    buttonMotion.apply(buttonVariants[index].animate);
+  }
   enterMotion.apply(enterVariants.animate);
 };
 
 const stopAnimation = () => {
   screenMotion.apply(screenVariants.normal);
-  button0Motion.apply(createButtonVariants(0).normal);
-  button1Motion.apply(createButtonVariants(1).normal);
-  button2Motion.apply(createButtonVariants(2).normal);
-  button3Motion.apply(createButtonVariants(3).normal);
-  button4Motion.apply(createButtonVariants(4).normal);
-  button5Motion.apply(createButtonVariants(5).normal);
+  for (const [index, buttonMotion] of buttonMotions.entries()) {
+    buttonMotion.apply(buttonVariants[index].normal);
+  }
   enterMotion.apply(enterVariants.normal);
 };
 

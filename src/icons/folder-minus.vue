@@ -11,16 +11,15 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
       <path
-        ref="pathRef"
         d="M13.0607 6.31066L10.9393 4.18934C10.658 3.90804 10.2765 3.75 9.87868 3.75H4.5C3.25736 3.75 2.25 4.75736 2.25 6V18C2.25 19.2426 3.25736 20.25 4.5 20.25H19.5C20.7426 20.25 21.75 19.2426 21.75 18V9C21.75 7.75736 20.7426 6.75 19.5 6.75H14.1213C13.7235 6.75 13.342 6.59197 13.0607 6.31066Z"
       />
-      <path d="M15 13.5H9" />
+      <path ref="minusRef" d="M15 13.5H9" />
     </svg>
   </div>
 </template>
@@ -38,32 +37,28 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const variants = {
-  normal: {
-    scale: 1,
-    transition: {
-      duration: 0.2,
-      ease: "easeOut",
-    },
-  },
+  normal: { pathLength: 1, opacity: 1, pathOffset: 0 },
   animate: {
-    scale: [1, 1.08, 1],
-    transition: {
-      duration: 0.45,
-      ease: "easeInOut",
-    },
+    pathLength: [0, 1],
+    opacity: [0, 1],
+    pathOffset: [1, 0],
+    transition: { duration: 0.4, ease: "easeInOut" },
   },
 };
 
-const pathRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(pathRef, {
+const minusRef = ref<SVGPathElement | null>(null);
+const motionInstance = useMotion(minusRef, {
   initial: variants.normal,
   enter: variants.normal,
 });

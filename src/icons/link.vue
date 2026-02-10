@@ -1,9 +1,9 @@
 <template>
   <div
-    v-bind="$attrs"
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -37,20 +37,18 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const variants = {
-  normal: {
-    pathLength: 1,
-    pathOffset: 0,
-    rotate: 0,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
+  normal: { pathLength: 1, pathOffset: 0, rotate: 0 },
   animate: {
     pathLength: [1, 0.97, 1, 0.97, 1],
     pathOffset: [0, 0.05, 0, 0.05, 0],
@@ -64,7 +62,7 @@ const variants = {
   },
 };
 
-const pathRef = ref<SVGPathElement | null>();
+const pathRef = ref<SVGPathElement | null>(null);
 const motionInstance = useMotion(pathRef, {
   initial: variants.normal,
   enter: variants.normal,

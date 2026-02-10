@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -41,28 +42,32 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createRayVariants = (i: number) => ({
-  normal: { opacity: 1, transition: { duration: 0.2 } },
+  normal: { opacity: 1 },
   animate: {
     opacity: [0, 1],
     transition: { delay: i * 0.1, duration: 0.3 },
   },
 });
 
-const r0 = ref(),
-  r1 = ref(),
-  r2 = ref(),
-  r3 = ref(),
-  r4 = ref(),
-  r5 = ref(),
-  r6 = ref(),
-  r7 = ref();
+const r0 = ref<SVGPathElement | null>(null);
+const r1 = ref<SVGPathElement | null>(null);
+const r2 = ref<SVGPathElement | null>(null);
+const r3 = ref<SVGPathElement | null>(null);
+const r4 = ref<SVGPathElement | null>(null);
+const r5 = ref<SVGPathElement | null>(null);
+const r6 = ref<SVGPathElement | null>(null);
+const r7 = ref<SVGPathElement | null>(null);
 const m0 = useMotion(r0, {
   initial: createRayVariants(0).normal,
   enter: createRayVariants(0).normal,
@@ -99,15 +104,17 @@ const m7 = useMotion(r7, {
 let isControlled = false;
 
 const startAnimation = () => {
-  [m0, m1, m2, m3, m4, m5, m6, m7].forEach((m, i) => {
-    m.apply(createRayVariants(i).animate);
-  });
+  const motions = [m0, m1, m2, m3, m4, m5, m6, m7];
+  for (const [index, motion] of motions.entries()) {
+    motion.apply(createRayVariants(index).animate);
+  }
 };
 
 const stopAnimation = () => {
-  [m0, m1, m2, m3, m4, m5, m6, m7].forEach((m, i) => {
-    m.apply(createRayVariants(i).normal);
-  });
+  const motions = [m0, m1, m2, m3, m4, m5, m6, m7];
+  for (const [index, motion] of motions.entries()) {
+    motion.apply(createRayVariants(index).normal);
+  }
 };
 
 const handleMouseEnter = () => {

@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -43,11 +43,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const cursorVariants = {
@@ -55,7 +58,7 @@ const cursorVariants = {
   animate: {
     x: [0, 0, -3, 0],
     y: [0, -4, 0, 0],
-    transition: { duration: 1, ease: [0.34, 1.56, 0.64, 1] },
+    transition: { duration: 1, bounce: 0.3 },
   },
 };
 
@@ -73,21 +76,21 @@ const raySpread = (custom: { x: number; y: number }) => ({
   x: [0, custom.x, 0, 0],
   y: [0, custom.y, 0, 0],
   transition: {
+    ease: "easeInOut",
+    duration: 1,
     delay: 1.3,
-    duration: 0.5,
-    ease: [0.34, 1.56, 0.64, 1],
   },
 });
 
 const rayNormal = { opacity: 1, x: 0, y: 0 };
 
-const cursorRef = ref<SVGPathElement | null>();
-const r0 = ref<SVGPathElement | null>();
-const r1 = ref<SVGPathElement | null>();
-const r2 = ref<SVGPathElement | null>();
-const r3 = ref<SVGPathElement | null>();
-const r4 = ref<SVGPathElement | null>();
-const r5 = ref<SVGPathElement | null>();
+const cursorRef = ref<SVGPathElement | null>(null);
+const r0 = ref<SVGPathElement | null>(null);
+const r1 = ref<SVGPathElement | null>(null);
+const r2 = ref<SVGPathElement | null>(null);
+const r3 = ref<SVGPathElement | null>(null);
+const r4 = ref<SVGPathElement | null>(null);
+const r5 = ref<SVGPathElement | null>(null);
 
 const cursorMotion = useMotion(cursorRef, {
   initial: cursorVariants.normal,

@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -43,16 +44,19 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const cardNormal = {
   opacity: 1,
   y: 0,
-  transition: { duration: 0.2, ease: "easeOut" },
 };
 const createCardAnimate = (delay: number) => ({
   opacity: [0, 1],
@@ -60,8 +64,8 @@ const createCardAnimate = (delay: number) => ({
   transition: { duration: 0.4, delay, ease: "easeOut" },
 });
 
-const card1Ref = ref();
-const card2Ref = ref();
+const card1Ref = ref<SVGPathElement | null>(null);
+const card2Ref = ref<SVGPathElement | null>(null);
 const motion1 = useMotion(card1Ref, { initial: cardNormal, enter: cardNormal });
 const motion2 = useMotion(card2Ref, { initial: cardNormal, enter: cardNormal });
 

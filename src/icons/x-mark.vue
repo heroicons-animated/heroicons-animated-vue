@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -34,27 +35,29 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const pathVariants = {
   normal: {
     opacity: 1,
     pathLength: 1,
-    transition: { duration: 0.2 },
   },
   animate: {
     opacity: [0, 1],
     pathLength: [0, 1],
-    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 
-const path1Ref = ref();
-const path2Ref = ref();
+const path1Ref = ref<SVGPathElement | null>(null);
+const path2Ref = ref<SVGPathElement | null>(null);
 const motion1 = useMotion(path1Ref, {
   initial: pathVariants.normal,
   enter: pathVariants.normal,
@@ -69,7 +72,7 @@ let isControlled = false;
 const path2Animate = {
   opacity: [0, 1],
   pathLength: [0, 1],
-  transition: { duration: 0.4, ease: "easeOut", delay: 0.2 },
+  transition: { delay: 0.2 },
 };
 
 const startAnimation = () => {

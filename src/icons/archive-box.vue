@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -44,11 +44,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const springTransition = {
@@ -80,28 +83,18 @@ const pathVariants = {
   },
 };
 
-const path1Ref = ref();
-const path2Ref = ref();
-const path3Ref = ref();
-const path4Ref = ref();
-const lidRef = ref();
-
-const path1Motion = useMotion(path1Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path2Motion = useMotion(path2Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path3Motion = useMotion(path3Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const path4Motion = useMotion(path4Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
+const path1Ref = ref<SVGPathElement | null>(null);
+const path2Ref = ref<SVGPathElement | null>(null);
+const path3Ref = ref<SVGPathElement | null>(null);
+const path4Ref = ref<SVGPathElement | null>(null);
+const lidRef = ref<SVGPathElement | null>(null);
+const pathRefs = [path1Ref, path2Ref, path3Ref, path4Ref] as const;
+const pathMotions = pathRefs.map((pathRef) =>
+  useMotion(pathRef, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  })
+);
 const lidMotion = useMotion(lidRef, {
   initial: lidVariants.normal,
   enter: lidVariants.normal,
@@ -110,18 +103,16 @@ const lidMotion = useMotion(lidRef, {
 let isControlled = false;
 
 const startAnimation = () => {
-  path1Motion.apply(pathVariants.animate);
-  path2Motion.apply(pathVariants.animate);
-  path3Motion.apply(pathVariants.animate);
-  path4Motion.apply(pathVariants.animate);
+  for (const pathMotion of pathMotions) {
+    pathMotion.apply(pathVariants.animate);
+  }
   lidMotion.apply(lidVariants.animate);
 };
 
 const stopAnimation = () => {
-  path1Motion.apply(pathVariants.normal);
-  path2Motion.apply(pathVariants.normal);
-  path3Motion.apply(pathVariants.normal);
-  path4Motion.apply(pathVariants.normal);
+  for (const pathMotion of pathMotions) {
+    pathMotion.apply(pathVariants.normal);
+  }
   lidMotion.apply(lidVariants.normal);
 };
 

@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -44,17 +45,20 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const percentVariants = {
   normal: {
     opacity: 1,
     pathLength: 1,
-    transition: { duration: 0.3, opacity: { duration: 0.1 } },
   },
   animate: {
     opacity: [0, 1],
@@ -67,7 +71,6 @@ const createDotVariants = (delay: number) => ({
   normal: {
     scale: 1,
     opacity: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
   },
   animate: {
     scale: [0, 1.2, 1],
@@ -76,9 +79,9 @@ const createDotVariants = (delay: number) => ({
   },
 });
 
-const percentLineRef = ref();
-const dot1Ref = ref();
-const dot2Ref = ref();
+const percentLineRef = ref<SVGPathElement | null>(null);
+const dot1Ref = ref<SVGPathElement | null>(null);
+const dot2Ref = ref<SVGPathElement | null>(null);
 const percentMotion = useMotion(percentLineRef, {
   initial: percentVariants.normal,
   enter: percentVariants.normal,

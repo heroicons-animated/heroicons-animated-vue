@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -38,14 +39,21 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createButtonVariants = (delay: number) => ({
-  normal: { scale: 1, opacity: 1, transition: { duration: 0.2 } },
+  normal: {
+    scale: 1,
+    opacity: 1,
+  },
   animate: {
     scale: [0, 1.3, 1],
     opacity: [0, 1, 1],
@@ -53,9 +61,9 @@ const createButtonVariants = (delay: number) => ({
   },
 });
 
-const b0Ref = ref();
-const b1Ref = ref();
-const b2Ref = ref();
+const b0Ref = ref<SVGPathElement | null>(null);
+const b1Ref = ref<SVGPathElement | null>(null);
+const b2Ref = ref<SVGPathElement | null>(null);
 const m0 = useMotion(b0Ref, {
   initial: createButtonVariants(0).normal,
   enter: createButtonVariants(0).normal,

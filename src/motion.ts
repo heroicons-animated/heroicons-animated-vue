@@ -44,6 +44,34 @@ const resolveElement = (target: MotionTarget): MotionElement | null => {
   return isDomElement(element) ? element : null;
 };
 
+const takeTransformOrigin = (value: unknown): string | null => {
+  if (typeof value === "string") {
+    return value;
+  }
+  if (Array.isArray(value) && value.length > 0) {
+    const lastValue = value[value.length - 1];
+    if (typeof lastValue === "string") {
+      return lastValue;
+    }
+  }
+  return null;
+};
+
+const extractAnimatableValues = (
+  element: MotionElement,
+  values: MotionValues
+): MotionValues => {
+  const animatableValues: MotionValues = { ...values };
+  const transformOrigin = takeTransformOrigin(values.transformOrigin);
+
+  if (transformOrigin && "style" in element) {
+    element.style.transformOrigin = transformOrigin;
+    delete animatableValues.transformOrigin;
+  }
+
+  return animatableValues;
+};
+
 const runAnimation = (
   element: MotionElement,
   controlsRef: { current: MotionControls | null },
@@ -55,7 +83,9 @@ const runAnimation = (
   }
 
   const { transition, ...values } = variant;
-  if (Object.keys(values).length === 0) {
+  const animatableValues = extractAnimatableValues(element, values);
+
+  if (Object.keys(animatableValues).length === 0) {
     return;
   }
 
@@ -67,7 +97,7 @@ const runAnimation = (
 
   controlsRef.current = animate(
     element,
-    values as Record<string, unknown>,
+    animatableValues as Record<string, unknown>,
     animationOptions
   ) as MotionControls;
 };

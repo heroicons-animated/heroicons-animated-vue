@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -45,11 +45,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 // Match React CURSOR_VARIANTS: x [0,0,-3,0] y [0,-4,0,0] duration 1 bounce 0.3
@@ -58,7 +61,7 @@ const cursorVariants = {
   animate: {
     x: [0, 0, -3, 0],
     y: [0, -4, 0, 0],
-    transition: { duration: 1, ease: [0.34, 1.56, 0.64, 1] }, // approx bounce
+    transition: { duration: 1, bounce: 0.3 },
   },
 };
 
@@ -71,9 +74,9 @@ const rippleVariants = (delay: number) => ({
   },
 });
 
-const cursorRef = ref<SVGPathElement | null>();
-const ripple0Ref = ref<SVGPathElement | null>();
-const ripple1Ref = ref<SVGPathElement | null>();
+const cursorRef = ref<SVGPathElement | null>(null);
+const ripple0Ref = ref<SVGPathElement | null>(null);
+const ripple1Ref = ref<SVGPathElement | null>(null);
 
 const cursorMotion = useMotion(cursorRef, {
   initial: cursorVariants.normal,

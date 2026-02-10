@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -38,11 +38,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const visible = {
@@ -63,23 +66,38 @@ const toVisible = (delay: number) => ({
   transition: { delay, duration: 0.3 },
 });
 
-const line1Ref = ref<SVGPathElement | null>();
-const line2Ref = ref<SVGPathElement | null>();
+const line1Ref = ref<SVGPathElement | null>(null);
+const line2Ref = ref<SVGPathElement | null>(null);
 
 const motion1 = useMotion(line1Ref, { initial: visible, enter: visible });
 const motion2 = useMotion(line2Ref, { initial: visible, enter: visible });
 
 let isControlled = false;
+let animationTimeout: number | undefined;
 
-const startAnimation = async () => {
-  await Promise.all([motion1.apply(hidden(0)), motion2.apply(hidden(0.1))]);
-  await Promise.all([
-    motion1.apply(toVisible(0)),
-    motion2.apply(toVisible(0.1)),
-  ]);
+const clearAnimationTimeout = () => {
+  if (animationTimeout !== undefined) {
+    clearTimeout(animationTimeout);
+    animationTimeout = undefined;
+  }
+};
+
+const startAnimation = () => {
+  clearAnimationTimeout();
+
+  motion1.apply(hidden(0));
+  motion2.apply(hidden(0.1));
+
+  const hideDurationMs = 400;
+  animationTimeout = window.setTimeout(() => {
+    motion1.apply(toVisible(0));
+    motion2.apply(toVisible(0.1));
+    animationTimeout = undefined;
+  }, hideDurationMs);
 };
 
 const stopAnimation = () => {
+  clearAnimationTimeout();
   motion1.apply(visible);
   motion2.apply(visible);
 };

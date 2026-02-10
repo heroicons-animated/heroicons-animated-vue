@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -44,11 +44,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const defaultTransition = {
@@ -58,15 +61,15 @@ const defaultTransition = {
   mass: 0.4,
 };
 
-const line1Ref = ref<SVGLineElement>();
-const line2Ref = ref<SVGLineElement>();
-const circle1Ref = ref<SVGCircleElement>();
-const line3Ref = ref<SVGLineElement>();
-const line4Ref = ref<SVGLineElement>();
-const circle2Ref = ref<SVGCircleElement>();
-const line5Ref = ref<SVGLineElement>();
-const line6Ref = ref<SVGLineElement>();
-const circle3Ref = ref<SVGCircleElement>();
+const line1Ref = ref<SVGLineElement | null>(null);
+const line2Ref = ref<SVGLineElement | null>(null);
+const circle1Ref = ref<SVGCircleElement | null>(null);
+const line3Ref = ref<SVGLineElement | null>(null);
+const line4Ref = ref<SVGLineElement | null>(null);
+const circle2Ref = ref<SVGCircleElement | null>(null);
+const line5Ref = ref<SVGLineElement | null>(null);
+const line6Ref = ref<SVGLineElement | null>(null);
+const circle3Ref = ref<SVGCircleElement | null>(null);
 
 const line1Variants = {
   normal: { y2: 13.5, transition: defaultTransition },
@@ -105,67 +108,36 @@ const circle3Variants = {
   animate: { cy: 12, transition: defaultTransition },
 };
 
-const line1Motion = useMotion(line1Ref, {
-  initial: line1Variants.normal,
-  enter: line1Variants.normal,
-});
-const line2Motion = useMotion(line2Ref, {
-  initial: line2Variants.normal,
-  enter: line2Variants.normal,
-});
-const circle1Motion = useMotion(circle1Ref, {
-  initial: circle1Variants.normal,
-  enter: circle1Variants.normal,
-});
-const line3Motion = useMotion(line3Ref, {
-  initial: line3Variants.normal,
-  enter: line3Variants.normal,
-});
-const line4Motion = useMotion(line4Ref, {
-  initial: line4Variants.normal,
-  enter: line4Variants.normal,
-});
-const circle2Motion = useMotion(circle2Ref, {
-  initial: circle2Variants.normal,
-  enter: circle2Variants.normal,
-});
-const line5Motion = useMotion(line5Ref, {
-  initial: line5Variants.normal,
-  enter: line5Variants.normal,
-});
-const line6Motion = useMotion(line6Ref, {
-  initial: line6Variants.normal,
-  enter: line6Variants.normal,
-});
-const circle3Motion = useMotion(circle3Ref, {
-  initial: circle3Variants.normal,
-  enter: circle3Variants.normal,
-});
+const motionItems = [
+  { targetRef: line1Ref, variants: line1Variants },
+  { targetRef: line2Ref, variants: line2Variants },
+  { targetRef: circle1Ref, variants: circle1Variants },
+  { targetRef: line3Ref, variants: line3Variants },
+  { targetRef: line4Ref, variants: line4Variants },
+  { targetRef: circle2Ref, variants: circle2Variants },
+  { targetRef: line5Ref, variants: line5Variants },
+  { targetRef: line6Ref, variants: line6Variants },
+  { targetRef: circle3Ref, variants: circle3Variants },
+] as const;
+const motionInstances = motionItems.map((item) =>
+  useMotion(item.targetRef, {
+    initial: item.variants.normal,
+    enter: item.variants.normal,
+  })
+);
 
 let isControlled = false;
 
 const startAnimation = () => {
-  line1Motion.apply(line1Variants.animate);
-  line2Motion.apply(line2Variants.animate);
-  circle1Motion.apply(circle1Variants.animate);
-  line3Motion.apply(line3Variants.animate);
-  line4Motion.apply(line4Variants.animate);
-  circle2Motion.apply(circle2Variants.animate);
-  line5Motion.apply(line5Variants.animate);
-  line6Motion.apply(line6Variants.animate);
-  circle3Motion.apply(circle3Variants.animate);
+  for (const [index, motionInstance] of motionInstances.entries()) {
+    motionInstance.apply(motionItems[index].variants.animate);
+  }
 };
 
 const stopAnimation = () => {
-  line1Motion.apply(line1Variants.normal);
-  line2Motion.apply(line2Variants.normal);
-  circle1Motion.apply(circle1Variants.normal);
-  line3Motion.apply(line3Variants.normal);
-  line4Motion.apply(line4Variants.normal);
-  circle2Motion.apply(circle2Variants.normal);
-  line5Motion.apply(line5Variants.normal);
-  line6Motion.apply(line6Variants.normal);
-  circle3Motion.apply(circle3Variants.normal);
+  for (const [index, motionInstance] of motionInstances.entries()) {
+    motionInstance.apply(motionItems[index].variants.normal);
+  }
 };
 
 const handleMouseEnter = () => {

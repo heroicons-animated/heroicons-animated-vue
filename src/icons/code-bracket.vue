@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -37,31 +37,39 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const variants = {
   normal: {
-    scale: 1,
+    opacity: 1,
+    pathLength: 1,
+    pathOffset: 0,
     transition: {
-      duration: 0.2,
-      ease: "easeOut",
+      duration: 0.4,
+      opacity: { duration: 0.1 },
     },
   },
   animate: {
-    scale: [1, 1.08, 1],
+    opacity: [0, 1],
+    pathLength: [0, 1],
+    pathOffset: [1, 0],
     transition: {
-      duration: 0.45,
-      ease: "easeInOut",
+      duration: 0.6,
+      ease: "linear",
+      opacity: { duration: 0.1 },
     },
   },
 };
 
-const pathRef = ref<SVGPathElement | null>();
+const pathRef = ref<SVGPathElement | null>(null);
 const motionInstance = useMotion(pathRef, {
   initial: variants.normal,
   enter: variants.normal,

@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -42,11 +42,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const DOT_DURATION = 0.1;
@@ -97,56 +100,47 @@ const line1Variants = createLineVariants(lineDelay0);
 const line2Variants = createLineVariants(lineDelay1);
 const line3Variants = createLineVariants(lineDelay2);
 
-const dot1Ref = ref<SVGPathElement | null>();
-const line1Ref = ref<SVGPathElement | null>();
-const dot2Ref = ref<SVGPathElement | null>();
-const line2Ref = ref<SVGPathElement | null>();
-const dot3Ref = ref<SVGPathElement | null>();
-const line3Ref = ref<SVGPathElement | null>();
-
-const dot1Motion = useMotion(dot1Ref, {
-  initial: dot1Variants.normal,
-  enter: dot1Variants.normal,
-});
-const line1Motion = useMotion(line1Ref, {
-  initial: line1Variants.normal,
-  enter: line1Variants.normal,
-});
-const dot2Motion = useMotion(dot2Ref, {
-  initial: dot2Variants.normal,
-  enter: dot2Variants.normal,
-});
-const line2Motion = useMotion(line2Ref, {
-  initial: line2Variants.normal,
-  enter: line2Variants.normal,
-});
-const dot3Motion = useMotion(dot3Ref, {
-  initial: dot3Variants.normal,
-  enter: dot3Variants.normal,
-});
-const line3Motion = useMotion(line3Ref, {
-  initial: line3Variants.normal,
-  enter: line3Variants.normal,
-});
+const dot1Ref = ref<SVGPathElement | null>(null);
+const line1Ref = ref<SVGPathElement | null>(null);
+const dot2Ref = ref<SVGPathElement | null>(null);
+const line2Ref = ref<SVGPathElement | null>(null);
+const dot3Ref = ref<SVGPathElement | null>(null);
+const line3Ref = ref<SVGPathElement | null>(null);
+const itemRefs = [
+  { dotRef: dot1Ref, lineRef: line1Ref },
+  { dotRef: dot2Ref, lineRef: line2Ref },
+  { dotRef: dot3Ref, lineRef: line3Ref },
+] as const;
+const itemVariants = [
+  { dot: dot1Variants, line: line1Variants },
+  { dot: dot2Variants, line: line2Variants },
+  { dot: dot3Variants, line: line3Variants },
+] as const;
+const itemMotions = itemRefs.map((item, index) => ({
+  dotMotion: useMotion(item.dotRef, {
+    initial: itemVariants[index].dot.normal,
+    enter: itemVariants[index].dot.normal,
+  }),
+  lineMotion: useMotion(item.lineRef, {
+    initial: itemVariants[index].line.normal,
+    enter: itemVariants[index].line.normal,
+  }),
+}));
 
 let isControlled = false;
 
 const startAnimation = () => {
-  dot1Motion.apply(dot1Variants.animate);
-  line1Motion.apply(line1Variants.animate);
-  dot2Motion.apply(dot2Variants.animate);
-  line2Motion.apply(line2Variants.animate);
-  dot3Motion.apply(dot3Variants.animate);
-  line3Motion.apply(line3Variants.animate);
+  for (const [index, itemMotion] of itemMotions.entries()) {
+    itemMotion.dotMotion.apply(itemVariants[index].dot.animate);
+    itemMotion.lineMotion.apply(itemVariants[index].line.animate);
+  }
 };
 
 const stopAnimation = () => {
-  dot1Motion.apply(dot1Variants.normal);
-  line1Motion.apply(line1Variants.normal);
-  dot2Motion.apply(dot2Variants.normal);
-  line2Motion.apply(line2Variants.normal);
-  dot3Motion.apply(dot3Variants.normal);
-  line3Motion.apply(line3Variants.normal);
+  for (const [index, itemMotion] of itemMotions.entries()) {
+    itemMotion.dotMotion.apply(itemVariants[index].dot.normal);
+    itemMotion.lineMotion.apply(itemVariants[index].line.normal);
+  }
 };
 
 const handleMouseEnter = () => {

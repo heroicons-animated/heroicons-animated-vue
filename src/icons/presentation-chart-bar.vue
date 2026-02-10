@@ -1,9 +1,9 @@
 <template>
   <div
-    v-bind="$attrs"
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -39,10 +39,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createBarVariants = (delay: number) => ({
@@ -50,6 +54,10 @@ const createBarVariants = (delay: number) => ({
     opacity: 1,
     pathLength: 1,
     pathOffset: 0,
+    transition: {
+      duration: 0.4,
+      opacity: { duration: 0.1 },
+    },
   },
   animate: {
     opacity: [0, 1],
@@ -64,9 +72,9 @@ const createBarVariants = (delay: number) => ({
   },
 });
 
-const bar1Ref = ref<SVGPathElement | null>();
-const bar2Ref = ref<SVGPathElement | null>();
-const bar3Ref = ref<SVGPathElement | null>();
+const bar1Ref = ref<SVGPathElement | null>(null);
+const bar2Ref = ref<SVGPathElement | null>(null);
+const bar3Ref = ref<SVGPathElement | null>(null);
 const bar1Motion = useMotion(bar1Ref, {
   initial: createBarVariants(0).normal,
   enter: createBarVariants(0).normal,
@@ -89,10 +97,9 @@ const startAnimation = () => {
 };
 
 const stopAnimation = () => {
-  const barNormal = { opacity: 1, pathLength: 1, pathOffset: 0 };
-  bar1Motion.apply(barNormal);
-  bar2Motion.apply(barNormal);
-  bar3Motion.apply(barNormal);
+  bar1Motion.apply(createBarVariants(0).normal);
+  bar2Motion.apply(createBarVariants(0.15).normal);
+  bar3Motion.apply(createBarVariants(0.3).normal);
 };
 
 const handleMouseEnter = () => {

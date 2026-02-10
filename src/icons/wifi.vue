@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -45,32 +46,46 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const normal = {
   opacity: 1,
   scale: 1,
-  transition: { duration: 0.2, ease: "easeOut" },
 };
-const createPulse = (delay: number) => ({
-  opacity: [1, 0, 0, 1],
-  scale: [1, 0, 0, 1],
+const createPulse = (custom: number) => ({
+  opacity: 0,
+  scale: 0,
   transition: {
-    duration: 0.6,
-    ease: "easeInOut",
-    delay,
-    opacity: { duration: 0.6, times: [0, 0.333, 0.666, 1], delay },
-    scale: { duration: 0.6, times: [0, 0.333, 0.666, 1], delay },
+    opacity: {
+      duration: 0.2,
+      ease: "easeInOut",
+      repeat: 1,
+      repeatType: "reverse",
+      repeatDelay: 0.2,
+      delay: 0.2 * (custom - 1),
+    },
+    scale: {
+      duration: 0.2,
+      ease: "easeInOut",
+      repeat: 1,
+      repeatType: "reverse",
+      repeatDelay: 0.2,
+      delay: 0.2 * (custom - 1),
+    },
   },
 });
 
-const arc1Ref = ref();
-const arc2Ref = ref();
-const arc3Ref = ref();
+const arc1Ref = ref<SVGPathElement | null>(null);
+const arc2Ref = ref<SVGPathElement | null>(null);
+const arc3Ref = ref<SVGPathElement | null>(null);
 const motion1 = useMotion(arc1Ref, { initial: normal, enter: normal });
 const motion2 = useMotion(arc2Ref, { initial: normal, enter: normal });
 const motion3 = useMotion(arc3Ref, { initial: normal, enter: normal });
@@ -78,9 +93,9 @@ const motion3 = useMotion(arc3Ref, { initial: normal, enter: normal });
 let isControlled = false;
 
 const startAnimation = () => {
-  motion1.apply(createPulse(0));
-  motion2.apply(createPulse(0.2));
-  motion3.apply(createPulse(0.4));
+  motion1.apply(createPulse(1));
+  motion2.apply(createPulse(2));
+  motion3.apply(createPulse(3));
 };
 
 const stopAnimation = () => {

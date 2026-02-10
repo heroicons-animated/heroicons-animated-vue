@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -41,51 +42,66 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
-const createWaveVariants = (delay: number) => ({
+const createWaveVariants = (custom: number) => ({
   normal: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
   },
   animate: {
-    opacity: [1, 0, 1],
-    scale: [1, 0, 1],
+    opacity: 0,
+    scale: 0,
     transition: {
-      duration: 0.4,
-      ease: "easeInOut",
-      delay,
-      times: [0, 0.5, 1],
+      opacity: {
+        duration: 0.2,
+        ease: "easeInOut",
+        repeat: 1,
+        repeatType: "reverse",
+        repeatDelay: 0.2,
+        delay: 0.2 * (custom - 1),
+      },
+      scale: {
+        duration: 0.2,
+        ease: "easeInOut",
+        repeat: 1,
+        repeatType: "reverse",
+        repeatDelay: 0.2,
+        delay: 0.2 * (custom - 1),
+      },
     },
   },
 });
 
-const wave1Ref = ref();
-const wave2Ref = ref();
+const wave1Ref = ref<SVGPathElement | null>(null);
+const wave2Ref = ref<SVGPathElement | null>(null);
 const motion1 = useMotion(wave1Ref, {
-  initial: createWaveVariants(0).normal,
-  enter: createWaveVariants(0).normal,
+  initial: createWaveVariants(1).normal,
+  enter: createWaveVariants(1).normal,
 });
 const motion2 = useMotion(wave2Ref, {
-  initial: createWaveVariants(0.2).normal,
-  enter: createWaveVariants(0.2).normal,
+  initial: createWaveVariants(2).normal,
+  enter: createWaveVariants(2).normal,
 });
 
 let isControlled = false;
 
 const startAnimation = () => {
-  motion1.apply(createWaveVariants(0).animate);
-  motion2.apply(createWaveVariants(0.2).animate);
+  motion1.apply(createWaveVariants(1).animate);
+  motion2.apply(createWaveVariants(2).animate);
 };
 
 const stopAnimation = () => {
-  motion1.apply(createWaveVariants(0).normal);
-  motion2.apply(createWaveVariants(0.2).normal);
+  motion1.apply(createWaveVariants(1).normal);
+  motion2.apply(createWaveVariants(2).normal);
 };
 
 const handleMouseEnter = () => {

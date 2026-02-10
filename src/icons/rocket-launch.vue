@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       ref="svgRef"
@@ -11,8 +12,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -40,10 +41,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const FIRE_PATHS = [
@@ -55,7 +60,7 @@ const FIRE_PATHS = [
 ];
 
 const floatVariants = {
-  normal: { x: 0, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+  normal: { x: 0, y: 0 },
   animate: {
     x: [0, 0, -3, 2, -2, 1, -1, 0],
     y: [0, -3, 0, -2, -3, -1, -2, 0],
@@ -70,7 +75,7 @@ const floatVariants = {
 };
 
 const fireVariants = {
-  normal: { d: FIRE_PATHS[0], transition: { duration: 0.3 } },
+  normal: { d: FIRE_PATHS[0] },
   animate: {
     d: FIRE_PATHS,
     transition: {
@@ -82,8 +87,8 @@ const fireVariants = {
   },
 };
 
-const svgRef = ref();
-const fireRef = ref();
+const svgRef = ref<SVGSVGElement | null>(null);
+const fireRef = ref<SVGPathElement | null>(null);
 const svgMotion = useMotion(svgRef, {
   initial: floatVariants.normal,
   enter: floatVariants.normal,

@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -40,11 +40,14 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 // Match React VARIANTS: magnifying path x [0,0,-2,0] y [0,-3,0,0] 1s bounce 0.3
@@ -53,11 +56,11 @@ const variants = {
   animate: {
     x: [0, 0, -2, 0],
     y: [0, -3, 0, 0],
-    transition: { duration: 1, ease: [0.34, 1.56, 0.64, 1] },
+    transition: { duration: 1, bounce: 0.3 },
   },
 };
 
-const glassRef = ref<SVGPathElement | null>();
+const glassRef = ref<SVGPathElement | null>(null);
 const motionInstance = useMotion(glassRef, {
   initial: variants.normal,
   enter: variants.normal,

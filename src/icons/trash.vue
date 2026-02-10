@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -40,36 +41,40 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const lidVariants = {
   normal: {
-    y: 0,
+    translateY: 0,
     transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
   },
   animate: {
-    y: -1.5,
+    translateY: -1.5,
     transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
   },
 };
 
 const bodyVariants = {
   normal: {
-    y: 0,
+    translateY: 0,
     transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
   },
   animate: {
-    y: 1,
+    translateY: 1,
     transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
   },
 };
 
-const lidRef = ref();
-const bodyRef = ref();
+const lidRef = ref<SVGPathElement | null>(null);
+const bodyRef = ref<SVGPathElement | null>(null);
 const lidMotion = useMotion(lidRef, {
   initial: lidVariants.normal,
   enter: lidVariants.normal,

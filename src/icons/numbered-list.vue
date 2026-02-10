@@ -1,9 +1,9 @@
 <template>
   <div
-    v-bind="$attrs"
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -32,16 +32,20 @@ export default {
 
 <script setup lang="ts">
 import { useMotion } from "../motion";
+import type { MotionInstance } from "../motion";
 import { onMounted, ref } from "vue";
 
 export interface Props {
   size?: number;
   class?: string;
-  [key: string]: any; // Allow all HTMLAttributes
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const NUMBER_DURATION = 0.2;
@@ -68,8 +72,8 @@ const LIST_ITEMS = [
 const numberRefs = ref<SVGPathElement[]>([]);
 const lineRefs = ref<SVGPathElement[]>([]);
 
-const numberMotions: any[] = [];
-const lineMotions: any[] = [];
+const numberMotions: MotionInstance[] = [];
+const lineMotions: MotionInstance[] = [];
 
 onMounted(() => {
   numberRefs.value.forEach((el, index) => {

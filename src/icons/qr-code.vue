@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,8 +11,8 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
@@ -49,17 +50,20 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const createDotVariants = (delay: number) => ({
   normal: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
   },
   animate: {
     opacity: [0, 1],
@@ -69,14 +73,14 @@ const createDotVariants = (delay: number) => ({
 });
 
 const DELAYS = [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35];
-const dot0Ref = ref();
-const dot1Ref = ref();
-const dot2Ref = ref();
-const dot3Ref = ref();
-const dot4Ref = ref();
-const dot5Ref = ref();
-const dot6Ref = ref();
-const dot7Ref = ref();
+const dot0Ref = ref<SVGPathElement | null>(null);
+const dot1Ref = ref<SVGPathElement | null>(null);
+const dot2Ref = ref<SVGPathElement | null>(null);
+const dot3Ref = ref<SVGPathElement | null>(null);
+const dot4Ref = ref<SVGPathElement | null>(null);
+const dot5Ref = ref<SVGPathElement | null>(null);
+const dot6Ref = ref<SVGPathElement | null>(null);
+const dot7Ref = ref<SVGPathElement | null>(null);
 
 const motion0 = useMotion(dot0Ref, {
   initial: createDotVariants(0).normal,
@@ -125,15 +129,15 @@ const motions = [
 let isControlled = false;
 
 const startAnimation = () => {
-  DELAYS.forEach((d, i) => {
-    motions[i].apply(createDotVariants(d).animate);
-  });
+  for (const [index, delay] of DELAYS.entries()) {
+    motions[index].apply(createDotVariants(delay).animate);
+  }
 };
 
 const stopAnimation = () => {
-  motions.forEach((m, i) => {
-    m.apply(createDotVariants(DELAYS[i]).normal);
-  });
+  for (const [index, motion] of motions.entries()) {
+    motion.apply(createDotVariants(DELAYS[index]).normal);
+  }
 };
 
 const handleMouseEnter = () => {

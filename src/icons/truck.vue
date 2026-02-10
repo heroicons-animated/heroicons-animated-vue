@@ -3,6 +3,7 @@
     :class="props.class"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
+    v-bind="$attrs"
   >
     <svg
       class="overflow-visible"
@@ -11,15 +12,15 @@
       :height="props.size"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
+      :stroke="props.color"
+      :stroke-width="props.strokeWidth"
       stroke-linecap="round"
       stroke-linejoin="round"
     >
       <line
         ref="line0Ref"
         stroke-linecap="round"
-        stroke-width="1.5"
+        :stroke-width="props.strokeWidth"
         x1="0"
         x2="5"
         y1="8"
@@ -28,7 +29,7 @@
       <line
         ref="line1Ref"
         stroke-linecap="round"
-        stroke-width="1.5"
+        :stroke-width="props.strokeWidth"
         x1="-1"
         x2="6"
         y1="11"
@@ -37,7 +38,7 @@
       <line
         ref="line2Ref"
         stroke-linecap="round"
-        stroke-width="1.5"
+        :stroke-width="props.strokeWidth"
         x1="0"
         x2="4"
         y1="14"
@@ -64,14 +65,18 @@ import { ref } from "vue";
 export interface Props {
   size?: number;
   class?: string;
+  color?: string;
+  strokeWidth?: number | string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 28,
+  color: "currentColor",
+  strokeWidth: 1.5,
 });
 
 const truckVariants = {
-  normal: { y: 0, transition: { duration: 0.2 } },
+  normal: { x: 0, y: 0 },
   animate: {
     y: [0, -1, 0, -0.5, 0],
     transition: {
@@ -87,8 +92,7 @@ const createSpeedLineVariants = (i: number) => ({
   normal: {
     opacity: 0,
     x: 0,
-    scaleX: 0.2,
-    transition: { duration: 0.2 },
+    scaleX: 0,
   },
   animate: {
     opacity: [0, 0.7, 0.5, 0],
@@ -104,10 +108,10 @@ const createSpeedLineVariants = (i: number) => ({
   },
 });
 
-const pathRef = ref();
-const line0Ref = ref();
-const line1Ref = ref();
-const line2Ref = ref();
+const pathRef = ref<SVGPathElement | null>(null);
+const line0Ref = ref<SVGLineElement | null>(null);
+const line1Ref = ref<SVGLineElement | null>(null);
+const line2Ref = ref<SVGLineElement | null>(null);
 
 const pathMotion = useMotion(pathRef, {
   initial: truckVariants.normal,
