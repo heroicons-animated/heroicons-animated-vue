@@ -4,9 +4,9 @@ import { getPackageManagerPrefix } from "./package-manager";
 
 export const getFileExtension = (): string => "vue";
 
-export const getShadcnCLI = (): string => "shadcn-vue@latest";
+export const getShadcnCLI = (): string => "shadcn-vue";
 
-export const getRegistryPathPrefix = (): string => "/vue/";
+export const getRegistryPathPrefix = (): string => `${SITE.URL}/r/`;
 
 export const getCLICommand = (
   packageManager: PackageManager,
@@ -14,5 +14,5 @@ export const getCLICommand = (
 ): string => {
   const prefix = getPackageManagerPrefix(packageManager);
   const cli = getShadcnCLI();
-  return `${prefix} ${cli} add @${SITE.NAME}${getRegistryPathPrefix()}${iconName}`;
+  return `${prefix} ${cli} add ${getRegistryPathPrefix()}${iconName}`;
 };

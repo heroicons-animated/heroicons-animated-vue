@@ -82,6 +82,7 @@
     "@heroicons/vue": "^2.2.0",
     "@number-flow/vue": "^0.4.9",
     "@nuxt/fonts": "^0.13.0",
+    "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/seo": "^3.4.0",
     "@tailwindcss/vite": "^4.1.18",
     "@toolwind/corner-shape": "0.0.8-3",

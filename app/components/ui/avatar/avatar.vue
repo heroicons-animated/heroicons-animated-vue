@@ -12,7 +12,7 @@
       shape?: AvatarVariants["shape"];
     }>(),
     {
-      size: "sm",
+      size: "md",
       shape: "circle",
     }
   );

@@ -4,6 +4,7 @@
     CheckIcon,
     XMarkIcon,
   } from "@heroicons/vue/24/outline";
+  import { AnimatePresence, Motion } from "motion-v";
   import { computed, onBeforeUnmount, ref, watch } from "vue";
   import type { IconStatus } from "~/types";
 
@@ -55,20 +56,25 @@
     }
     return props.status;
   });
+
+  const key = computed(() => {
+    return props.status === "loading" && !showLoading.value
+      ? "idle"
+      : props.status;
+  });
 </script>
 
 <template>
-  <Transition
-    mode="out-in"
-    enter-active-class="transition duration-100 ease-out"
-    enter-from-class="opacity-0 scale-[0.6] blur-[3px]"
-    enter-to-class="opacity-100 scale-100 blur-0"
-    leave-active-class="transition duration-100 ease-out"
-    leave-from-class="opacity-100 scale-100 blur-0"
-    leave-to-class="opacity-0 scale-[0.6] blur-[3px]"
-  >
-    <span
-      :key="displayStatus"
+  <AnimatePresence :initial="false" mode="popLayout">
+    <Motion
+      :key="key"
+      :initial="{ opacity: 0, scale: 0.6, filter: 'blur(3px)' }"
+      :animate="{ opacity: 1, scale: 1, filter: 'blur(0px)' }"
+      :exit="{ opacity: 0, scale: 0.6, filter: 'blur(3px)' }"
+      :transition="{
+        duration: 0.1,
+        ease: 'easeOut',
+      }"
       class="flex items-center justify-center [&>svg]:size-4 [&>svg]:shrink-0"
     >
       <ArrowPathIcon
@@ -87,6 +93,6 @@
         class="text-red-500"
       />
       <slot v-else />
-    </span>
-  </Transition>
+    </Motion>
+  </AnimatePresence>
 </template>

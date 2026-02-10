@@ -10,14 +10,17 @@ export const avatarVariant = cva(
   {
     variants: {
       size: {
-        sm: "h-10 w-10 text-xs",
-        base: "h-16 w-16 text-2xl",
-        lg: "h-32 w-32 text-5xl",
+        sm: "size-7 text-sm",
+        md: "size-10",
+        lg: "size-12 text-lg",
       },
       shape: {
         circle: "rounded-full",
         square: "rounded-md",
       },
+    },
+    defaultVariants: {
+      size: "md",
     },
   }
 );

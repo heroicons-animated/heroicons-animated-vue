@@ -75,7 +75,6 @@
         placeholder="Search icons..."
         role="search"
         spellcheck="false"
-        type="search"
       >
         <template #leading>
           <MagnifyingGlassIcon

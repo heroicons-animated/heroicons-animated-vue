@@ -1,17 +1,7 @@
 <script setup lang="ts">
-  import {
-    type ComponentPublicInstance,
-    computed,
-    nextTick,
-    onBeforeUnmount,
-    onBeforeUpdate,
-    onMounted,
-    onUpdated,
-    ref,
-    watch,
-  } from "vue";
+  import { computed, ref, watch } from "vue";
   import { ClipboardDocumentIcon } from "@heroicons/vue/24/outline";
-  import { PACKAGE_MANAGER, SITE } from "~/lib/constants";
+  import { PACKAGE_MANAGER } from "~/lib/constants";
   import {
     getCLICommand,
     getRegistryPathPrefix,
@@ -28,6 +18,7 @@
     TabsList,
     TabsTrigger,
   } from "~/components/ui/tabs";
+  import { ScrollArea } from "~/components/ui/scroll-area";
   import { TextLoop } from "~/components/ui/text-loop";
   import type { IconItem } from "~/types";
 
@@ -83,81 +74,6 @@
       }, 2000);
     }
   };
-
-  const viewportRefs = ref<HTMLDivElement[]>([]);
-
-  const setViewportRef = (el: Element | ComponentPublicInstance | null) => {
-    if (!(el instanceof HTMLDivElement)) {
-      return;
-    }
-    viewportRefs.value.push(el);
-  };
-
-  const updateScrollIndicators = (el: HTMLDivElement) => {
-    if (!el?.style) {
-      return;
-    }
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const left = Math.max(0, Math.min(el.scrollLeft, 40));
-    const right = Math.max(0, Math.min(maxScroll - el.scrollLeft, 40));
-    el.style.setProperty("--scroll-area-overflow-x-start", `${left}px`);
-    el.style.setProperty("--scroll-area-overflow-x-end", `${right}px`);
-  };
-
-  const handleScroll = (event: Event) => {
-    const el = event.currentTarget as HTMLDivElement | null;
-    if (!el) {
-      return;
-    }
-    updateScrollIndicators(el);
-  };
-
-  const attachScrollListeners = () => {
-    for (const el of viewportRefs.value) {
-      updateScrollIndicators(el);
-      el.addEventListener("scroll", handleScroll);
-    }
-  };
-
-  const detachScrollListeners = () => {
-    for (const el of viewportRefs.value) {
-      el.removeEventListener("scroll", handleScroll);
-    }
-  };
-
-  onMounted(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("resize", handleResize);
-    }
-
-    nextTick(() => {
-      attachScrollListeners();
-    });
-  });
-
-  onBeforeUnmount(() => {
-    if (typeof window !== "undefined") {
-      window.removeEventListener("resize", handleResize);
-    }
-    detachScrollListeners();
-  });
-
-  onBeforeUpdate(() => {
-    detachScrollListeners();
-    viewportRefs.value = [];
-  });
-
-  const handleResize = () => {
-    for (const el of viewportRefs.value) {
-      updateScrollIndicators(el);
-    }
-  };
-
-  onUpdated(() => {
-    nextTick(() => {
-      attachScrollListeners();
-    });
-  });
 </script>
 
 <template>
@@ -165,7 +81,7 @@
     :class="cn('relative mt-[40px] w-full max-w-[642px] px-4', props.className)"
   >
     <Tabs class="w-full" v-model="packageManager">
-      <TabsList class="w-full" @click.stop>
+      <TabsList class="w-full justify-start" @click.stop>
         <TabsTrigger
           v-for="pm in Object.values(PACKAGE_MANAGER)"
           :key="pm"
@@ -178,26 +94,29 @@
         v-for="pm in Object.values(PACKAGE_MANAGER)"
         :key="pm"
         :value="pm"
-        class="supports-[corner-shape:squircle]:corner-tr-squircle supports-[corner-shape:squircle]:corner-br-squircle supports-[corner-shape:squircle]:corner-bl-squircle mt-px overflow-hidden rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] focus-within:outline-offset-0 focus-visible:outline-1 focus-visible:outline-primary supports-[corner-shape:squircle]:rounded-tr-[14px] supports-[corner-shape:squircle]:rounded-br-[14px] supports-[corner-shape:squircle]:rounded-bl-[14px]"
+        class="supports-[corner-shape:squircle]:corner-tr-squircle supports-[corner-shape:squircle]:corner-br-squircle supports-[corner-shape:squircle]:corner-bl-squircle overflow-hidden rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] focus-within:outline-offset-0 focus-visible:outline-1 focus-visible:outline-primary supports-[corner-shape:squircle]:rounded-tr-[14px] supports-[corner-shape:squircle]:rounded-br-[14px] supports-[corner-shape:squircle]:rounded-bl-[14px]"
       >
-        <div class="relative w-full overflow-hidden">
+        <ScrollArea
+          orientation="horizontal"
+          class="w-full overflow-hidden"
+          scrollbarClasses="pointer-events-none absolute right-2! bottom-1! left-2! flex h-0.5 touch-none rounded bg-neutral-200 opacity-0 transition-opacity duration-100 data-hovering:pointer-events-auto data-scrolling:pointer-events-auto data-hovering:opacity-100 data-scrolling:opacity-100 data-hovering:delay-0 data-scrolling:duration-0 dark:bg-neutral-700"
+        >
           <div
-            :ref="setViewportRef"
-            class="overflow-x-auto overflow-y-hidden rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white focus-visible:outline-1 focus-visible:outline-primary focus-visible:outline-offset-0 dark:bg-white/10 supports-[corner-shape:squircle]:corner-tr-squircle supports-[corner-shape:squircle]:corner-br-squircle supports-[corner-shape:squircle]:corner-bl-squircle supports-[corner-shape:squircle]:rounded-tr-[14px] supports-[corner-shape:squircle]:rounded-br-[14px] supports-[corner-shape:squircle]:rounded-bl-[14px] isolate whitespace-nowrap px-4 py-3 pr-20 font-mono text-sm tracking-[-0.39px] before:pointer-events-none before:absolute before:top-0 before:left-0 before:z-10 before:block before:h-full before:rounded-bl-[10px] supports-[corner-shape:squircle]:before:corner-bl-squircle supports-[corner-shape:squircle]:before:rounded-bl-[14px] before:transition-[width] before:duration-50 before:ease-out before:content-[''] before:w-[min(40px,var(--scroll-area-overflow-x-start,0px))] before:bg-[linear-gradient(to_right,white,transparent)] dark:before:bg-[linear-gradient(to_right,rgb(47_47_47/1),transparent)] before:[--scroll-area-overflow-x-start:inherit] after:pointer-events-none after:absolute after:top-0 after:right-0 after:z-10 after:block after:h-full after:rounded-r-[10px] supports-[corner-shape:squircle]:after:corner-r-squircle supports-[corner-shape:squircle]:after:rounded-r-[14px] after:transition-[width] after:duration-50 after:ease-out after:content-[''] after:w-[calc(min(40px,var(--scroll-area-overflow-x-end,100px))+100px)] after:bg-[linear-gradient(to_left,white_0%,white_30%,transparent)] dark:after:bg-[linear-gradient(to_left,rgb(47_47_47/1)_0%,rgb(47_47_47/1)_30%,transparent)] after:[--scroll-area-overflow-x-end:inherit]"
+            class="overflow-hidden rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] bg-white focus-visible:outline-1 focus-visible:outline-primary focus-visible:outline-offset-0 dark:bg-white/10 supports-[corner-shape:squircle]:corner-tr-squircle supports-[corner-shape:squircle]:corner-br-squircle supports-[corner-shape:squircle]:corner-bl-squircle supports-[corner-shape:squircle]:rounded-tr-[14px] supports-[corner-shape:squircle]:rounded-br-[14px] supports-[corner-shape:squircle]:rounded-bl-[14px] isolate whitespace-nowrap px-4 py-3 pr-20 font-mono text-sm tracking-[-0.39px] before:pointer-events-none before:absolute before:top-0 before:left-0 before:z-10 before:block before:h-full before:rounded-bl-[10px] supports-[corner-shape:squircle]:before:corner-bl-squircle supports-[corner-shape:squircle]:before:rounded-bl-[14px] before:transition-[width] before:duration-50 before:ease-out before:content-[''] before:w-[min(40px,var(--scroll-area-overflow-x-start))] before:bg-[linear-gradient(to_right,white,transparent)] dark:before:bg-[linear-gradient(to_right,rgb(47_47_47/1),transparent)] before:[--scroll-area-overflow-x-start:inherit] after:pointer-events-none after:absolute after:top-0 after:right-0 after:z-10 after:block after:h-full after:rounded-r-[10px] supports-[corner-shape:squircle]:after:corner-r-squircle supports-[corner-shape:squircle]:after:rounded-r-[14px] after:transition-[width] after:duration-50 after:ease-out after:content-[''] after:w-[calc(min(40px,var(--scroll-area-overflow-x-end,100px))+100px)] after:bg-[linear-gradient(to_left,white_0%,white_30%,transparent)] dark:after:bg-[linear-gradient(to_left,rgb(47_47_47/1)_0%,rgb(47_47_47/1)_30%,transparent)] after:[--scroll-area-overflow-x-end:inherit]"
           >
             <span class="sr-only">
-              {{ getPackageManagerPrefix(pm) }} {{ getShadcnCLI() }} add @
-              {{ SITE.NAME }}
+              {{ getPackageManagerPrefix(pm) }} {{ getShadcnCLI() }} add
               {{ getRegistryPathPrefix() }}
               {{ props.staticIconName || currentIconName }}
             </span>
             <span class="text-neutral-600 dark:text-neutral-400">
               {{ getPackageManagerPrefix(pm) }}
             </span>
+            {{ " " }}
+            <!-- biome-ignore format: preserve inline spacing -->
             <span class="text-black dark:text-white">
-              {{ getShadcnCLI() }} add @{{ SITE.NAME }}
-              {{ getRegistryPathPrefix() }}
-            </span>
+                {{ getShadcnCLI() }} add {{ getRegistryPathPrefix() }}
+              </span>
             <span v-if="props.staticIconName" class="shrink-0 text-primary">
               {{ props.staticIconName }}
             </span>
@@ -206,10 +125,15 @@
               :interval="1.5"
               :transition="{ duration: 0.25 }"
               :variants="{
-                initial: { y: -12, rotateX: -90, opacity: 0, filter: 'blur(2px)' },
-                animate: { y: 0, rotateX: 0, opacity: 1, filter: 'blur(0px)' },
-                exit: { y: 12, rotateX: 90, opacity: 0, filter: 'blur(2px)' },
-              }"
+                  initial: {
+                    y: -12,
+                    rotateX: -90,
+                    opacity: 0,
+                    filter: 'blur(2px)',
+                  },
+                  animate: { y: 0, rotateX: 0, opacity: 1, filter: 'blur(0px)' },
+                  exit: { y: 12, rotateX: 90, opacity: 0, filter: 'blur(2px)' },
+                }"
               @index-change="handleIndexChange"
             >
               <span
@@ -232,7 +156,7 @@
               <ClipboardDocumentIcon aria-hidden="true" class="size-4" />
             </IconState>
           </button>
-        </div>
+        </ScrollArea>
       </TabsContent>
     </Tabs>
   </div>

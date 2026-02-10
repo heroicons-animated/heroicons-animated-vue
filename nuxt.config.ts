@@ -29,7 +29,16 @@ const SITEMAP_URLS: SitemapEntry[] = [
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/fonts", "@nuxtjs/seo", "motion-v/nuxt", "shadcn-nuxt"],
+  modules: [
+    "@nuxt/fonts",
+    "@nuxtjs/seo",
+    "motion-v/nuxt",
+    "shadcn-nuxt",
+    "@nuxtjs/color-mode",
+  ],
+  colorMode: {
+    classSuffix: "",
+  },
   site: {
     url: SITE.URL,
     name: SITE.NAME,

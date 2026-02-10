@@ -2,13 +2,16 @@
   import { computed, onBeforeUnmount, onMounted, ref } from "vue";
   import MoonIcon from "@heroicons-animated/vue/moon";
   import SunIcon from "@heroicons-animated/vue/sun";
+  import { useColorMode } from "#imports";
 
   interface AnimatedIconInstance {
     startAnimation?: () => void;
     stopAnimation?: () => void;
   }
 
-  const isDark = ref(false);
+  const colorMode = useColorMode();
+  const isDark = computed(() => colorMode.value === "dark");
+
   const sunRef = ref<AnimatedIconInstance | null>(null);
   const moonRef = ref<AnimatedIconInstance | null>(null);
 
@@ -20,20 +23,8 @@
 
   const ICON_TRANSITION = { duration: 0.15, ease: "ease-out" } as const;
 
-  const applyTheme = (dark: boolean) => {
-    isDark.value = dark;
-    const root = document.documentElement;
-    if (dark) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  };
-
   const toggleTheme = () => {
-    const next = !isDark.value;
-    localStorage.setItem("theme", next ? "dark" : "light");
-    applyTheme(next);
+    colorMode.preference = isDark.value ? "light" : "dark";
   };
 
   const handleKeydown = (event: KeyboardEvent) => {
@@ -45,17 +36,6 @@
   };
 
   onMounted(() => {
-    const stored = localStorage.getItem("theme");
-    if (stored === "dark") {
-      applyTheme(true);
-    } else if (stored === "light") {
-      applyTheme(false);
-    } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      applyTheme(prefersDark);
-    }
     window.addEventListener("keydown", handleKeydown);
   });
 

@@ -6,37 +6,21 @@
     ref,
     useSlots,
     watch,
+    type VNode,
   } from "vue";
+  import { AnimatePresence, Motion } from "motion-v";
+  import type { TargetAndTransition, Transition } from "motion-v";
   import { cn } from "~/lib/utils";
-
-  interface Variant {
-    opacity?: number;
-    x?: number;
-    y?: number;
-    rotate?: number;
-    rotateX?: number;
-    rotateY?: number;
-    scale?: number;
-    scaleX?: number;
-    scaleY?: number;
-    filter?: string;
-  }
-
-  interface TransitionSpec {
-    duration?: number;
-    ease?: string;
-    delay?: number;
-  }
 
   const props = withDefaults(
     defineProps<{
       class?: string;
       interval?: number;
-      transition?: TransitionSpec;
+      transition?: Transition;
       variants?: {
-        initial?: Variant;
-        animate?: Variant;
-        exit?: Variant;
+        initial?: TargetAndTransition;
+        animate?: TargetAndTransition;
+        exit?: TargetAndTransition;
       };
       onIndexChange?: (index: number) => void;
     }>(),
@@ -48,9 +32,37 @@
   const emit = defineEmits<(e: "index-change", index: number) => void>();
 
   const slots = useSlots();
-  const items = computed(() => slots.default?.() ?? []);
+
+  function flatten(vnodes: VNode[]) {
+    const result: VNode[] = [];
+    for (const vnode of vnodes) {
+      if (vnode.type?.toString() === "Symbol(v-fgt)") {
+        let children: VNode[] = [];
+        if (Array.isArray(vnode.children)) {
+          children = vnode.children as VNode[];
+        } else if (
+          typeof vnode.children === "object" &&
+          vnode.children !== null &&
+          "default" in vnode.children
+        ) {
+          const defaultSlot = (vnode.children as { default?: () => VNode[] })
+            .default;
+          children = defaultSlot?.() || [];
+        }
+        result.push(...flatten(children));
+      } else {
+        result.push(vnode);
+      }
+    }
+    return result;
+  }
+
+  const items = computed(() => {
+    const vnodes = (slots.default?.() ?? []) as VNode[];
+    return flatten(vnodes);
+  });
   const currentIndex = ref(0);
-  let timer: number | undefined;
+  let timer: ReturnType<typeof setInterval> | undefined;
 
   const notify = (index: number) => {
     props.onIndexChange?.(index);
@@ -67,7 +79,7 @@
     if (items.value.length === 0) {
       return;
     }
-    timer = window.setInterval(() => {
+    timer = setInterval(() => {
       currentIndex.value = (currentIndex.value + 1) % items.value.length;
       notify(currentIndex.value);
     }, props.interval * 1000);
@@ -90,9 +102,11 @@
     }
   );
 
-  watch(items, () => {
-    currentIndex.value = 0;
-    notify(0);
+  watch(items, (newItems) => {
+    if (currentIndex.value >= newItems.length) {
+      currentIndex.value = 0;
+      notify(0);
+    }
     startTimer();
   });
 
@@ -102,124 +116,25 @@
     exit: { y: -20, opacity: 0 },
   };
 
-  const resolvedVariants = computed(() => props.variants || defaultVariants);
-  const resolvedTransition = computed(() => ({
-    duration: props.transition?.duration ?? 0.3,
-    ease: props.transition?.ease ?? "ease-out",
-    delay: props.transition?.delay ?? 0,
-  }));
-
-  const buildTransform = (variant: Variant) => {
-    const transforms: string[] = [];
-    const has3d =
-      typeof variant.rotateX === "number" ||
-      typeof variant.rotateY === "number";
-    if (has3d) {
-      transforms.push("perspective(1000px)");
-    }
-    if (typeof variant.x === "number") {
-      transforms.push(`translateX(${variant.x}px)`);
-    }
-    if (typeof variant.y === "number") {
-      transforms.push(`translateY(${variant.y}px)`);
-    }
-    if (typeof variant.rotate === "number") {
-      transforms.push(`rotate(${variant.rotate}deg)`);
-    }
-    if (typeof variant.rotateX === "number") {
-      transforms.push(`rotateX(${variant.rotateX}deg)`);
-    }
-    if (typeof variant.rotateY === "number") {
-      transforms.push(`rotateY(${variant.rotateY}deg)`);
-    }
-    if (typeof variant.scale === "number") {
-      transforms.push(`scale(${variant.scale})`);
-    }
-    if (typeof variant.scaleX === "number") {
-      transforms.push(`scaleX(${variant.scaleX})`);
-    }
-    if (typeof variant.scaleY === "number") {
-      transforms.push(`scaleY(${variant.scaleY})`);
-    }
-    return transforms.join(" ");
-  };
-
-  const applyVariant = (el: HTMLElement, variant: Variant) => {
-    const transform = buildTransform(variant);
-    if (transform) {
-      el.style.transform = transform;
-    } else {
-      el.style.removeProperty("transform");
-    }
-
-    if (typeof variant.opacity === "number") {
-      el.style.opacity = `${variant.opacity}`;
-    } else {
-      el.style.removeProperty("opacity");
-    }
-
-    if (typeof variant.filter === "string") {
-      el.style.filter = variant.filter;
-    } else {
-      el.style.removeProperty("filter");
-    }
-  };
-
-  const applyTransition = (el: HTMLElement) => {
-    const { duration, ease, delay } = resolvedTransition.value;
-    el.style.willChange = "transform, opacity, filter";
-    el.style.transition = `transform ${duration}s ${ease} ${delay}s, opacity ${duration}s ${ease} ${delay}s, filter ${duration}s ${ease} ${delay}s`;
-  };
-
-  const handleBeforeEnter = (el: Element) => {
-    const node = el as HTMLElement;
-    node.style.transition = "none";
-    node.style.transformOrigin = "50% 50%";
-    node.style.transformStyle = "preserve-3d";
-    node.style.backfaceVisibility = "hidden";
-    applyVariant(
-      node,
-      resolvedVariants.value.initial || defaultVariants.initial
-    );
-  };
-
-  const handleEnter = (el: Element, done: () => void) => {
-    const node = el as HTMLElement;
-    const { duration, delay } = resolvedTransition.value;
-    requestAnimationFrame(() => {
-      applyTransition(node);
-      applyVariant(
-        node,
-        resolvedVariants.value.animate || defaultVariants.animate
-      );
-      window.setTimeout(done, (duration + delay) * 1000);
-    });
-  };
-
-  const handleLeave = (el: Element, done: () => void) => {
-    const node = el as HTMLElement;
-    const { duration, delay } = resolvedTransition.value;
-    applyTransition(node);
-    applyVariant(node, resolvedVariants.value.exit || defaultVariants.exit);
-    window.setTimeout(done, (duration + delay) * 1000);
-  };
+  const defaultTransition = { duration: 0.3 };
 </script>
 
 <template>
   <div
+    aria-hidden="true"
     :class="cn('relative inline-block whitespace-nowrap', props.class)"
-    style="perspective: 1000px;"
   >
-    <Transition
-      :css="false"
-      mode="out-in"
-      @before-enter="handleBeforeEnter"
-      @enter="handleEnter"
-      @leave="handleLeave"
-    >
-      <span v-if="items.length" :key="currentIndex" class="inline-flex">
+    <AnimatePresence mode="popLayout" :initial="false">
+      <Motion
+        v-if="items.length"
+        :key="currentIndex"
+        :initial="(props.variants?.initial as any) ?? defaultVariants.initial"
+        :animate="(props.variants?.animate as any) ?? defaultVariants.animate"
+        :exit="(props.variants?.exit as any) ?? defaultVariants.exit"
+        :transition="props.transition ?? defaultTransition"
+      >
         <component :is="items[currentIndex]" />
-      </span>
-    </Transition>
+      </Motion>
+    </AnimatePresence>
   </div>
 </template>
