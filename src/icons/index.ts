@@ -1,3 +1,4 @@
+// biome-ignore-all lint/performance/noBarrelFile: This package intentionally exposes all icon components from one public entrypoint.
 export { default as AcademicCapIcon } from "./academic-cap.vue";
 export { default as AdjustmentsHorizontalIcon } from "./adjustments-horizontal.vue";
 export { default as AdjustmentsVerticalIcon } from "./adjustments-vertical.vue";

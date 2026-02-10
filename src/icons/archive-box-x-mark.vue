@@ -133,8 +133,10 @@
     for (const pathMotion of pathMotions) {
       pathMotion.apply(pathVariants.animate);
     }
-    for (const [index, xMarkMotion] of xMarkMotions.entries()) {
+    let index = 0;
+    for (const xMarkMotion of xMarkMotions) {
       xMarkMotion.apply(xMarkVariants[index].animate);
+      index += 1;
     }
     lidMotion.apply(lidVariants.animate);
   };
@@ -143,8 +145,10 @@
     for (const pathMotion of pathMotions) {
       pathMotion.apply(pathVariants.normal);
     }
-    for (const [index, xMarkMotion] of xMarkMotions.entries()) {
+    let index = 0;
+    for (const xMarkMotion of xMarkMotions) {
       xMarkMotion.apply(xMarkVariants[index].normal);
+      index += 1;
     }
     lidMotion.apply(lidVariants.normal);
   };

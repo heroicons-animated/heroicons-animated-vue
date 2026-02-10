@@ -12,11 +12,16 @@
   import { usePackageManager } from "~/lib/state";
   import { toast } from "~/lib/toast";
   import { cn } from "~/lib/utils";
-  import IconState from "~/components/ui/IconState.vue";
-  import TooltipProvider from "~/components/ui/TooltipProvider.vue";
-  import Tooltip from "~/components/ui/Tooltip.vue";
-  import TooltipTrigger from "~/components/ui/TooltipTrigger.vue";
-  import TooltipContent from "~/components/ui/TooltipContent.vue";
+  import IconState from "~/components/ui/icon-state.vue";
+  import TooltipProvider from "~/components/ui/tooltip-provider.vue";
+  import Tooltip from "~/components/ui/tooltip.vue";
+  import TooltipTrigger from "~/components/ui/tooltip-trigger.vue";
+  import TooltipContent from "~/components/ui/tooltip-content.vue";
+
+  interface AnimatedIconInstance {
+    startAnimation?: () => void;
+    stopAnimation?: () => void;
+  }
 
   const props = withDefaults(
     defineProps<{
@@ -39,7 +44,7 @@
     }
   );
   const iconComponent = computed(() => ICON_COMPONENTS[props.name]);
-  const iconRef = ref<any>(null);
+  const iconRef = ref<AnimatedIconInstance | null>(null);
   const isTouch = ref(false);
   const isAnimating = ref(false);
   let playTimeout: number | undefined;
@@ -103,13 +108,17 @@
         getCLICommand(packageManager.value, props.name)
       );
       cliState.value = "done";
-      setTimeout(() => (cliState.value = "idle"), 2000);
+      setTimeout(() => {
+        cliState.value = "idle";
+      }, 2000);
     } catch {
       toast.error("Failed to copy to clipboard", {
         description: "Please check your browser permissions.",
       });
       cliState.value = "error";
-      setTimeout(() => (cliState.value = "idle"), 2000);
+      setTimeout(() => {
+        cliState.value = "idle";
+      }, 2000);
     }
   };
 
@@ -150,13 +159,17 @@
       }
       await navigator.clipboard.writeText(content);
       codeState.value = "done";
-      setTimeout(() => (codeState.value = "idle"), 2000);
+      setTimeout(() => {
+        codeState.value = "idle";
+      }, 2000);
     } catch {
       toast.error("Failed to copy to clipboard", {
         description: "Please check your browser permissions.",
       });
       codeState.value = "error";
-      setTimeout(() => (codeState.value = "idle"), 2000);
+      setTimeout(() => {
+        codeState.value = "idle";
+      }, 2000);
     }
   };
 

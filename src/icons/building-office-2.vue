@@ -114,14 +114,18 @@
   let isControlled = false;
 
   const startAnimation = () => {
-    for (const [index, windowMotion] of windowMotions.entries()) {
+    let index = 0;
+    for (const windowMotion of windowMotions) {
       windowMotion.apply(windowVariants[index].animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
-    for (const [index, windowMotion] of windowMotions.entries()) {
+    let index = 0;
+    for (const windowMotion of windowMotions) {
       windowMotion.apply(windowVariants[index].normal);
+      index += 1;
     }
   };
 

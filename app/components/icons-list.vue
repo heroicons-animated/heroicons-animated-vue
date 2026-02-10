@@ -5,8 +5,8 @@
   import { ICON_MANIFEST } from "~/lib/manifest";
   import { DEFAULT_FRAMEWORK } from "~/lib/framework";
   import { useFramework } from "~/lib/framework";
-  import SearchInput from "~/components/SearchInput.vue";
-  import IconCard from "~/components/IconCard.vue";
+  import SearchInput from "~/components/search-input.vue";
+  import IconCard from "~/components/icon-card.vue";
 
   const route = useRoute();
   const router = useRouter();
@@ -44,7 +44,7 @@
     }
 
     if (value.trim().length === 0) {
-      delete nextQuery.search;
+      nextQuery.search = undefined;
     } else {
       nextQuery.search = value;
     }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useSchemaOrg } from "#imports";
-  import Header from "~/components/Header.vue";
-  import Toaster from "~/components/Toaster.vue";
+  import Header from "~/components/header.vue";
+  import Toaster from "~/components/toaster.vue";
   import { LINK, SITE } from "~/lib/constants";
   import { provideFramework } from "~/lib/framework";
   import { ICON_MANIFEST } from "~/lib/manifest";

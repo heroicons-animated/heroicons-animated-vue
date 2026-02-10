@@ -16,9 +16,17 @@
 
   const handleClick = (event: MouseEvent) => {
     ctx?.setValue(props.value);
-    const onClick = (attrs as any).onClick;
+    const onClick = attrs.onClick;
     if (typeof onClick === "function") {
       onClick(event);
+      return;
+    }
+    if (Array.isArray(onClick)) {
+      for (const listener of onClick) {
+        if (typeof listener === "function") {
+          listener(event);
+        }
+      }
     }
   };
 </script>

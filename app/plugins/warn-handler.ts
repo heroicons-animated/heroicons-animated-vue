@@ -1,3 +1,5 @@
+import { defineNuxtPlugin } from "#app";
+
 export default defineNuxtPlugin((nuxtApp) => {
   const ignoredMessages = [
     "<Suspense> is an experimental feature and its API will likely change.",

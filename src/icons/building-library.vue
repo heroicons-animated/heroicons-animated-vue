@@ -109,15 +109,19 @@
 
   const startAnimation = () => {
     dotMotion.apply(dotVariants.animate);
-    for (const [index, pillarMotion] of pillarMotions.entries()) {
+    let index = 0;
+    for (const pillarMotion of pillarMotions) {
       pillarMotion.apply(pillarVariants[index].animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
     dotMotion.apply(dotVariants.normal);
-    for (const [index, pillarMotion] of pillarMotions.entries()) {
+    let index = 0;
+    for (const pillarMotion of pillarMotions) {
       pillarMotion.apply(pillarVariants[index].normal);
+      index += 1;
     }
   };
 

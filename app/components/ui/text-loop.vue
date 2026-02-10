@@ -9,7 +9,7 @@
   } from "vue";
   import { cn } from "~/lib/utils";
 
-  type Variant = {
+  interface Variant {
     opacity?: number;
     x?: number;
     y?: number;
@@ -20,13 +20,13 @@
     scaleX?: number;
     scaleY?: number;
     filter?: string;
-  };
+  }
 
-  type TransitionSpec = {
+  interface TransitionSpec {
     duration?: number;
     ease?: string;
     delay?: number;
-  };
+  }
 
   const props = withDefaults(
     defineProps<{

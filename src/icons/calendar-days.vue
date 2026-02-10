@@ -170,14 +170,18 @@
   let isControlled = false;
 
   const startAnimation = () => {
-    for (const [index, dotMotion] of dotMotions.entries()) {
+    let index = 0;
+    for (const dotMotion of dotMotions) {
       dotMotion.apply(dotVariants[index].animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
-    for (const [index, dotMotion] of dotMotions.entries()) {
+    let index = 0;
+    for (const dotMotion of dotMotions) {
       dotMotion.apply(dotVariants[index].normal);
+      index += 1;
     }
   };
 

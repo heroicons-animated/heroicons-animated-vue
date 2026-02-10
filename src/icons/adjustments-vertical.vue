@@ -129,14 +129,18 @@
   let isControlled = false;
 
   const startAnimation = () => {
-    for (const [index, motionInstance] of motionInstances.entries()) {
+    let index = 0;
+    for (const motionInstance of motionInstances) {
       motionInstance.apply(motionItems[index].variants.animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
-    for (const [index, motionInstance] of motionInstances.entries()) {
+    let index = 0;
+    for (const motionInstance of motionInstances) {
       motionInstance.apply(motionItems[index].variants.normal);
+      index += 1;
     }
   };
 

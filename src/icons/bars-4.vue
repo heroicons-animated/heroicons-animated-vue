@@ -107,14 +107,18 @@
   let isControlled = false;
 
   const startAnimation = () => {
-    for (const [index, barMotion] of barMotions.entries()) {
+    let index = 0;
+    for (const barMotion of barMotions) {
       barMotion.apply(barVariants[index].animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
-    for (const [index, barMotion] of barMotions.entries()) {
+    let index = 0;
+    for (const barMotion of barMotions) {
       barMotion.apply(barVariants[index].normal);
+      index += 1;
     }
   };
 

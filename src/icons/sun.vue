@@ -105,15 +105,19 @@
 
   const startAnimation = () => {
     const motions = [m0, m1, m2, m3, m4, m5, m6, m7];
-    for (const [index, motion] of motions.entries()) {
+    let index = 0;
+    for (const motion of motions) {
       motion.apply(createRayVariants(index).animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
     const motions = [m0, m1, m2, m3, m4, m5, m6, m7];
-    for (const [index, motion] of motions.entries()) {
+    let index = 0;
+    for (const motion of motions) {
       motion.apply(createRayVariants(index).normal);
+      index += 1;
     }
   };
 

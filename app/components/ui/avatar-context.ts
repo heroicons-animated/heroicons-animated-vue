@@ -1,9 +1,9 @@
 import type { InjectionKey, Ref } from "vue";
 
-export type AvatarContext = {
+export interface AvatarContext {
   imageLoaded: Ref<boolean>;
   setImageLoaded: (value: boolean) => void;
-};
+}
 
 export const avatarContextKey: InjectionKey<AvatarContext> =
   Symbol("AvatarContext");

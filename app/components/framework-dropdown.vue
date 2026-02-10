@@ -8,7 +8,9 @@
   import { useFramework } from "~/lib/framework";
   import { cn } from "~/lib/utils";
 
-  const ReactIcon = (props: Record<string, any>) =>
+  type SvgProps = Record<string, unknown>;
+
+  const ReactIcon = (props: SvgProps) =>
     h(
       "svg",
       {
@@ -30,7 +32,7 @@
       ]
     );
 
-  const VueIcon = (props: Record<string, any>) =>
+  const VueIcon = (props: SvgProps) =>
     h(
       "svg",
       { ...props, preserveAspectRatio: "xMidYMid", viewBox: "0 0 256 221" },
@@ -50,7 +52,7 @@
       ]
     );
 
-  const SvelteIcon = (props: Record<string, any>) =>
+  const SvelteIcon = (props: SvgProps) =>
     h(
       "svg",
       { ...props, preserveAspectRatio: "xMidYMid", viewBox: "0 0 256 308" },

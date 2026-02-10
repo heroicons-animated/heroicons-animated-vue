@@ -1,11 +1,14 @@
+import { defineEventHandler } from "h3";
+import { $fetch } from "ofetch";
+
 const GITHUB_REPO_API =
   "https://api.github.com/repos/heroicons-animated/heroicons-animated-vue";
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 1 day
 
-type StarsCache = {
+interface StarsCache {
   stars: number;
   fetchedAt: number;
-};
+}
 
 let cache: StarsCache | null = null;
 

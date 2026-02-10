@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
   import { useMotion } from "../motion";
+  import type { MotionInstance } from "../motion";
   import { onMounted, ref } from "vue";
 
   export interface Props {
@@ -71,20 +72,20 @@
   const bulletRefs = ref<SVGPathElement[]>([]);
   const lineRefs = ref<SVGPathElement[]>([]);
 
-  const bulletMotions: any[] = [];
-  const lineMotions: any[] = [];
+  const bulletMotions: MotionInstance[] = [];
+  const lineMotions: MotionInstance[] = [];
 
   onMounted(() => {
-    bulletRefs.value.forEach((el, index) => {
+    for (const [index, el] of bulletRefs.value.entries()) {
       bulletMotions[index] = useMotion(el, {
         initial: { opacity: 1 },
       });
-    });
-    lineRefs.value.forEach((el, index) => {
+    }
+    for (const [index, el] of lineRefs.value.entries()) {
       lineMotions[index] = useMotion(el, {
         initial: { pathLength: 1, opacity: 1 },
       });
-    });
+    }
   });
 
   let isControlled = false;
@@ -123,12 +124,12 @@
   };
 
   const stopAnimation = () => {
-    bulletMotions.forEach((m) => {
+    for (const m of bulletMotions) {
       m?.apply({ opacity: 1 });
-    });
-    lineMotions.forEach((m) => {
+    }
+    for (const m of lineMotions) {
       m?.apply({ pathLength: 1, opacity: 1 });
-    });
+    }
   };
 
   const handleMouseEnter = () => {

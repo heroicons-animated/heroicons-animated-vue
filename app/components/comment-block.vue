@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import ArrowTopRightOnSquareIcon from "@heroicons-animated/vue/arrow-top-right-on-square";
-  import Avatar from "~/components/ui/Avatar.vue";
-  import AvatarImage from "~/components/ui/AvatarImage.vue";
-  import AvatarFallback from "~/components/ui/AvatarFallback.vue";
+  import Avatar from "~/components/ui/avatar.vue";
+  import AvatarImage from "~/components/ui/avatar-image.vue";
+  import AvatarFallback from "~/components/ui/avatar-fallback.vue";
 
   const arrowRef = ref<InstanceType<typeof ArrowTopRightOnSquareIcon> | null>(
     null

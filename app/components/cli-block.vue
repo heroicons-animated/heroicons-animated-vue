@@ -20,20 +20,22 @@
   import { usePackageManager } from "~/lib/state";
   import { toast } from "~/lib/toast";
   import { cn } from "~/lib/utils";
-  import IconState from "~/components/ui/IconState.vue";
-  import Tabs from "~/components/ui/Tabs.vue";
-  import TabsList from "~/components/ui/TabsList.vue";
-  import TabsTrigger from "~/components/ui/TabsTrigger.vue";
-  import TabsContent from "~/components/ui/TabsContent.vue";
-  import TextLoop from "~/components/ui/TextLoop.vue";
+  import IconState from "~/components/ui/icon-state.vue";
+  import Tabs from "~/components/ui/tabs.vue";
+  import TabsList from "~/components/ui/tabs-list.vue";
+  import TabsTrigger from "~/components/ui/tabs-trigger.vue";
+  import TabsContent from "~/components/ui/tabs-content.vue";
+  import TextLoop from "~/components/ui/text-loop.vue";
 
-  type IconItem = { name: string };
+  interface IconItem {
+    name: string;
+  }
 
-  type Props = {
+  interface Props {
     icons?: IconItem[];
     staticIconName?: string;
     className?: string;
-  };
+  }
 
   const props = defineProps<Props>();
   const packageManager = usePackageManager();
@@ -68,13 +70,17 @@
         getCLICommand(packageManager.value, currentIconName.value)
       );
       state.value = "done";
-      setTimeout(() => (state.value = "idle"), 2000);
+      setTimeout(() => {
+        state.value = "idle";
+      }, 2000);
     } catch {
       toast.error("Failed to copy to clipboard", {
         description: "Please check your browser permissions.",
       });
       state.value = "error";
-      setTimeout(() => (state.value = "idle"), 2000);
+      setTimeout(() => {
+        state.value = "idle";
+      }, 2000);
     }
   };
 
@@ -88,7 +94,7 @@
   };
 
   const updateScrollIndicators = (el: HTMLDivElement) => {
-    if (!(el && el.style)) {
+    if (!el?.style) {
       return;
     }
     const maxScroll = el.scrollWidth - el.clientWidth;
@@ -107,16 +113,16 @@
   };
 
   const attachScrollListeners = () => {
-    viewportRefs.value.forEach((el) => {
+    for (const el of viewportRefs.value) {
       updateScrollIndicators(el);
       el.addEventListener("scroll", handleScroll);
-    });
+    }
   };
 
   const detachScrollListeners = () => {
-    viewportRefs.value.forEach((el) => {
+    for (const el of viewportRefs.value) {
       el.removeEventListener("scroll", handleScroll);
-    });
+    }
   };
 
   onMounted(() => {
@@ -142,9 +148,9 @@
   });
 
   const handleResize = () => {
-    viewportRefs.value.forEach((el) => {
+    for (const el of viewportRefs.value) {
       updateScrollIndicators(el);
-    });
+    }
   };
 
   onUpdated(() => {

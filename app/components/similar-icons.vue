@@ -2,7 +2,7 @@
   import { computed } from "vue";
   import { ICON_MANIFEST, type IconManifestItem } from "~/lib/manifest";
   import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
-  import IconCard from "~/components/IconCard.vue";
+  import IconCard from "~/components/icon-card.vue";
 
   const props = defineProps<{
     currentIcon: IconManifestItem;

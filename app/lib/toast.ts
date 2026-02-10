@@ -2,16 +2,16 @@ import { ref } from "vue";
 
 export type ToastType = "info" | "success" | "warning" | "error";
 
-export type ToastAction = {
+export interface ToastAction {
   label: string;
   onClick: () => void;
-};
+}
 
-export type ToastOptions = {
+export interface ToastOptions {
   description?: string;
   duration?: number;
   action?: ToastAction;
-};
+}
 
 export type ToastItem = ToastOptions & {
   id: string;

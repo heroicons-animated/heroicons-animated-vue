@@ -6,10 +6,10 @@ export type Framework = "react" | "vue" | "svelte";
 export const FRAMEWORKS = ["react", "vue", "svelte"] as const;
 export const DEFAULT_FRAMEWORK: Framework = "vue";
 
-type FrameworkContext = {
+interface FrameworkContext {
   framework: Ref<Framework>;
   setFramework: (framework: Framework) => void;
-};
+}
 
 const frameworkKey = Symbol("framework");
 
@@ -60,7 +60,7 @@ export const provideFramework = () => {
     }
 
     if (value === DEFAULT_FRAMEWORK) {
-      delete nextQuery.framework;
+      nextQuery.framework = undefined;
     } else {
       nextQuery.framework = value;
     }

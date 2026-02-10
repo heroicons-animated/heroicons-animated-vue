@@ -157,16 +157,20 @@
 
   const startAnimation = () => {
     screenMotion.apply(screenVariants.animate);
-    for (const [index, buttonMotion] of buttonMotions.entries()) {
+    let index = 0;
+    for (const buttonMotion of buttonMotions) {
       buttonMotion.apply(buttonVariants[index].animate);
+      index += 1;
     }
     enterMotion.apply(enterVariants.animate);
   };
 
   const stopAnimation = () => {
     screenMotion.apply(screenVariants.normal);
-    for (const [index, buttonMotion] of buttonMotions.entries()) {
+    let index = 0;
+    for (const buttonMotion of buttonMotions) {
       buttonMotion.apply(buttonVariants[index].normal);
+      index += 1;
     }
     enterMotion.apply(enterVariants.normal);
   };

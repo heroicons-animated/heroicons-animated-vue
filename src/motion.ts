@@ -66,7 +66,7 @@ const extractAnimatableValues = (
 
   if (transformOrigin && "style" in element) {
     element.style.transformOrigin = transformOrigin;
-    delete animatableValues.transformOrigin;
+    animatableValues.transformOrigin = undefined;
   }
 
   return animatableValues;

@@ -66,7 +66,7 @@
         'supports-[corner-shape:squircle]:corner-squircle rounded-[14px] supports-[corner-shape:squircle]:rounded-[24px]',
         hasLeading ? 'pl-10' : undefined,
         hasTrailing ? 'pr-12' : undefined,
-        (attrs as any).class
+        attrs.class
       )"
       data-slot="input"
     >

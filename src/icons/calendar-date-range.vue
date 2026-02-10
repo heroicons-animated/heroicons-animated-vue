@@ -44,6 +44,7 @@
 
 <script setup lang="ts">
   import { useMotion } from "../motion";
+  import type { MotionInstance } from "../motion";
   import { onMounted, ref } from "vue";
 
   export interface Props {
@@ -136,42 +137,42 @@
     initial: FIRST_DOT_VARIANTS.normal,
     enter: FIRST_DOT_VARIANTS.normal,
   });
-  const lineMotions: any[] = [];
-  const dotMotions: any[] = [];
+  const lineMotions: MotionInstance[] = [];
+  const dotMotions: MotionInstance[] = [];
 
   onMounted(() => {
-    lineRefs.value.forEach((el, index) => {
+    for (const [index, el] of lineRefs.value.entries()) {
       lineMotions[index] = useMotion(el, {
         initial: lineVariants(index).normal,
       });
-    });
-    dotRefs.value.forEach((el, index) => {
+    }
+    for (const [index, el] of dotRefs.value.entries()) {
       dotMotions[index] = useMotion(el, {
         initial: dotVariants(index).normal,
       });
-    });
+    }
   });
 
   let isControlled = false;
 
   const startAnimation = () => {
     firstDotMotion.apply(FIRST_DOT_VARIANTS.animate);
-    lineRefs.value.forEach((_, index) => {
+    for (const [index] of lineRefs.value.entries()) {
       lineMotions[index]?.apply(lineVariants(index).animate);
-    });
-    dotRefs.value.forEach((_, index) => {
+    }
+    for (const [index] of dotRefs.value.entries()) {
       dotMotions[index]?.apply(dotVariants(index).animate);
-    });
+    }
   };
 
   const stopAnimation = () => {
     firstDotMotion.apply(FIRST_DOT_VARIANTS.normal);
-    lineRefs.value.forEach((_, index) => {
+    for (const [index] of lineRefs.value.entries()) {
       lineMotions[index]?.apply(lineVariants(index).normal);
-    });
-    dotRefs.value.forEach((_, index) => {
+    }
+    for (const [index] of dotRefs.value.entries()) {
       dotMotions[index]?.apply(dotVariants(index).normal);
-    });
+    }
   };
 
   const handleMouseEnter = () => {

@@ -130,16 +130,20 @@
   let isControlled = false;
 
   const startAnimation = () => {
-    for (const [index, itemMotion] of itemMotions.entries()) {
+    let index = 0;
+    for (const itemMotion of itemMotions) {
       itemMotion.dotMotion.apply(itemVariants[index].dot.animate);
       itemMotion.lineMotion.apply(itemVariants[index].line.animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
-    for (const [index, itemMotion] of itemMotions.entries()) {
+    let index = 0;
+    for (const itemMotion of itemMotions) {
       itemMotion.dotMotion.apply(itemVariants[index].dot.normal);
       itemMotion.lineMotion.apply(itemVariants[index].line.normal);
+      index += 1;
     }
   };
 

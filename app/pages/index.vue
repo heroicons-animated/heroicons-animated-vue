@@ -2,9 +2,9 @@
   import { useHead, useSeoMeta } from "#imports";
   import { ICON_MANIFEST } from "~/lib/manifest";
   import { LINK, SITE } from "~/lib/constants";
-  import CliBlock from "~/components/CliBlock.vue";
-  import CommentBlock from "~/components/CommentBlock.vue";
-  import IconsList from "~/components/IconsList.vue";
+  import CliBlock from "~/components/cli-block.vue";
+  import CommentBlock from "~/components/comment-block.vue";
+  import IconsList from "~/components/icons-list.vue";
 
   const icons = ICON_MANIFEST;
   const homeTitle = "Free Animated Heroicons for Vue";

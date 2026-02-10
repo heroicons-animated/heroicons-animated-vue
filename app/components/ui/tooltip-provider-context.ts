@@ -1,9 +1,9 @@
 import type { InjectionKey } from "vue";
 
-export type TooltipProviderContext = {
+export interface TooltipProviderContext {
   delay: number;
   closeDelay: number;
-};
+}
 
 export const tooltipProviderKey: InjectionKey<TooltipProviderContext> = Symbol(
   "TooltipProviderContext"

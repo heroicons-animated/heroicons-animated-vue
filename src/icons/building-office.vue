@@ -102,14 +102,18 @@
   let isControlled = false;
 
   const startAnimation = () => {
-    for (const [index, floorMotion] of floorMotions.entries()) {
+    let index = 0;
+    for (const floorMotion of floorMotions) {
       floorMotion.apply(floorVariants[index].animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
-    for (const [index, floorMotion] of floorMotions.entries()) {
+    let index = 0;
+    for (const floorMotion of floorMotions) {
       floorMotion.apply(floorVariants[index].normal);
+      index += 1;
     }
   };
 

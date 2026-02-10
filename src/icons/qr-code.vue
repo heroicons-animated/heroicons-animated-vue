@@ -129,14 +129,18 @@
   let isControlled = false;
 
   const startAnimation = () => {
-    for (const [index, delay] of DELAYS.entries()) {
+    let index = 0;
+    for (const delay of DELAYS) {
       motions[index].apply(createDotVariants(delay).animate);
+      index += 1;
     }
   };
 
   const stopAnimation = () => {
-    for (const [index, motion] of motions.entries()) {
+    let index = 0;
+    for (const motion of motions) {
       motion.apply(createDotVariants(DELAYS[index]).normal);
+      index += 1;
     }
   };
 

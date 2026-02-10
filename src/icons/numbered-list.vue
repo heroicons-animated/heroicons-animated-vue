@@ -76,22 +76,22 @@
   const lineMotions: MotionInstance[] = [];
 
   onMounted(() => {
-    numberRefs.value.forEach((el, index) => {
+    for (const [index, el] of numberRefs.value.entries()) {
       numberMotions[index] = useMotion(el, {
         initial: { pathLength: 1, opacity: 1 },
       });
-    });
-    lineRefs.value.forEach((el, index) => {
+    }
+    for (const [index, el] of lineRefs.value.entries()) {
       lineMotions[index] = useMotion(el, {
         initial: { pathLength: 1, opacity: 1 },
       });
-    });
+    }
   });
 
   let isControlled = false;
 
   const startAnimation = () => {
-    LIST_ITEMS.forEach((_, index) => {
+    for (const [index] of LIST_ITEMS.entries()) {
       const numberDelay = index * (NUMBER_DURATION + LINE_DURATION);
       const lineDelay = numberDelay + NUMBER_DURATION;
 
@@ -128,16 +128,16 @@
           },
         },
       });
-    });
+    }
   };
 
   const stopAnimation = () => {
-    numberMotions.forEach((m) => {
+    for (const m of numberMotions) {
       m?.apply({ pathLength: 1, opacity: 1 });
-    });
-    lineMotions.forEach((m) => {
+    }
+    for (const m of lineMotions) {
       m?.apply({ pathLength: 1, opacity: 1 });
-    });
+    }
   };
 
   const handleMouseEnter = () => {

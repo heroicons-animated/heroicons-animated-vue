@@ -8,14 +8,17 @@
     useSchemaOrg,
     useSeoMeta,
   } from "#imports";
-  import CliBlock from "~/components/CliBlock.vue";
-  import IconCard from "~/components/IconCard.vue";
-  import SimilarIcons from "~/components/SimilarIcons.vue";
+  import CliBlock from "~/components/cli-block.vue";
+  import IconCard from "~/components/icon-card.vue";
+  import SimilarIcons from "~/components/similar-icons.vue";
   import { LINK, SITE } from "~/lib/constants";
   import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
   import { getFrameworkName } from "~/lib/cli";
   import { kebabToPascalCase } from "~/lib/kebab-to-pascal";
   import { ICON_MANIFEST } from "~/lib/manifest";
+
+  const DASH_REGEX = /-/g;
+  const ICON_SUFFIX_REGEX = /Icon$/u;
 
   const route = useRoute();
   const { framework } = useFramework();
@@ -30,7 +33,7 @@
   }
 
   const pascalName = computed(() => kebabToPascalCase(slug.value));
-  const formattedName = computed(() => slug.value.replace(/-/g, " "));
+  const formattedName = computed(() => slug.value.replace(DASH_REGEX, " "));
 
   const backHref = computed(() => {
     if (framework.value === DEFAULT_FRAMEWORK) {
@@ -42,7 +45,7 @@
   const canonicalUrl = computed(() => `${SITE.URL}/icons/${slug.value}`);
 
   const pageTitle = computed(() => {
-    const keyword = pascalName.value.replace(/Icon$/u, "").trim();
+    const keyword = pascalName.value.replace(ICON_SUFFIX_REGEX, "").trim();
     return `${keyword} Icon - Animated Icon for Vue`;
   });
 

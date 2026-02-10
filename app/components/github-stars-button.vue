@@ -1,11 +1,12 @@
 <script setup lang="ts">
+  import { useFetch } from "#imports";
   import { computed, ref } from "vue";
   import StarIcon from "@heroicons-animated/vue/star";
   import { LINK } from "~/lib/constants";
 
-  type StarsResponse = {
+  interface StarsResponse {
     stars: number | null;
-  };
+  }
 
   const { data } = await useFetch<StarsResponse>("/api/github-stars");
   const stars = computed(() => data.value?.stars ?? null);

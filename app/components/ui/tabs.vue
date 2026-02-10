@@ -15,10 +15,10 @@
     }
   );
 
-  const emit = defineEmits<{
-    (e: "update:modelValue", value: string): void;
-    (e: "value-change", value: string): void;
-  }>();
+  const emit =
+    defineEmits<
+      (e: "value-change" | "update:modelValue", value: string) => void
+    >();
 
   const attrs = useAttrs();
   const internalValue = ref(props.modelValue ?? props.defaultValue ?? "");
