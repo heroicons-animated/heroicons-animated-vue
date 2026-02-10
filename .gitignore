@@ -13,3 +13,6 @@ GEMINI.md
 .codex
 .gemini
 .opencode
+
+# TypeScript build metadata
+tsconfig.lib.tsbuildinfo
