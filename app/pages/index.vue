@@ -7,7 +7,7 @@
   import IconsList from "~/components/icons-list.vue";
 
   const icons = ICON_MANIFEST;
-  const homeTitle = "Free Animated Heroicons for Vue";
+  const homeTitle = `${SITE.NAME} | Animated Heroicons for Vue`;
 
   useSeoMeta({
     title: homeTitle,

@@ -38,7 +38,7 @@
 
   const pageTitle = computed(() => {
     const keyword = pascalName.value.replace(ICON_SUFFIX_REGEX, "").trim();
-    return `${keyword} Icon - Animated Icon for Vue`;
+    return `${keyword} Icon - Animated Icon for Vue | ${SITE.NAME}`;
   });
 
   const pageDescription = computed(() => {

@@ -5,7 +5,7 @@ import type { SitemapEntry } from "./app/types";
 import { SITE } from "./app/lib/constants";
 import { ICON_MANIFEST } from "./app/lib/manifest";
 
-const SITE_DEFAULT_TITLE = "Free Animated Heroicons for Vue";
+const SITE_DEFAULT_TITLE = "Animated Heroicons for Vue";
 const SITE_OG_TITLE = `${SITE.NAME} | ${SITE_DEFAULT_TITLE}`;
 const SITE_OG_IMAGE_URL = `${SITE.URL}${SITE.OG_IMAGE}`;
 const SITE_OG_IMAGE_ALT = `${SITE.NAME} - Animated Heroicons Library for Vue`;
@@ -99,7 +99,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      titleTemplate: `%s | ${SITE.NAME}`,
+      titleTemplate: "%s",
       viewport:
         "width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1",
       htmlAttrs: {
@@ -110,8 +110,23 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-        { rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
-        { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "/favicon-16x16.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "/favicon-32x32.png",
+        },
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
+        },
       ],
     },
   },
