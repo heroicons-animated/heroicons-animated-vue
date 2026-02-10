@@ -14,7 +14,7 @@
 
 <template>
   <TabsContent
-    :class="cn('mt-px ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300', props.class)"
+    :class="cn('mt-px focus-visible:outline-1 focus-visible:outline-primary', props.class)"
     v-bind="delegatedProps"
   >
     <slot />

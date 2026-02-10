@@ -52,6 +52,7 @@
     if (isTouch.value) {
       return;
     }
+    iconRef.value?.setControlled?.(true);
     iconRef.value?.startAnimation?.();
   };
 
@@ -59,10 +60,13 @@
     if (isTouch.value) {
       return;
     }
+    iconRef.value?.setControlled?.(false);
     iconRef.value?.stopAnimation?.();
   };
 
-  const handlePlayClick = () => {
+  const handlePlayClick = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
     if (isAnimating.value) {
       iconRef.value?.stopAnimation?.();
       isAnimating.value = false;

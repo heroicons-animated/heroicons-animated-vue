@@ -3,11 +3,7 @@
   import MoonIcon from "@heroicons-animated/vue/moon";
   import SunIcon from "@heroicons-animated/vue/sun";
   import { useColorMode } from "#imports";
-
-  interface AnimatedIconInstance {
-    startAnimation?: () => void;
-    stopAnimation?: () => void;
-  }
+  import type { AnimatedIconInstance } from "~/types";
 
   const colorMode = useColorMode();
   const isDark = computed(() => colorMode.value === "dark");
@@ -51,11 +47,15 @@
   );
 
   const handleMouseEnter = () => {
+    sunRef.value?.setControlled?.(true);
+    moonRef.value?.setControlled?.(true);
     sunRef.value?.startAnimation?.();
     moonRef.value?.startAnimation?.();
   };
 
   const handleMouseLeave = () => {
+    sunRef.value?.setControlled?.(false);
+    moonRef.value?.setControlled?.(false);
     sunRef.value?.stopAnimation?.();
     moonRef.value?.stopAnimation?.();
   };

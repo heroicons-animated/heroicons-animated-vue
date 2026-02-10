@@ -2,11 +2,7 @@
   import { ref } from "vue";
   import ArrowTopRightOnSquareIcon from "@heroicons-animated/vue/arrow-top-right-on-square";
   import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-
-  interface AnimatedIconInstance {
-    startAnimation?: () => void;
-    stopAnimation?: () => void;
-  }
+  import type { AnimatedIconInstance } from "~/types";
 
   const arrowRef = ref<AnimatedIconInstance | null>(null);
 </script>
@@ -62,8 +58,7 @@
             target="_blank"
           >
             aniket
-          </a>
-          , creator of heroicons-animated
+          </a>, creator of heroicons-animated
         </p>
       </div>
       <a
@@ -72,8 +67,8 @@
         rel="noopener external"
         tabIndex="0"
         target="_blank"
-        @mouseenter="arrowRef?.startAnimation?.()"
-        @mouseleave="arrowRef?.stopAnimation?.()"
+        @mouseenter="arrowRef?.setControlled?.(true); arrowRef?.startAnimation?.()"
+        @mouseleave="arrowRef?.setControlled?.(false); arrowRef?.stopAnimation?.()"
       >
         Take the course
         <ArrowTopRightOnSquareIcon ref="arrowRef" :size="14" />
