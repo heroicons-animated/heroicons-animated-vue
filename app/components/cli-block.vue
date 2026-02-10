@@ -19,18 +19,17 @@
   } from "~/lib/cli";
   import { getPackageManagerPrefix } from "~/lib/package-manager";
   import { usePackageManager } from "~/lib/state";
-  import { toast } from "~/lib/toast";
+  import { toast } from "vue-sonner";
   import { cn } from "~/lib/utils";
-  import IconState from "~/components/ui/icon-state.vue";
-  import Tabs from "~/components/ui/tabs.vue";
-  import TabsList from "~/components/ui/tabs-list.vue";
-  import TabsTrigger from "~/components/ui/tabs-trigger.vue";
-  import TabsContent from "~/components/ui/tabs-content.vue";
-  import TextLoop from "~/components/ui/text-loop.vue";
-
-  interface IconItem {
-    name: string;
-  }
+  import { IconState } from "~/components/ui/icon-state";
+  import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+  } from "~/components/ui/tabs";
+  import { TextLoop } from "~/components/ui/text-loop";
+  import type { IconItem } from "~/types";
 
   interface Props {
     icons?: IconItem[];

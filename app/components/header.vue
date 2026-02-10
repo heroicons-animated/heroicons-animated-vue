@@ -40,15 +40,15 @@
         tabIndex="0"
       >
         <Logo class="w-6 text-primary min-[395px]:w-8" />
-        <span class="relative inline-flex">
-          heroicons-animated
+        <span class="relative inline-flex flex-col">
+          <span>heroicons-animated</span>
           <span
-            class="absolute right-0 top-full mt-0.5 flex items-center gap-1 text-[10px] font-medium text-neutral-500 dark:text-neutral-400"
+            class="absolute -bottom-[14px] right-0 flex items-center gap-1 font-mono text-[10px] text-secondary"
           >
             - for
             <svg
               aria-hidden="true"
-              class="size-3"
+              class="h-3.5 w-3.5"
               preserveAspectRatio="xMidYMid"
               viewBox="0 0 256 221"
               xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,6 @@
 import { inject, provide, ref, type Ref } from "vue";
 import { PACKAGE_MANAGER } from "./constants";
-
-type PackageManager = (typeof PACKAGE_MANAGER)[keyof typeof PACKAGE_MANAGER];
+import type { PackageManager } from "~/types";
 
 const packageManagerKey = Symbol("packageManager");
 

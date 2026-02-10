@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { computed, onBeforeUnmount, onMounted, ref } from "vue";
   import { MagnifyingGlassIcon } from "@heroicons/vue/24/outline";
-  import Input from "~/components/ui/input.vue";
-  import Kbd from "~/components/ui/kbd.vue";
+  import { Input } from "~/components/ui/input";
+  import { Kbd } from "~/components/ui/kbd";
 
   const props = defineProps<{
     modelValue: string;

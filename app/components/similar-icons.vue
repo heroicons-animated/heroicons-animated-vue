@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { computed } from "vue";
-  import { ICON_MANIFEST, type IconManifestItem } from "~/lib/manifest";
   import IconCard from "~/components/icon-card.vue";
+  import { ICON_MANIFEST } from "~/lib/manifest";
+  import type { IconManifestItem } from "~/types";
 
   const props = defineProps<{
     currentIcon: IconManifestItem;

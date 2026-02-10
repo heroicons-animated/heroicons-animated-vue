@@ -1,7 +1,4 @@
-export interface IconManifestItem {
-  name: string;
-  keywords: string[];
-}
+import type { IconManifestItem } from "~/types";
 
 export const ICON_MANIFEST: IconManifestItem[] = [
   {

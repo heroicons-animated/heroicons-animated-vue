@@ -1,7 +1,6 @@
-import { type PACKAGE_MANAGER, SITE } from "./constants";
+import type { PackageManager } from "~/types";
+import { SITE } from "./constants";
 import { getPackageManagerPrefix } from "./package-manager";
-
-type PackageManager = (typeof PACKAGE_MANAGER)[keyof typeof PACKAGE_MANAGER];
 
 export const getFileExtension = (): string => "vue";
 

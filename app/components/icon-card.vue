@@ -9,18 +9,16 @@
   import { ICON_COMPONENTS } from "~/lib/icon-components";
   import { getCLICommand, getFileExtension } from "~/lib/cli";
   import { usePackageManager } from "~/lib/state";
-  import { toast } from "~/lib/toast";
+  import { toast } from "vue-sonner";
   import { cn } from "~/lib/utils";
-  import IconState from "~/components/ui/icon-state.vue";
-  import TooltipProvider from "~/components/ui/tooltip-provider.vue";
-  import Tooltip from "~/components/ui/tooltip.vue";
-  import TooltipTrigger from "~/components/ui/tooltip-trigger.vue";
-  import TooltipContent from "~/components/ui/tooltip-content.vue";
-
-  interface AnimatedIconInstance {
-    startAnimation?: () => void;
-    stopAnimation?: () => void;
-  }
+  import { IconState } from "~/components/ui/icon-state";
+  import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "~/components/ui/tooltip";
+  import type { AnimatedIconInstance } from "~/types";
 
   const props = withDefaults(
     defineProps<{

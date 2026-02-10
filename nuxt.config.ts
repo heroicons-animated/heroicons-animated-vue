@@ -1,6 +1,7 @@
 import { resolve } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import { defineNuxtConfig } from "nuxt/config";
+import type { SitemapEntry } from "./app/types";
 import { SITE } from "./app/lib/constants";
 import { ICON_MANIFEST } from "./app/lib/manifest";
 
@@ -8,29 +9,36 @@ const SITE_DEFAULT_TITLE = "Free Animated Heroicons for Vue";
 const SITE_OG_TITLE = `${SITE.NAME} | ${SITE_DEFAULT_TITLE}`;
 const SITE_OG_IMAGE_URL = `${SITE.URL}${SITE.OG_IMAGE}`;
 const SITE_OG_IMAGE_ALT = `${SITE.NAME} - Animated Heroicons Library for Vue`;
-const SITEMAP_URLS = [
+
+const SITEMAP_URLS: SitemapEntry[] = [
   {
     loc: "/",
-    changefreq: "weekly" as const,
-    priority: 1 as const,
+    changefreq: "weekly",
+    priority: 1,
   },
-  ...ICON_MANIFEST.map((icon) => ({
-    loc: `/icons/${icon.name}`,
-    changefreq: "monthly" as const,
-    priority: 0.7 as const,
-  })),
+  ...ICON_MANIFEST.map(
+    (icon): SitemapEntry => ({
+      loc: `/icons/${icon.name}`,
+      changefreq: "monthly",
+      priority: 0.7,
+    })
+  ),
 ];
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
-  modules: ["@nuxt/fonts", "@nuxtjs/seo", "motion-v/nuxt"],
+  modules: ["@nuxt/fonts", "@nuxtjs/seo", "motion-v/nuxt", "shadcn-nuxt"],
   site: {
     url: SITE.URL,
     name: SITE.NAME,
     description: SITE.DESCRIPTION.LONG,
     defaultLocale: "en",
+  },
+  shadcn: {
+    prefix: "",
+    componentDir: "@/components/ui",
   },
   robots: {
     groups: [

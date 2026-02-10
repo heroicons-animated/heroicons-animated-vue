@@ -1,6 +1,4 @@
-import type { PACKAGE_MANAGER } from "./constants";
-
-type PackageManager = (typeof PACKAGE_MANAGER)[keyof typeof PACKAGE_MANAGER];
+import type { PackageManager } from "~/types";
 
 const PREFIX_MAP: Record<PackageManager, string> = {
   pnpm: "pnpm dlx",
