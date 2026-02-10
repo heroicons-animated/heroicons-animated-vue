@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import type { HTMLAttributes } from "vue";
   import { computed, ref, watch } from "vue";
   import { ClipboardDocumentIcon } from "@heroicons/vue/24/outline";
   import { PACKAGE_MANAGER } from "~/lib/constants";
@@ -22,13 +23,11 @@
   import { TextLoop } from "~/components/ui/text-loop";
   import type { IconItem } from "~/types";
 
-  interface Props {
+  const props = defineProps<{
+    class?: HTMLAttributes["class"];
     icons?: IconItem[];
     staticIconName?: string;
-    className?: string;
-  }
-
-  const props = defineProps<Props>();
+  }>();
   const packageManager = usePackageManager();
 
   const iconList = computed(() =>
@@ -61,14 +60,12 @@
         getCLICommand(packageManager.value, currentIconName.value)
       );
       state.value = "done";
-      setTimeout(() => {
-        state.value = "idle";
-      }, 2000);
-    } catch {
+    } catch (error: unknown) {
       toast.error("Failed to copy to clipboard", {
-        description: "Please check your browser permissions.",
+        description: (error as Error).message,
       });
       state.value = "error";
+    } finally {
       setTimeout(() => {
         state.value = "idle";
       }, 2000);
@@ -77,9 +74,7 @@
 </script>
 
 <template>
-  <div
-    :class="cn('relative mt-[40px] w-full max-w-[642px] px-4', props.className)"
-  >
+  <div :class="cn('relative mt-[40px] w-full max-w-[642px] px-4', props.class)">
     <Tabs class="w-full" v-model="packageManager">
       <TabsList class="w-full justify-start" @click.stop>
         <TabsTrigger

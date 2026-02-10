@@ -5,6 +5,7 @@
   import { LINK, SITE } from "~/lib/constants";
   import { ICON_MANIFEST } from "~/lib/manifest";
   import { providePackageManager } from "~/lib/state";
+  import "vue-sonner/style.css";
 
   const todayIsoDate = new Date().toISOString().split("T")[0] ?? "";
   const faqEntries = [
@@ -110,6 +111,6 @@
     <NuxtLoadingIndicator color="#8b5cf6" />
     <Header />
     <NuxtPage />
-    <Toaster />
+    <Toaster position="top-center" />
   </div>
 </template>

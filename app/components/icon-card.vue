@@ -104,14 +104,12 @@
         getCLICommand(packageManager.value, props.name)
       );
       cliState.value = "done";
-      setTimeout(() => {
-        cliState.value = "idle";
-      }, 2000);
-    } catch {
+    } catch (error: unknown) {
       toast.error("Failed to copy to clipboard", {
-        description: "Please check your browser permissions.",
+        description: (error as Error).message,
       });
       cliState.value = "error";
+    } finally {
       setTimeout(() => {
         cliState.value = "idle";
       }, 2000);
@@ -130,22 +128,20 @@
       if (!response.ok) {
         throw new Error("Missing content");
       }
+
       const data = await response.json();
       const content = data?.files?.[0]?.content;
-
       if (!content) {
         throw new Error("Missing content");
       }
       await navigator.clipboard.writeText(content);
       codeState.value = "done";
-      setTimeout(() => {
-        codeState.value = "idle";
-      }, 2000);
-    } catch {
+    } catch (error: unknown) {
       toast.error("Failed to copy to clipboard", {
-        description: "Please check your browser permissions.",
+        description: (error as Error).message,
       });
       codeState.value = "error";
+    } finally {
       setTimeout(() => {
         codeState.value = "idle";
       }, 2000);
@@ -237,11 +233,11 @@
             </IconState>
           </TooltipTrigger>
           <TooltipContent>
-            Copy{{ " " }}
+            Copy
             <code class="rounded-[4px] bg-neutral-50/20 px-1 py-0.5 font-mono">
               .{{ getFileExtension() }}
             </code>
-            {{ " " }}code
+            code
           </TooltipContent>
         </Tooltip>
 
@@ -262,11 +258,11 @@
             </IconState>
           </TooltipTrigger>
           <TooltipContent>
-            Copy{{ " " }}
+            Copy
+            <!-- biome-ignore format: preserve inline spacing -->
             <code class="rounded-[4px] bg-neutral-50/20 px-1 py-0.5 font-mono">
-              shadcn/cli
-            </code>
-            {{ " " }}command
+              shadcn/cli</code>
+            command
           </TooltipContent>
         </Tooltip>
       </div>

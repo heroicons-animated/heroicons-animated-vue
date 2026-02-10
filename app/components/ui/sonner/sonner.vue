@@ -1,15 +1,9 @@
 <script lang="ts" setup>
   import type { ToasterProps } from "vue-sonner";
   import { reactiveOmit } from "@vueuse/core";
-  import {
-    CircleCheckIcon,
-    InfoIcon,
-    Loader2Icon,
-    OctagonXIcon,
-    TriangleAlertIcon,
-    XIcon,
-  } from "lucide-vue-next";
   import { Toaster as Sonner } from "vue-sonner";
+  import ExclamationTriangleIcon from "@heroicons-animated/vue/exclamation-triangle.vue";
+  import XMarkIcon from "@heroicons-animated/vue/x-mark.vue";
 
   const props = defineProps<ToasterProps>();
   const delegatedProps = reactiveOmit(props, "toastOptions");
@@ -20,35 +14,24 @@
     class="toaster group"
     :toast-options="{
       classes: {
-        toast: 'group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg',
-        description: 'group-[.toast]:text-muted-foreground',
-        actionButton:
-          'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
-        cancelButton:
-          'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground',
+      toast:
+        '!bg-white !px-4 !py-4 !flex-wrap dark:!bg-black !gap-0 !border-neutral-900/5 dark:!border-neutral-100/10 supports-[corner-shape:squircle]:!corner-squircle supports-[corner-shape:squircle]:!rounded-[30px] !rounded-[14px]',
+      title: 'font-sans text-black dark:!text-white',
+      icon: 'translate-y-[-9.5px]',
+      actionButton:
+        '!mt-2 w-full flex items-center justify-center !font-sans !bg-primary focus-visible:outline-primary cursor-pointer !h-8 !text-[14px] transition-colors duration-100 hover:!bg-[color-mix(in_oklab,var(--color-primary),black_10%)] focus-visible:outline-1 focus-visible:outline-offset-1 supports-[corner-shape:squircle]:!corner-squircle supports-[corner-shape:squircle]:!rounded-[30px] !rounded-[14px]',
       },
     }"
     v-bind="delegatedProps"
   >
-    <template #success-icon>
-      <CircleCheckIcon class="size-4" />
-    </template>
-    <template #info-icon>
-      <InfoIcon class="size-4" />
+    <template #error-icon>
+      <XMarkIcon :size="16" class="text-red-600 dark:text-red-400" />
     </template>
     <template #warning-icon>
-      <TriangleAlertIcon class="size-4" />
-    </template>
-    <template #error-icon>
-      <OctagonXIcon class="size-4" />
-    </template>
-    <template #loading-icon>
-      <div>
-        <Loader2Icon class="size-4 animate-spin" />
-      </div>
-    </template>
-    <template #close-icon>
-      <XIcon class="size-4" />
+      <ExclamationTriangleIcon
+        :size="16"
+        class="text-yellow-500 dark:text-yellow-400"
+      />
     </template>
   </Sonner>
 </template>
