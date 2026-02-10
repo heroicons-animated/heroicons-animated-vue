@@ -46,7 +46,7 @@
 
   // Match React: path pathLength [0,1] opacity [0,1] 0.4s linear, opacity duration 0.1
   const variants = {
-    normal: { opacity: 1 },
+    normal: { opacity: 1, pathLength: 1 },
     animate: {
       opacity: [0, 1],
       pathLength: [0, 1],

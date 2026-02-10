@@ -53,6 +53,7 @@
   const variants = {
     normal: {
       opacity: 1,
+      pathLength: 1,
     },
     animate: {
       opacity: [0, 1],

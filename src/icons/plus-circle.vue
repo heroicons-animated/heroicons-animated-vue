@@ -47,7 +47,7 @@
   });
 
   const verticalVariants = {
-    normal: { opacity: 1 },
+    normal: { opacity: 1, pathLength: 1 },
     animate: {
       opacity: [0, 1],
       pathLength: [0, 1],
@@ -60,7 +60,7 @@
   };
 
   const horizontalVariants = {
-    normal: { opacity: 1 },
+    normal: { opacity: 1, pathLength: 1 },
     animate: {
       opacity: [0, 1],
       pathLength: [0, 1],
