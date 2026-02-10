@@ -8,16 +8,24 @@ const __dirname = path.dirname(__filename);
 const iconsDir = path.resolve(__dirname, "../src/icons");
 const registryPath = path.resolve(__dirname, "../public/r");
 const registryIndexPath = path.join(registryPath, "registry.json");
+const motionFilePath = path.resolve(__dirname, "../src/motion.ts");
 
 const schemaUrl = "https://shadcn-vue.com/schema/registry-item.json";
 const registrySchemaUrl = "https://shadcn-vue.com/schema/registry.json";
-
+const registryItemType = "registry:component";
+const sourcePathPrefix = "src/icons";
+const targetPathPrefix = "~/src/components/heroicons-animated";
+const motionSourcePath = "src/motion.ts";
+const motionTargetPath = "~/src/components/motion.ts";
 const dependencies = ["motion-v"];
 
-const stripContent = (schema) => ({
-  ...schema,
-  files: schema.files.map(({ content: _content, ...rest }) => rest),
-});
+const stripContent = (schema) => {
+  const { files, $schema: _itemSchema, ...rest } = schema;
+  return {
+    ...rest,
+    files: files.map(({ content: _content, ...file }) => file),
+  };
+};
 
 const writeSchemaFile = (name, schema) => {
   fs.writeFileSync(
@@ -32,31 +40,51 @@ const buildRegistryItems = () => {
     return [];
   }
 
+  const motionContent = fs.existsSync(motionFilePath)
+    ? fs.readFileSync(motionFilePath, "utf8")
+    : null;
+
   const iconFiles = fs
     .readdirSync(iconsDir)
-    .filter((file) => file.endsWith(".vue"));
+    .filter((file) => file.endsWith(".vue"))
+    .sort((left, right) => left.localeCompare(right));
 
   const registryItems = [];
 
   for (const file of iconFiles) {
     const name = file.replace(".vue", "");
     const content = fs.readFileSync(path.join(iconsDir, file), "utf8");
+    const sourcePath = `${sourcePathPrefix}/${name}.vue`;
+    const targetPath = `${targetPathPrefix}/${name}.vue`;
+
+    const files = [
+      {
+        path: sourcePath,
+        type: registryItemType,
+        target: targetPath,
+        content,
+      },
+    ];
+
+    if (motionContent) {
+      files.push({
+        path: motionSourcePath,
+        type: registryItemType,
+        target: motionTargetPath,
+        content: motionContent,
+      });
+    }
 
     const schema = {
       $schema: schemaUrl,
       name,
+      type: registryItemType,
       title: name,
       description: `Animated ${name} icon for Vue`,
-      type: "registry:ui",
+      author: "Aniket Pawar <pawaraniket508@gmail.com>",
       registryDependencies: [],
       dependencies,
-      files: [
-        {
-          path: `${name}.vue`,
-          content,
-          type: "registry:ui",
-        },
-      ],
+      files,
     };
 
     writeSchemaFile(name, schema);

@@ -22,7 +22,9 @@
     "motion",
     "nuxt"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -30,12 +32,13 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
-    "./package.json": "./package.json",
     "./*": {
       "types": "./dist/icons/*.d.ts",
-      "import": "./dist/icons/*.js"
+      "import": "./dist/icons/*.js",
+      "default": "./dist/icons/*.js"
     }
   },
   "typesVersions": {
@@ -47,20 +50,15 @@
   },
   "files": [
     "dist",
-    "*.js",
-    "*.d.ts",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "dev": "nuxt dev",
     "build:site": "pnpm run build-registry && nuxt build",
-    "build:lib": "vite build -c vite.lib.config.ts && node scripts/generate-proxies.mjs",
+    "build:lib": "vite build -c vite.lib.config.ts",
     "build": "pnpm run build:lib && pnpm run build:site",
     "preview": "nuxt preview",
-    "lint": "ultracite check",
-    "lint:fix": "ultracite fix",
-    "lint:fix-unsafe": "ultracite fix --unsafe",
-    "lint:doctor": "ultracite doctor",
     "type-check:site": "nuxt typecheck",
     "type-check:lib": "vue-tsc --noEmit -p tsconfig.lib.json",
     "type-check": "pnpm run type-check:lib && pnpm run type-check:site",
@@ -104,19 +102,12 @@
     "vite-plugin-dts": "^4.3.0",
     "vue": "^3.5.27",
     "vue-router": "^4.6.4",
-    "vue-tsc": "^2.1.30"
+    "vue-tsc": "^2.1.30",
+    "vue-sonner": "^2.0.9"
   },
   "engines": {
-    "node": ">=22.20.0",
+    "node": ">=20.19.0",
     "pnpm": ">=10.x"
   },
-  "pnpm": {
-    "overrides": {
-      "confbox": "0.2.2"
-    }
-  },
-  "packageManager": "pnpm@10.28.0",
-  "dependencies": {
-    "vue-sonner": "^2.0.9"
-  }
+  "packageManager": "pnpm@10.28.0"
 }
