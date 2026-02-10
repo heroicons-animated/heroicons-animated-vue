@@ -12,12 +12,12 @@ const SITEMAP_URLS = [
   {
     loc: "/",
     changefreq: "weekly" as const,
-    priority: 1,
+    priority: 1 as const,
   },
   ...ICON_MANIFEST.map((icon) => ({
     loc: `/icons/${icon.name}`,
     changefreq: "monthly" as const,
-    priority: 0.7,
+    priority: 0.7 as const,
   })),
 ];
 
@@ -45,7 +45,6 @@ export default defineNuxtConfig({
   },
   seo: {
     meta: {
-      fallbackTitle: SITE_DEFAULT_TITLE,
       description: SITE.DESCRIPTION.LONG,
       keywords: SITE.KEYWORDS.join(", "),
       applicationName: SITE.NAME,

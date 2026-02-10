@@ -8,7 +8,6 @@
   } from "@heroicons/vue/24/outline";
   import { ICON_COMPONENTS } from "~/lib/icon-components";
   import { getCLICommand, getFileExtension } from "~/lib/cli";
-  import { useFramework } from "~/lib/framework";
   import { usePackageManager } from "~/lib/state";
   import { toast } from "~/lib/toast";
   import { cn } from "~/lib/utils";
@@ -50,7 +49,6 @@
   let playTimeout: number | undefined;
 
   const packageManager = usePackageManager();
-  const { framework } = useFramework();
 
   const handleMouseEnter = () => {
     if (isTouch.value) {
@@ -130,29 +128,12 @@
     }
     try {
       codeState.value = "loading";
-      const currentFramework = framework.value;
-      let content = "";
-
-      if (currentFramework === "vue") {
-        const response = await fetch(`/r/${props.name}.json`);
-        if (!response.ok) {
-          throw new Error("Missing content");
-        }
-        const data = await response.json();
-        content = data?.files?.[0]?.content;
-      } else {
-        const base =
-          "https://raw.githubusercontent.com/Aniket-508/heroicons-animated/main";
-        const path =
-          currentFramework === "react"
-            ? `/packages/react/src/icons/${props.name}.tsx`
-            : `/packages/svelte/src/lib/icons/${props.name}.svelte`;
-        const response = await fetch(`${base}${path}`);
-        if (!response.ok) {
-          throw new Error("Missing content");
-        }
-        content = await response.text();
+      const response = await fetch(`/r/${props.name}.json`);
+      if (!response.ok) {
+        throw new Error("Missing content");
       }
+      const data = await response.json();
+      const content = data?.files?.[0]?.content;
 
       if (!content) {
         throw new Error("Missing content");

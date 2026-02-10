@@ -1,14 +1,11 @@
 <script setup lang="ts">
   import { computed } from "vue";
   import { ICON_MANIFEST, type IconManifestItem } from "~/lib/manifest";
-  import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
   import IconCard from "~/components/icon-card.vue";
 
   const props = defineProps<{
     currentIcon: IconManifestItem;
   }>();
-
-  const { framework } = useFramework();
 
   const similarIcons = computed(() => {
     const currentKeywords = new Set(props.currentIcon.keywords);
@@ -27,15 +24,7 @@
     return scored.map((item) => item.icon);
   });
 
-  const getIconHref = (name: string) => {
-    if (framework.value === DEFAULT_FRAMEWORK) {
-      return `/icons/${name}`;
-    }
-    return {
-      path: `/icons/${name}`,
-      query: { framework: framework.value },
-    };
-  };
+  const getIconHref = (name: string) => `/icons/${name}`;
 </script>
 
 <template>

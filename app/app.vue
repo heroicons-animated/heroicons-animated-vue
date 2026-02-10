@@ -3,7 +3,6 @@
   import Header from "~/components/header.vue";
   import Toaster from "~/components/toaster.vue";
   import { LINK, SITE } from "~/lib/constants";
-  import { provideFramework } from "~/lib/framework";
   import { ICON_MANIFEST } from "~/lib/manifest";
   import { providePackageManager } from "~/lib/state";
 
@@ -102,7 +101,6 @@
     },
   ]);
 
-  provideFramework();
   providePackageManager();
 </script>
 

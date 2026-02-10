@@ -3,14 +3,11 @@
   import { computed, ref, watch } from "vue";
   import { useRoute, useRouter } from "#imports";
   import { ICON_MANIFEST } from "~/lib/manifest";
-  import { DEFAULT_FRAMEWORK } from "~/lib/framework";
-  import { useFramework } from "~/lib/framework";
   import SearchInput from "~/components/search-input.vue";
   import IconCard from "~/components/icon-card.vue";
 
   const route = useRoute();
   const router = useRouter();
-  const { framework } = useFramework();
 
   const query = ref(
     typeof route.query.search === "string" ? route.query.search : ""
@@ -36,9 +33,9 @@
       return;
     }
 
-    const nextQuery: Record<string, string> = {};
+    const nextQuery: Record<string, string | undefined> = {};
     for (const [key, val] of Object.entries(route.query)) {
-      if (typeof val === "string") {
+      if (key !== "framework" && typeof val === "string") {
         nextQuery[key] = val;
       }
     }
@@ -70,16 +67,6 @@
     }
     return fuse.search(query.value).map((result) => result.item);
   });
-
-  const getIconHref = (name: string) => {
-    if (framework.value === DEFAULT_FRAMEWORK) {
-      return `/icons/${name}`;
-    }
-    return {
-      path: `/icons/${name}`,
-      query: { framework: framework.value },
-    };
-  };
 </script>
 
 <template>
@@ -100,7 +87,7 @@
     <NuxtLink
       v-for="icon in filteredIcons"
       :key="icon.name"
-      :to="getIconHref(icon.name)"
+      :to="`/icons/${icon.name}`"
       class="rounded-[20px] focus-visible:outline-1 focus-visible:outline-primary focus-visible:outline-offset-2"
     >
       <IconCard :name="icon.name" />

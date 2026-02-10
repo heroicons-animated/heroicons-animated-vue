@@ -12,8 +12,6 @@
   import IconCard from "~/components/icon-card.vue";
   import SimilarIcons from "~/components/similar-icons.vue";
   import { LINK, SITE } from "~/lib/constants";
-  import { DEFAULT_FRAMEWORK, useFramework } from "~/lib/framework";
-  import { getFrameworkName } from "~/lib/cli";
   import { kebabToPascalCase } from "~/lib/kebab-to-pascal";
   import { ICON_MANIFEST } from "~/lib/manifest";
 
@@ -21,7 +19,6 @@
   const ICON_SUFFIX_REGEX = /Icon$/u;
 
   const route = useRoute();
-  const { framework } = useFramework();
 
   const slug = computed(() => String(route.params.slug || ""));
   const icon = computed(() =>
@@ -35,12 +32,7 @@
   const pascalName = computed(() => kebabToPascalCase(slug.value));
   const formattedName = computed(() => slug.value.replace(DASH_REGEX, " "));
 
-  const backHref = computed(() => {
-    if (framework.value === DEFAULT_FRAMEWORK) {
-      return "/";
-    }
-    return { path: "/", query: { framework: framework.value } };
-  });
+  const backHref = "/";
 
   const canonicalUrl = computed(() => `${SITE.URL}/icons/${slug.value}`);
 
@@ -155,7 +147,7 @@
             {{ pascalName }}
           </h1>
           <p class="font-mono text-secondary text-sm">
-            Animated {{ formattedName }} icon for {{ getFrameworkName() }}
+            Animated {{ formattedName }} icon for Vue
           </p>
           <CliBlock
             class="mt-7 hidden px-0 min-[880px]:flex"

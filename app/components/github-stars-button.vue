@@ -8,9 +8,14 @@
     stars: number | null;
   }
 
-  const { data } = await useFetch<StarsResponse>("/api/github-stars");
+  interface AnimatedIconInstance {
+    startAnimation?: () => void;
+    stopAnimation?: () => void;
+  }
+
+  const { data } = useFetch<StarsResponse>("/api/github-stars");
   const stars = computed(() => data.value?.stars ?? null);
-  const starRef = ref<InstanceType<typeof StarIcon> | null>(null);
+  const starRef = ref<AnimatedIconInstance | null>(null);
 
   const handleMouseEnter = () => {
     starRef.value?.startAnimation?.();

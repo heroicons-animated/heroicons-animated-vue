@@ -5,9 +5,12 @@
   import AvatarImage from "~/components/ui/avatar-image.vue";
   import AvatarFallback from "~/components/ui/avatar-fallback.vue";
 
-  const arrowRef = ref<InstanceType<typeof ArrowTopRightOnSquareIcon> | null>(
-    null
-  );
+  interface AnimatedIconInstance {
+    startAnimation?: () => void;
+    stopAnimation?: () => void;
+  }
+
+  const arrowRef = ref<AnimatedIconInstance | null>(null);
 </script>
 
 <template>

@@ -22,7 +22,7 @@
   );
 
   const showLoading = ref(false);
-  let loadingTimer: number | undefined;
+  let loadingTimer: ReturnType<typeof setTimeout> | undefined;
 
   const clearLoadingTimer = () => {
     if (loadingTimer) {

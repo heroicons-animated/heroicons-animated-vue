@@ -5,8 +5,6 @@ type PackageManager = (typeof PACKAGE_MANAGER)[keyof typeof PACKAGE_MANAGER];
 
 export const getFileExtension = (): string => "vue";
 
-export const getFrameworkName = (): string => "Vue";
-
 export const getShadcnCLI = (): string => "shadcn-vue@latest";
 
 export const getRegistryPathPrefix = (): string => "/vue/";

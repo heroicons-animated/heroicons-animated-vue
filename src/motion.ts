@@ -49,6 +49,7 @@ const takeTransformOrigin = (value: unknown): string | null => {
     return value;
   }
   if (Array.isArray(value) && value.length > 0) {
+    // biome-ignore lint/style/useAtIndex: ES2020 lib target for package type-check does not include Array.prototype.at.
     const lastValue = value[value.length - 1];
     if (typeof lastValue === "string") {
       return lastValue;

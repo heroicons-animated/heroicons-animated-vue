@@ -3,9 +3,14 @@
   import MoonIcon from "@heroicons-animated/vue/moon";
   import SunIcon from "@heroicons-animated/vue/sun";
 
+  interface AnimatedIconInstance {
+    startAnimation?: () => void;
+    stopAnimation?: () => void;
+  }
+
   const isDark = ref(false);
-  const sunRef = ref<InstanceType<typeof SunIcon> | null>(null);
-  const moonRef = ref<InstanceType<typeof MoonIcon> | null>(null);
+  const sunRef = ref<AnimatedIconInstance | null>(null);
+  const moonRef = ref<AnimatedIconInstance | null>(null);
 
   const ICON_VARIANTS = {
     initial: { opacity: 0, scale: 0.6, filter: "blur(3px)" },

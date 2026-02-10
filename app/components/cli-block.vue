@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import {
+    type ComponentPublicInstance,
     computed,
     nextTick,
     onBeforeUnmount,
@@ -86,8 +87,8 @@
 
   const viewportRefs = ref<HTMLDivElement[]>([]);
 
-  const setViewportRef = (el: HTMLDivElement | null) => {
-    if (!el) {
+  const setViewportRef = (el: Element | ComponentPublicInstance | null) => {
+    if (!(el instanceof HTMLDivElement)) {
       return;
     }
     viewportRefs.value.push(el);
