@@ -16,87 +16,84 @@
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <path
-        ref="headRef"
-        d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25"
-      />
+      <path ref="headRef" d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25" />
     </svg>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArrowDownRightIcon",
-};
+  export default {
+    name: "ArrowDownRightIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const headVariants = {
-  normal: {
-    translateX: 0,
-    translateY: 0,
-  },
-  animate: {
-    translateX: [0, -3, 0],
-    translateY: [0, -3, 0],
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
+  const headVariants = {
+    normal: {
+      translateX: 0,
+      translateY: 0,
     },
-  },
-};
+    animate: {
+      translateX: [0, -3, 0],
+      translateY: [0, -3, 0],
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-const headRef = ref();
-const headMotion = useMotion(headRef, {
-  initial: headVariants.normal,
-  enter: headVariants.normal,
-});
+  const headRef = ref();
+  const headMotion = useMotion(headRef, {
+    initial: headVariants.normal,
+    enter: headVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  headMotion.apply(headVariants.animate);
-};
+  const startAnimation = () => {
+    headMotion.apply(headVariants.animate);
+  };
 
-const stopAnimation = () => {
-  headMotion.apply(headVariants.normal);
-};
+  const stopAnimation = () => {
+    headMotion.apply(headVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

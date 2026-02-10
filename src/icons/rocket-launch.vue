@@ -29,106 +29,106 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "RocketLaunchIcon",
-};
+  export default {
+    name: "RocketLaunchIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const FIRE_PATHS = [
-  "M4.81191 16.6408C3.71213 17.4612 3 18.7724 3 20.25C3 20.4869 3.0183 20.7195 3.05356 20.9464C3.28054 20.9817 3.51313 21 3.75 21C5.22758 21 6.53883 20.2879 7.35925 19.1881",
-  "M4.81191 16.6408C3.21213 17.9612 2.5 19.2724 2.5 20.75C2.5 20.9869 2.5183 21.2195 2.55356 21.4464C2.78054 21.4817 3.01313 21.5 3.25 21.5C4.72758 21.5 6.03883 20.7879 6.85925 19.6881",
-  "M4.81191 16.6408C3.51213 17.2612 3.2 18.1724 3.2 19.65C3.2 19.8869 3.2183 20.1195 3.25356 20.3464C3.48054 20.3817 3.71313 20.4 3.95 20.4C5.42758 20.4 6.73883 19.6879 7.55925 18.5881",
-  "M4.81191 16.6408C3.41213 18.0612 2.8 19.4724 2.8 20.95C2.8 21.1869 2.8183 21.4195 2.85356 21.6464C3.08054 21.6817 3.31313 21.7 3.55 21.7C5.02758 21.7 6.33883 20.9879 7.15925 19.8881",
-  "M4.81191 16.6408C3.71213 17.4612 3 18.7724 3 20.25C3 20.4869 3.0183 20.7195 3.05356 20.9464C3.28054 20.9817 3.51313 21 3.75 21C5.22758 21 6.53883 20.2879 7.35925 19.1881",
-];
-
-const floatVariants = {
-  normal: { x: 0, y: 0 },
-  animate: {
-    x: [0, 0, -3, 2, -2, 1, -1, 0],
-    y: [0, -3, 0, -2, -3, -1, -2, 0],
-    transition: {
-      duration: 6,
-      ease: "easeInOut",
-      repeat: Number.POSITIVE_INFINITY,
-      repeatType: "reverse" as const,
-      times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
-    },
-  },
-};
-
-const fireVariants = {
-  normal: { d: FIRE_PATHS[0] },
-  animate: {
-    d: FIRE_PATHS,
-    transition: {
-      duration: 2,
-      ease: [0.4, 0, 0.2, 1],
-      repeat: Number.POSITIVE_INFINITY,
-      times: [0, 0.2, 0.5, 0.8, 1],
-    },
-  },
-};
-
-const svgRef = ref<SVGSVGElement | null>(null);
-const fireRef = ref<SVGPathElement | null>(null);
-const svgMotion = useMotion(svgRef, {
-  initial: floatVariants.normal,
-  enter: floatVariants.normal,
-});
-const fireMotion = useMotion(fireRef, {
-  initial: fireVariants.normal,
-  enter: fireVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  svgMotion.apply(floatVariants.animate);
-  fireMotion.apply(fireVariants.animate);
-};
-
-const stopAnimation = () => {
-  svgMotion.apply(floatVariants.normal);
-  fireMotion.apply(fireVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const FIRE_PATHS = [
+    "M4.81191 16.6408C3.71213 17.4612 3 18.7724 3 20.25C3 20.4869 3.0183 20.7195 3.05356 20.9464C3.28054 20.9817 3.51313 21 3.75 21C5.22758 21 6.53883 20.2879 7.35925 19.1881",
+    "M4.81191 16.6408C3.21213 17.9612 2.5 19.2724 2.5 20.75C2.5 20.9869 2.5183 21.2195 2.55356 21.4464C2.78054 21.4817 3.01313 21.5 3.25 21.5C4.72758 21.5 6.03883 20.7879 6.85925 19.6881",
+    "M4.81191 16.6408C3.51213 17.2612 3.2 18.1724 3.2 19.65C3.2 19.8869 3.2183 20.1195 3.25356 20.3464C3.48054 20.3817 3.71313 20.4 3.95 20.4C5.42758 20.4 6.73883 19.6879 7.55925 18.5881",
+    "M4.81191 16.6408C3.41213 18.0612 2.8 19.4724 2.8 20.95C2.8 21.1869 2.8183 21.4195 2.85356 21.6464C3.08054 21.6817 3.31313 21.7 3.55 21.7C5.02758 21.7 6.33883 20.9879 7.15925 19.8881",
+    "M4.81191 16.6408C3.71213 17.4612 3 18.7724 3 20.25C3 20.4869 3.0183 20.7195 3.05356 20.9464C3.28054 20.9817 3.51313 21 3.75 21C5.22758 21 6.53883 20.2879 7.35925 19.1881",
+  ];
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const floatVariants = {
+    normal: { x: 0, y: 0 },
+    animate: {
+      x: [0, 0, -3, 2, -2, 1, -1, 0],
+      y: [0, -3, 0, -2, -3, -1, -2, 0],
+      transition: {
+        duration: 6,
+        ease: "easeInOut",
+        repeat: Number.POSITIVE_INFINITY,
+        repeatType: "reverse" as const,
+        times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1],
+      },
+    },
+  };
+
+  const fireVariants = {
+    normal: { d: FIRE_PATHS[0] },
+    animate: {
+      d: FIRE_PATHS,
+      transition: {
+        duration: 2,
+        ease: [0.4, 0, 0.2, 1],
+        repeat: Number.POSITIVE_INFINITY,
+        times: [0, 0.2, 0.5, 0.8, 1],
+      },
+    },
+  };
+
+  const svgRef = ref<SVGSVGElement | null>(null);
+  const fireRef = ref<SVGPathElement | null>(null);
+  const svgMotion = useMotion(svgRef, {
+    initial: floatVariants.normal,
+    enter: floatVariants.normal,
+  });
+  const fireMotion = useMotion(fireRef, {
+    initial: fireVariants.normal,
+    enter: fireVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    svgMotion.apply(floatVariants.animate);
+    fireMotion.apply(fireVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    svgMotion.apply(floatVariants.normal);
+    fireMotion.apply(fireVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

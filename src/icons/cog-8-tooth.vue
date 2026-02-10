@@ -28,74 +28,74 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Cog8ToothIcon",
-};
+  export default {
+    name: "Cog8ToothIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const variants = {
-  normal: {
-    rotate: 0,
-    transition: { type: "spring", stiffness: 50, damping: 10 },
-  },
-  animate: {
-    rotate: 180,
-    transition: { type: "spring", stiffness: 50, damping: 10 },
-  },
-};
-
-const svgRef = ref<SVGSVGElement | null>(null);
-const motionInstance = useMotion(svgRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionInstance.apply(variants.animate);
-};
-
-const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const variants = {
+    normal: {
+      rotate: 0,
+      transition: { type: "spring", stiffness: 50, damping: 10 },
+    },
+    animate: {
+      rotate: 180,
+      transition: { type: "spring", stiffness: 50, damping: 10 },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const svgRef = ref<SVGSVGElement | null>(null);
+  const motionInstance = useMotion(svgRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionInstance.apply(variants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionInstance.apply(variants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

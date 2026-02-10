@@ -36,106 +36,106 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ChatBubbleOvalLeftEllipsisIcon",
-};
+  export default {
+    name: "ChatBubbleOvalLeftEllipsisIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const dotVariants = (custom: number) => ({
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [1, 0, 0, 1, 1, 0, 0, 1],
-    transition: {
-      opacity: {
-        times: [
-          0,
-          0.1,
-          0.1 + custom * 0.1,
-          0.1 + custom * 0.1 + 0.1,
-          0.5,
-          0.6,
-          0.6 + custom * 0.1,
-          0.6 + custom * 0.1 + 0.1,
-        ],
-        duration: 1.5,
+  const dotVariants = (custom: number) => ({
+    normal: {
+      opacity: 1,
+    },
+    animate: {
+      opacity: [1, 0, 0, 1, 1, 0, 0, 1],
+      transition: {
+        opacity: {
+          times: [
+            0,
+            0.1,
+            0.1 + custom * 0.1,
+            0.1 + custom * 0.1 + 0.1,
+            0.5,
+            0.6,
+            0.6 + custom * 0.1,
+            0.6 + custom * 0.1 + 0.1,
+          ],
+          duration: 1.5,
+        },
       },
     },
-  },
-});
+  });
 
-const dot1Variants = dotVariants(0);
-const dot2Variants = dotVariants(1);
-const dot3Variants = dotVariants(2);
+  const dot1Variants = dotVariants(0);
+  const dot2Variants = dotVariants(1);
+  const dot3Variants = dotVariants(2);
 
-const dot1Ref = ref<SVGPathElement | null>();
-const dot2Ref = ref<SVGPathElement | null>();
-const dot3Ref = ref<SVGPathElement | null>();
+  const dot1Ref = ref<SVGPathElement | null>();
+  const dot2Ref = ref<SVGPathElement | null>();
+  const dot3Ref = ref<SVGPathElement | null>();
 
-const dot1Motion = useMotion(dot1Ref, {
-  initial: dot1Variants.normal,
-  enter: dot1Variants.normal,
-});
-const dot2Motion = useMotion(dot2Ref, {
-  initial: dot2Variants.normal,
-  enter: dot2Variants.normal,
-});
-const dot3Motion = useMotion(dot3Ref, {
-  initial: dot3Variants.normal,
-  enter: dot3Variants.normal,
-});
+  const dot1Motion = useMotion(dot1Ref, {
+    initial: dot1Variants.normal,
+    enter: dot1Variants.normal,
+  });
+  const dot2Motion = useMotion(dot2Ref, {
+    initial: dot2Variants.normal,
+    enter: dot2Variants.normal,
+  });
+  const dot3Motion = useMotion(dot3Ref, {
+    initial: dot3Variants.normal,
+    enter: dot3Variants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  dot1Motion.apply(dot1Variants.animate);
-  dot2Motion.apply(dot2Variants.animate);
-  dot3Motion.apply(dot3Variants.animate);
-};
+  const startAnimation = () => {
+    dot1Motion.apply(dot1Variants.animate);
+    dot2Motion.apply(dot2Variants.animate);
+    dot3Motion.apply(dot3Variants.animate);
+  };
 
-const stopAnimation = () => {
-  dot1Motion.apply(dot1Variants.normal);
-  dot2Motion.apply(dot2Variants.normal);
-  dot3Motion.apply(dot3Variants.normal);
-};
+  const stopAnimation = () => {
+    dot1Motion.apply(dot1Variants.normal);
+    dot2Motion.apply(dot2Variants.normal);
+    dot3Motion.apply(dot3Variants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

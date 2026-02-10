@@ -32,98 +32,98 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "BookOpenIcon",
-};
+  export default {
+    name: "BookOpenIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const leftPageVariants = {
-  normal: {
-    rotateY: 0,
-  },
-  animate: {
-    rotateY: [0, 15, 0],
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const rightPageVariants = {
-  normal: {
-    rotateY: 0,
-  },
-  animate: {
-    rotateY: [0, -15, 0],
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const leftPageRef = ref<SVGGElement>();
-const rightPageRef = ref<SVGGElement>();
-
-const leftPageMotion = useMotion(leftPageRef, {
-  initial: leftPageVariants.normal,
-  enter: leftPageVariants.normal,
-});
-
-const rightPageMotion = useMotion(rightPageRef, {
-  initial: rightPageVariants.normal,
-  enter: rightPageVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  leftPageMotion.apply(leftPageVariants.animate);
-  rightPageMotion.apply(rightPageVariants.animate);
-};
-
-const stopAnimation = () => {
-  leftPageMotion.apply(leftPageVariants.normal);
-  rightPageMotion.apply(rightPageVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const leftPageVariants = {
+    normal: {
+      rotateY: 0,
+    },
+    animate: {
+      rotateY: [0, 15, 0],
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const rightPageVariants = {
+    normal: {
+      rotateY: 0,
+    },
+    animate: {
+      rotateY: [0, -15, 0],
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const leftPageRef = ref<SVGGElement>();
+  const rightPageRef = ref<SVGGElement>();
+
+  const leftPageMotion = useMotion(leftPageRef, {
+    initial: leftPageVariants.normal,
+    enter: leftPageVariants.normal,
+  });
+
+  const rightPageMotion = useMotion(rightPageRef, {
+    initial: rightPageVariants.normal,
+    enter: rightPageVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    leftPageMotion.apply(leftPageVariants.animate);
+    rightPageMotion.apply(rightPageVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    leftPageMotion.apply(leftPageVariants.normal);
+    rightPageMotion.apply(rightPageVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

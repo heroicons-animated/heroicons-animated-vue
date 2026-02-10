@@ -32,109 +32,109 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArchiveBoxIcon",
-};
+  export default {
+    name: "ArchiveBoxIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const springTransition = {
-  duration: 0.2,
-  type: "spring" as const,
-  stiffness: 200,
-  damping: 25,
-};
-
-const lidVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: -1.5,
-    transition: springTransition,
-  },
-};
-
-const pathVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: 1,
-    transition: springTransition,
-  },
-};
-
-const path1Ref = ref<SVGPathElement | null>(null);
-const path2Ref = ref<SVGPathElement | null>(null);
-const path3Ref = ref<SVGPathElement | null>(null);
-const path4Ref = ref<SVGPathElement | null>(null);
-const lidRef = ref<SVGPathElement | null>(null);
-const pathRefs = [path1Ref, path2Ref, path3Ref, path4Ref] as const;
-const pathMotions = pathRefs.map((pathRef) =>
-  useMotion(pathRef, {
-    initial: pathVariants.normal,
-    enter: pathVariants.normal,
-  })
-);
-const lidMotion = useMotion(lidRef, {
-  initial: lidVariants.normal,
-  enter: lidVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  for (const pathMotion of pathMotions) {
-    pathMotion.apply(pathVariants.animate);
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-  lidMotion.apply(lidVariants.animate);
-};
 
-const stopAnimation = () => {
-  for (const pathMotion of pathMotions) {
-    pathMotion.apply(pathVariants.normal);
-  }
-  lidMotion.apply(lidVariants.normal);
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const springTransition = {
+    duration: 0.2,
+    type: "spring" as const,
+    stiffness: 200,
+    damping: 25,
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const lidVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: -1.5,
+      transition: springTransition,
+    },
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const pathVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: 1,
+      transition: springTransition,
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const path1Ref = ref<SVGPathElement | null>(null);
+  const path2Ref = ref<SVGPathElement | null>(null);
+  const path3Ref = ref<SVGPathElement | null>(null);
+  const path4Ref = ref<SVGPathElement | null>(null);
+  const lidRef = ref<SVGPathElement | null>(null);
+  const pathRefs = [path1Ref, path2Ref, path3Ref, path4Ref] as const;
+  const pathMotions = pathRefs.map((pathRef) =>
+    useMotion(pathRef, {
+      initial: pathVariants.normal,
+      enter: pathVariants.normal,
+    })
+  );
+  const lidMotion = useMotion(lidRef, {
+    initial: lidVariants.normal,
+    enter: lidVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    for (const pathMotion of pathMotions) {
+      pathMotion.apply(pathVariants.animate);
+    }
+    lidMotion.apply(lidVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    for (const pathMotion of pathMotions) {
+      pathMotion.apply(pathVariants.normal);
+    }
+    lidMotion.apply(lidVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

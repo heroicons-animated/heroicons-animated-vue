@@ -35,94 +35,98 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "UserGroupIcon",
-};
+  export default {
+    name: "UserGroupIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const rightVariants = {
-  normal: {
-    translateX: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 200, damping: 13 },
-  },
-  animate: {
-    translateX: [-6, 0],
-    opacity: [0, 0, 1],
-    transition: {
-      delay: 0.1,
-      translateX: { type: "spring", stiffness: 200, damping: 13 },
-      opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+  const rightVariants = {
+    normal: {
+      translateX: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 200, damping: 13 },
     },
-  },
-};
-
-const leftVariants = {
-  normal: {
-    translateX: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 200, damping: 13 },
-  },
-  animate: {
-    translateX: [6, 0],
-    opacity: [0, 0, 1],
-    transition: {
-      delay: 0.1,
-      translateX: { type: "spring", stiffness: 200, damping: 13 },
-      opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+    animate: {
+      translateX: [-6, 0],
+      opacity: [0, 0, 1],
+      transition: {
+        delay: 0.1,
+        translateX: { type: "spring", stiffness: 200, damping: 13 },
+        opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+      },
     },
-  },
-};
+  };
 
-const rightRef = ref<SVGPathElement | null>(null);
-const leftRef = ref<SVGPathElement | null>(null);
-const rightMotion = useMotion(rightRef, {
-  initial: rightVariants.normal,
-  enter: rightVariants.normal,
-});
-const leftMotion = useMotion(leftRef, {
-  initial: leftVariants.normal,
-  enter: leftVariants.normal,
-});
+  const leftVariants = {
+    normal: {
+      translateX: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 200, damping: 13 },
+    },
+    animate: {
+      translateX: [6, 0],
+      opacity: [0, 0, 1],
+      transition: {
+        delay: 0.1,
+        translateX: { type: "spring", stiffness: 200, damping: 13 },
+        opacity: { duration: 0.4, times: [0, 0.3, 1], ease: "easeOut" },
+      },
+    },
+  };
 
-let isControlled = false;
+  const rightRef = ref<SVGPathElement | null>(null);
+  const leftRef = ref<SVGPathElement | null>(null);
+  const rightMotion = useMotion(rightRef, {
+    initial: rightVariants.normal,
+    enter: rightVariants.normal,
+  });
+  const leftMotion = useMotion(leftRef, {
+    initial: leftVariants.normal,
+    enter: leftVariants.normal,
+  });
 
-const startAnimation = () => {
-  rightMotion.apply(rightVariants.animate);
-  leftMotion.apply(leftVariants.animate);
-};
+  let isControlled = false;
 
-const stopAnimation = () => {
-  rightMotion.apply(rightVariants.normal);
-  leftMotion.apply(leftVariants.normal);
-};
+  const startAnimation = () => {
+    rightMotion.apply(rightVariants.animate);
+    leftMotion.apply(leftVariants.animate);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const stopAnimation = () => {
+    rightMotion.apply(rightVariants.normal);
+    leftMotion.apply(leftVariants.normal);
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

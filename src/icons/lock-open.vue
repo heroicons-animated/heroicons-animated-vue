@@ -29,86 +29,86 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "LockOpenIcon",
-};
+  export default {
+    name: "LockOpenIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const svgVariants = {
-  normal: { scale: 1 },
-  animate: {
-    scale: [1, 1.05, 1],
-    transition: { duration: 0.4, ease: "easeInOut" },
-  },
-};
-
-const shackleVariants = {
-  normal: { y: 0 },
-  animate: {
-    y: [0, -1.25, 0],
-    transition: { duration: 0.4, ease: "easeOut" },
-  },
-};
-
-const svgRef = ref<SVGSVGElement | null>(null);
-const shackleRef = ref<SVGPathElement | null>(null);
-const svgMotion = useMotion(svgRef, {
-  initial: svgVariants.normal,
-  enter: svgVariants.normal,
-});
-const shackleMotion = useMotion(shackleRef, {
-  initial: shackleVariants.normal,
-  enter: shackleVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  svgMotion.apply(svgVariants.animate);
-  shackleMotion.apply(shackleVariants.animate);
-};
-
-const stopAnimation = () => {
-  svgMotion.apply(svgVariants.normal);
-  shackleMotion.apply(shackleVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const svgVariants = {
+    normal: { scale: 1 },
+    animate: {
+      scale: [1, 1.05, 1],
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const shackleVariants = {
+    normal: { y: 0 },
+    animate: {
+      y: [0, -1.25, 0],
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
+  };
+
+  const svgRef = ref<SVGSVGElement | null>(null);
+  const shackleRef = ref<SVGPathElement | null>(null);
+  const svgMotion = useMotion(svgRef, {
+    initial: svgVariants.normal,
+    enter: svgVariants.normal,
+  });
+  const shackleMotion = useMotion(shackleRef, {
+    initial: shackleVariants.normal,
+    enter: shackleVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    svgMotion.apply(svgVariants.animate);
+    shackleMotion.apply(shackleVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    svgMotion.apply(svgVariants.normal);
+    shackleMotion.apply(shackleVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

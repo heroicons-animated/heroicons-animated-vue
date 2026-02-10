@@ -26,86 +26,86 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "SpeakerXMarkIcon",
-};
+  export default {
+    name: "SpeakerXMarkIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const lineVariants = {
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-  },
-};
-
-const delayedAnimateVariant = {
-  ...lineVariants.animate,
-  transition: { delay: 0.2 },
-};
-
-const line1Ref = ref<SVGPathElement | null>(null);
-const line2Ref = ref<SVGPathElement | null>(null);
-const motion1 = useMotion(line1Ref, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-const motion2 = useMotion(line2Ref, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motion1.apply(lineVariants.animate);
-  motion2.apply(delayedAnimateVariant);
-};
-
-const stopAnimation = () => {
-  motion1.apply(lineVariants.normal);
-  motion2.apply(lineVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const lineVariants = {
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const delayedAnimateVariant = {
+    ...lineVariants.animate,
+    transition: { delay: 0.2 },
+  };
+
+  const line1Ref = ref<SVGPathElement | null>(null);
+  const line2Ref = ref<SVGPathElement | null>(null);
+  const motion1 = useMotion(line1Ref, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+  const motion2 = useMotion(line2Ref, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motion1.apply(lineVariants.animate);
+    motion2.apply(delayedAnimateVariant);
+  };
+
+  const stopAnimation = () => {
+    motion1.apply(lineVariants.normal);
+    motion2.apply(lineVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

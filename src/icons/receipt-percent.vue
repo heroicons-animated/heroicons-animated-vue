@@ -33,101 +33,105 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ReceiptPercentIcon",
-};
+  export default {
+    name: "ReceiptPercentIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const percentVariants = {
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: { duration: 0.4, ease: "easeOut", opacity: { duration: 0.1 } },
-  },
-};
-
-const createDotVariants = (delay: number) => ({
-  normal: {
-    scale: 1,
-    opacity: 1,
-  },
-  animate: {
-    scale: [0, 1.2, 1],
-    opacity: [0, 1, 1],
-    transition: { delay, duration: 0.3, ease: "easeOut" },
-  },
-});
-
-const percentLineRef = ref<SVGPathElement | null>(null);
-const dot1Ref = ref<SVGPathElement | null>(null);
-const dot2Ref = ref<SVGPathElement | null>(null);
-const percentMotion = useMotion(percentLineRef, {
-  initial: percentVariants.normal,
-  enter: percentVariants.normal,
-});
-const dot1Motion = useMotion(dot1Ref, {
-  initial: createDotVariants(0.2).normal,
-  enter: createDotVariants(0.2).normal,
-});
-const dot2Motion = useMotion(dot2Ref, {
-  initial: createDotVariants(0.35).normal,
-  enter: createDotVariants(0.35).normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  percentMotion.apply(percentVariants.animate);
-  dot1Motion.apply(createDotVariants(0.2).animate);
-  dot2Motion.apply(createDotVariants(0.35).animate);
-};
-
-const stopAnimation = () => {
-  percentMotion.apply(percentVariants.normal);
-  dot1Motion.apply(createDotVariants(0.2).normal);
-  dot2Motion.apply(createDotVariants(0.35).normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const percentVariants = {
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+        opacity: { duration: 0.1 },
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const createDotVariants = (delay: number) => ({
+    normal: {
+      scale: 1,
+      opacity: 1,
+    },
+    animate: {
+      scale: [0, 1.2, 1],
+      opacity: [0, 1, 1],
+      transition: { delay, duration: 0.3, ease: "easeOut" },
+    },
+  });
+
+  const percentLineRef = ref<SVGPathElement | null>(null);
+  const dot1Ref = ref<SVGPathElement | null>(null);
+  const dot2Ref = ref<SVGPathElement | null>(null);
+  const percentMotion = useMotion(percentLineRef, {
+    initial: percentVariants.normal,
+    enter: percentVariants.normal,
+  });
+  const dot1Motion = useMotion(dot1Ref, {
+    initial: createDotVariants(0.2).normal,
+    enter: createDotVariants(0.2).normal,
+  });
+  const dot2Motion = useMotion(dot2Ref, {
+    initial: createDotVariants(0.35).normal,
+    enter: createDotVariants(0.35).normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    percentMotion.apply(percentVariants.animate);
+    dot1Motion.apply(createDotVariants(0.2).animate);
+    dot2Motion.apply(createDotVariants(0.35).animate);
+  };
+
+  const stopAnimation = () => {
+    percentMotion.apply(percentVariants.normal);
+    dot1Motion.apply(createDotVariants(0.2).normal);
+    dot2Motion.apply(createDotVariants(0.35).normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

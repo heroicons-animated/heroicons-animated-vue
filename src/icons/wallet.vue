@@ -32,74 +32,80 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "WalletIcon",
-};
+  export default {
+    name: "WalletIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const cardNormal = {
-  opacity: 1,
-  y: 0,
-};
-const createCardAnimate = (delay: number) => ({
-  opacity: [0, 1],
-  y: [2, 0],
-  transition: { duration: 0.4, delay, ease: "easeOut" },
-});
-
-const card1Ref = ref<SVGPathElement | null>(null);
-const card2Ref = ref<SVGPathElement | null>(null);
-const motion1 = useMotion(card1Ref, { initial: cardNormal, enter: cardNormal });
-const motion2 = useMotion(card2Ref, { initial: cardNormal, enter: cardNormal });
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motion1.apply(createCardAnimate(0));
-  motion2.apply(createCardAnimate(0.15));
-};
-
-const stopAnimation = () => {
-  motion1.apply(cardNormal);
-  motion2.apply(cardNormal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const cardNormal = {
+    opacity: 1,
+    y: 0,
+  };
+  const createCardAnimate = (delay: number) => ({
+    opacity: [0, 1],
+    y: [2, 0],
+    transition: { duration: 0.4, delay, ease: "easeOut" },
+  });
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const card1Ref = ref<SVGPathElement | null>(null);
+  const card2Ref = ref<SVGPathElement | null>(null);
+  const motion1 = useMotion(card1Ref, {
+    initial: cardNormal,
+    enter: cardNormal,
+  });
+  const motion2 = useMotion(card2Ref, {
+    initial: cardNormal,
+    enter: cardNormal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motion1.apply(createCardAnimate(0));
+    motion2.apply(createCardAnimate(0.15));
+  };
+
+  const stopAnimation = () => {
+    motion1.apply(cardNormal);
+    motion2.apply(cardNormal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

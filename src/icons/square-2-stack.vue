@@ -29,85 +29,89 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Square2StackIcon",
-};
+  export default {
+    name: "Square2StackIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const backVariants = {
-  normal: {
-    x: 0,
-    y: 0,
-    opacity: 1,
-  },
-  animate: {
-    x: [-4, 0],
-    y: [-4, 0],
-    opacity: [0, 1],
-    transition: { duration: 0.3, ease: "easeOut" },
-  },
-};
+  const backVariants = {
+    normal: {
+      x: 0,
+      y: 0,
+      opacity: 1,
+    },
+    animate: {
+      x: [-4, 0],
+      y: [-4, 0],
+      opacity: [0, 1],
+      transition: { duration: 0.3, ease: "easeOut" },
+    },
+  };
 
-const frontVariants = {
-  normal: { x: 0, y: 0 },
-  animate: {
-    x: [0, 1, 0],
-    y: [0, 1, 0],
-    transition: { duration: 0.3, ease: "easeInOut" },
-  },
-};
+  const frontVariants = {
+    normal: { x: 0, y: 0 },
+    animate: {
+      x: [0, 1, 0],
+      y: [0, 1, 0],
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+  };
 
-const backRef = ref<SVGPathElement | null>(null);
-const frontRef = ref<SVGPathElement | null>(null);
-const backMotion = useMotion(backRef, {
-  initial: backVariants.normal,
-  enter: backVariants.normal,
-});
-const frontMotion = useMotion(frontRef, {
-  initial: frontVariants.normal,
-  enter: frontVariants.normal,
-});
+  const backRef = ref<SVGPathElement | null>(null);
+  const frontRef = ref<SVGPathElement | null>(null);
+  const backMotion = useMotion(backRef, {
+    initial: backVariants.normal,
+    enter: backVariants.normal,
+  });
+  const frontMotion = useMotion(frontRef, {
+    initial: frontVariants.normal,
+    enter: frontVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  backMotion.apply(backVariants.animate);
-  frontMotion.apply(frontVariants.animate);
-};
+  const startAnimation = () => {
+    backMotion.apply(backVariants.animate);
+    frontMotion.apply(frontVariants.animate);
+  };
 
-const stopAnimation = () => {
-  backMotion.apply(backVariants.normal);
-  frontMotion.apply(frontVariants.normal);
-};
+  const stopAnimation = () => {
+    backMotion.apply(backVariants.normal);
+    frontMotion.apply(frontVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) { startAnimation(); }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) { stopAnimation(); }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

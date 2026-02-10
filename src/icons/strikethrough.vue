@@ -25,74 +25,74 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "StrikethroughIcon",
-};
+  export default {
+    name: "StrikethroughIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const lineVariants = {
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: { duration: 0.4 },
-  },
-};
-
-const lineRef = ref<SVGPathElement | null>(null);
-const motionInstance = useMotion(lineRef, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionInstance.apply(lineVariants.animate);
-};
-
-const stopAnimation = () => {
-  motionInstance.apply(lineVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const lineVariants = {
+    normal: {
+      opacity: 1,
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: { duration: 0.4 },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const lineRef = ref<SVGPathElement | null>(null);
+  const motionInstance = useMotion(lineRef, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionInstance.apply(lineVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionInstance.apply(lineVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

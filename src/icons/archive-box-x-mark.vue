@@ -33,141 +33,141 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArchiveBoxXMarkIcon",
-};
+  export default {
+    name: "ArchiveBoxXMarkIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const springTransition = {
-  duration: 0.2,
-  type: "spring" as const,
-  stiffness: 200,
-  damping: 25,
-};
+  const springTransition = {
+    duration: 0.2,
+    type: "spring" as const,
+    stiffness: 200,
+    damping: 25,
+  };
 
-const lidVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: -1.5,
-    transition: springTransition,
-  },
-};
-
-const pathVariants = {
-  normal: {
-    translateY: 0,
-    transition: springTransition,
-  },
-  animate: {
-    translateY: 1,
-    transition: springTransition,
-  },
-};
-
-const createXMarkVariants = (delay: number) => ({
-  normal: {
-    opacity: 1,
-    pathLength: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      delay,
+  const lidVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
     },
-  },
-});
+    animate: {
+      translateY: -1.5,
+      transition: springTransition,
+    },
+  };
 
-const xMark1Variants = createXMarkVariants(0.2);
-const xMark2Variants = createXMarkVariants(0.4);
+  const pathVariants = {
+    normal: {
+      translateY: 0,
+      transition: springTransition,
+    },
+    animate: {
+      translateY: 1,
+      transition: springTransition,
+    },
+  };
 
-const path1Ref = ref<SVGPathElement | null>(null);
-const path2Ref = ref<SVGPathElement | null>(null);
-const path3Ref = ref<SVGPathElement | null>(null);
-const xMark1Ref = ref<SVGPathElement | null>(null);
-const xMark2Ref = ref<SVGPathElement | null>(null);
-const lidRef = ref<SVGPathElement | null>(null);
-const pathRefs = [path1Ref, path2Ref, path3Ref] as const;
-const pathMotions = pathRefs.map((pathRef) =>
-  useMotion(pathRef, {
-    initial: pathVariants.normal,
-    enter: pathVariants.normal,
-  })
-);
-const xMarkRefs = [xMark1Ref, xMark2Ref] as const;
-const xMarkVariants = [xMark1Variants, xMark2Variants] as const;
-const xMarkMotions = xMarkRefs.map((xMarkRef, index) =>
-  useMotion(xMarkRef, {
-    initial: xMarkVariants[index].normal,
-    enter: xMarkVariants[index].normal,
-  })
-);
-const lidMotion = useMotion(lidRef, {
-  initial: lidVariants.normal,
-  enter: lidVariants.normal,
-});
+  const createXMarkVariants = (delay: number) => ({
+    normal: {
+      opacity: 1,
+      pathLength: 1,
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        delay,
+      },
+    },
+  });
 
-let isControlled = false;
+  const xMark1Variants = createXMarkVariants(0.2);
+  const xMark2Variants = createXMarkVariants(0.4);
 
-const startAnimation = () => {
-  for (const pathMotion of pathMotions) {
-    pathMotion.apply(pathVariants.animate);
-  }
-  for (const [index, xMarkMotion] of xMarkMotions.entries()) {
-    xMarkMotion.apply(xMarkVariants[index].animate);
-  }
-  lidMotion.apply(lidVariants.animate);
-};
+  const path1Ref = ref<SVGPathElement | null>(null);
+  const path2Ref = ref<SVGPathElement | null>(null);
+  const path3Ref = ref<SVGPathElement | null>(null);
+  const xMark1Ref = ref<SVGPathElement | null>(null);
+  const xMark2Ref = ref<SVGPathElement | null>(null);
+  const lidRef = ref<SVGPathElement | null>(null);
+  const pathRefs = [path1Ref, path2Ref, path3Ref] as const;
+  const pathMotions = pathRefs.map((pathRef) =>
+    useMotion(pathRef, {
+      initial: pathVariants.normal,
+      enter: pathVariants.normal,
+    })
+  );
+  const xMarkRefs = [xMark1Ref, xMark2Ref] as const;
+  const xMarkVariants = [xMark1Variants, xMark2Variants] as const;
+  const xMarkMotions = xMarkRefs.map((xMarkRef, index) =>
+    useMotion(xMarkRef, {
+      initial: xMarkVariants[index].normal,
+      enter: xMarkVariants[index].normal,
+    })
+  );
+  const lidMotion = useMotion(lidRef, {
+    initial: lidVariants.normal,
+    enter: lidVariants.normal,
+  });
 
-const stopAnimation = () => {
-  for (const pathMotion of pathMotions) {
-    pathMotion.apply(pathVariants.normal);
-  }
-  for (const [index, xMarkMotion] of xMarkMotions.entries()) {
-    xMarkMotion.apply(xMarkVariants[index].normal);
-  }
-  lidMotion.apply(lidVariants.normal);
-};
+  let isControlled = false;
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const startAnimation = () => {
+    for (const pathMotion of pathMotions) {
+      pathMotion.apply(pathVariants.animate);
+    }
+    for (const [index, xMarkMotion] of xMarkMotions.entries()) {
+      xMarkMotion.apply(xMarkVariants[index].animate);
+    }
+    lidMotion.apply(lidVariants.animate);
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const stopAnimation = () => {
+    for (const pathMotion of pathMotions) {
+      pathMotion.apply(pathVariants.normal);
+    }
+    for (const [index, xMarkMotion] of xMarkMotions.entries()) {
+      xMarkMotion.apply(xMarkVariants[index].normal);
+    }
+    lidMotion.apply(lidVariants.normal);
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

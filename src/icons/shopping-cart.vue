@@ -25,79 +25,79 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ShoppingCartIcon",
-};
+  export default {
+    name: "ShoppingCartIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const cartVariants = {
-  normal: {
-    scale: 1,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
-  animate: {
-    scale: 1.1,
-    y: [0, -5, 0],
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-      y: { repeat: 1, delay: 0.1, duration: 0.4 },
+  const cartVariants = {
+    normal: {
+      scale: 1,
+      transition: { duration: 0.2, ease: "easeOut" },
     },
-  },
-};
+    animate: {
+      scale: 1.1,
+      y: [0, -5, 0],
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        y: { repeat: 1, delay: 0.1, duration: 0.4 },
+      },
+    },
+  };
 
-const svgRef = ref<SVGSVGElement | null>(null);
-const motionInstance = useMotion(svgRef, {
-  initial: cartVariants.normal,
-  enter: cartVariants.normal,
-});
+  const svgRef = ref<SVGSVGElement | null>(null);
+  const motionInstance = useMotion(svgRef, {
+    initial: cartVariants.normal,
+    enter: cartVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motionInstance.apply(cartVariants.animate);
-};
+  const startAnimation = () => {
+    motionInstance.apply(cartVariants.animate);
+  };
 
-const stopAnimation = () => {
-  motionInstance.apply(cartVariants.normal);
-};
+  const stopAnimation = () => {
+    motionInstance.apply(cartVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

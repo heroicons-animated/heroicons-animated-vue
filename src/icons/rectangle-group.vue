@@ -33,89 +33,89 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "RectangleGroupIcon",
-};
+  export default {
+    name: "RectangleGroupIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const createRectVariants = (delay: number) => ({
-  normal: {
-    scale: 1,
-    opacity: 1,
-  },
-  animate: {
-    scale: [0.9, 1.05, 1],
-    opacity: [0.5, 1, 1],
-    transition: { delay, duration: 0.3, ease: "easeOut" },
-  },
-});
-
-const rect0Ref = ref<SVGPathElement | null>(null);
-const rect1Ref = ref<SVGPathElement | null>(null);
-const rect2Ref = ref<SVGPathElement | null>(null);
-const motion0 = useMotion(rect0Ref, {
-  initial: createRectVariants(0).normal,
-  enter: createRectVariants(0).normal,
-});
-const motion1 = useMotion(rect1Ref, {
-  initial: createRectVariants(0.1).normal,
-  enter: createRectVariants(0.1).normal,
-});
-const motion2 = useMotion(rect2Ref, {
-  initial: createRectVariants(0.2).normal,
-  enter: createRectVariants(0.2).normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motion0.apply(createRectVariants(0).animate);
-  motion1.apply(createRectVariants(0.1).animate);
-  motion2.apply(createRectVariants(0.2).animate);
-};
-
-const stopAnimation = () => {
-  motion0.apply(createRectVariants(0).normal);
-  motion1.apply(createRectVariants(0.1).normal);
-  motion2.apply(createRectVariants(0.2).normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const createRectVariants = (delay: number) => ({
+    normal: {
+      scale: 1,
+      opacity: 1,
+    },
+    animate: {
+      scale: [0.9, 1.05, 1],
+      opacity: [0.5, 1, 1],
+      transition: { delay, duration: 0.3, ease: "easeOut" },
+    },
+  });
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const rect0Ref = ref<SVGPathElement | null>(null);
+  const rect1Ref = ref<SVGPathElement | null>(null);
+  const rect2Ref = ref<SVGPathElement | null>(null);
+  const motion0 = useMotion(rect0Ref, {
+    initial: createRectVariants(0).normal,
+    enter: createRectVariants(0).normal,
+  });
+  const motion1 = useMotion(rect1Ref, {
+    initial: createRectVariants(0.1).normal,
+    enter: createRectVariants(0.1).normal,
+  });
+  const motion2 = useMotion(rect2Ref, {
+    initial: createRectVariants(0.2).normal,
+    enter: createRectVariants(0.2).normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motion0.apply(createRectVariants(0).animate);
+    motion1.apply(createRectVariants(0.1).animate);
+    motion2.apply(createRectVariants(0.2).animate);
+  };
+
+  const stopAnimation = () => {
+    motion0.apply(createRectVariants(0).normal);
+    motion1.apply(createRectVariants(0.1).normal);
+    motion2.apply(createRectVariants(0.2).normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

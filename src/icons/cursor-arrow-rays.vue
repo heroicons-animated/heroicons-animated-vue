@@ -31,107 +31,111 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CursorArrowRaysIcon",
-};
+  export default {
+    name: "CursorArrowRaysIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const cursorVariants = {
-  normal: { x: 0, y: 0 },
-  animate: {
-    x: [0, 0, -3, 0],
-    y: [0, -4, 0, 0],
-    transition: { duration: 1, bounce: 0.3 },
-  },
-};
-
-const rayCustoms = [
-  { x: 0, y: -2 },
-  { x: 2, y: -2 },
-  { x: 2, y: 0 },
-  { x: -2, y: 2 },
-  { x: -2, y: 0 },
-  { x: -2, y: -2 },
-];
-
-const raySpread = (custom: { x: number; y: number }) => ({
-  opacity: [0, 1, 0, 0, 0, 0, 1],
-  x: [0, custom.x, 0, 0],
-  y: [0, custom.y, 0, 0],
-  transition: {
-    ease: "easeInOut",
-    duration: 1,
-    delay: 1.3,
-  },
-});
-
-const rayNormal = { opacity: 1, x: 0, y: 0 };
-
-const cursorRef = ref<SVGPathElement | null>(null);
-const r0 = ref<SVGPathElement | null>(null);
-const r1 = ref<SVGPathElement | null>(null);
-const r2 = ref<SVGPathElement | null>(null);
-const r3 = ref<SVGPathElement | null>(null);
-const r4 = ref<SVGPathElement | null>(null);
-const r5 = ref<SVGPathElement | null>(null);
-
-const cursorMotion = useMotion(cursorRef, {
-  initial: cursorVariants.normal,
-  enter: cursorVariants.normal,
-});
-const rayMotions = [
-  useMotion(r0, { initial: rayNormal, enter: rayNormal }),
-  useMotion(r1, { initial: rayNormal, enter: rayNormal }),
-  useMotion(r2, { initial: rayNormal, enter: rayNormal }),
-  useMotion(r3, { initial: rayNormal, enter: rayNormal }),
-  useMotion(r4, { initial: rayNormal, enter: rayNormal }),
-  useMotion(r5, { initial: rayNormal, enter: rayNormal }),
-];
-
-let isControlled = false;
-
-const startAnimation = () => {
-  cursorMotion.apply(cursorVariants.animate);
-  for (let i = 0; i < 6; i++) {
-    rayMotions[i].apply(raySpread(rayCustoms[i]));
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const stopAnimation = () => {
-  cursorMotion.apply(cursorVariants.normal);
-  for (let i = 0; i < 6; i++) {
-    rayMotions[i].apply(rayNormal);
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const cursorVariants = {
+    normal: { x: 0, y: 0 },
+    animate: {
+      x: [0, 0, -3, 0],
+      y: [0, -4, 0, 0],
+      transition: { duration: 1, bounce: 0.3 },
+    },
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const rayCustoms = [
+    { x: 0, y: -2 },
+    { x: 2, y: -2 },
+    { x: 2, y: 0 },
+    { x: -2, y: 2 },
+    { x: -2, y: 0 },
+    { x: -2, y: -2 },
+  ];
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const raySpread = (custom: { x: number; y: number }) => ({
+    opacity: [0, 1, 0, 0, 0, 0, 1],
+    x: [0, custom.x, 0, 0],
+    y: [0, custom.y, 0, 0],
+    transition: {
+      ease: "easeInOut",
+      duration: 1,
+      delay: 1.3,
+    },
+  });
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  const rayNormal = { opacity: 1, x: 0, y: 0 };
+
+  const cursorRef = ref<SVGPathElement | null>(null);
+  const r0 = ref<SVGPathElement | null>(null);
+  const r1 = ref<SVGPathElement | null>(null);
+  const r2 = ref<SVGPathElement | null>(null);
+  const r3 = ref<SVGPathElement | null>(null);
+  const r4 = ref<SVGPathElement | null>(null);
+  const r5 = ref<SVGPathElement | null>(null);
+
+  const cursorMotion = useMotion(cursorRef, {
+    initial: cursorVariants.normal,
+    enter: cursorVariants.normal,
+  });
+  const rayMotions = [
+    useMotion(r0, { initial: rayNormal, enter: rayNormal }),
+    useMotion(r1, { initial: rayNormal, enter: rayNormal }),
+    useMotion(r2, { initial: rayNormal, enter: rayNormal }),
+    useMotion(r3, { initial: rayNormal, enter: rayNormal }),
+    useMotion(r4, { initial: rayNormal, enter: rayNormal }),
+    useMotion(r5, { initial: rayNormal, enter: rayNormal }),
+  ];
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    cursorMotion.apply(cursorVariants.animate);
+    for (let i = 0; i < 6; i++) {
+      rayMotions[i].apply(raySpread(rayCustoms[i]));
+    }
+  };
+
+  const stopAnimation = () => {
+    cursorMotion.apply(cursorVariants.normal);
+    for (let i = 0; i < 6; i++) {
+      rayMotions[i].apply(rayNormal);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

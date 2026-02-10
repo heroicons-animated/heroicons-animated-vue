@@ -29,86 +29,86 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ServerIcon",
-};
+  export default {
+    name: "ServerIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const containerVariants = {
-  normal: { y: 0 },
-  animate: {
-    y: [0, -2, 0],
-    transition: { duration: 0.4, ease: "easeInOut" },
-  },
-};
-
-const lightVariants = {
-  normal: { opacity: 1 },
-  animate: {
-    opacity: [1, 0.4, 1, 0.4, 1],
-    transition: { duration: 0.6, ease: "easeInOut" },
-  },
-};
-
-const svgRef = ref<SVGSVGElement | null>(null);
-const lightsRef = ref<SVGPathElement | null>(null);
-const svgMotion = useMotion(svgRef, {
-  initial: containerVariants.normal,
-  enter: containerVariants.normal,
-});
-const lightsMotion = useMotion(lightsRef, {
-  initial: lightVariants.normal,
-  enter: lightVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  svgMotion.apply(containerVariants.animate);
-  lightsMotion.apply(lightVariants.animate);
-};
-
-const stopAnimation = () => {
-  svgMotion.apply(containerVariants.normal);
-  lightsMotion.apply(lightVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const containerVariants = {
+    normal: { y: 0 },
+    animate: {
+      y: [0, -2, 0],
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const lightVariants = {
+    normal: { opacity: 1 },
+    animate: {
+      opacity: [1, 0.4, 1, 0.4, 1],
+      transition: { duration: 0.6, ease: "easeInOut" },
+    },
+  };
+
+  const svgRef = ref<SVGSVGElement | null>(null);
+  const lightsRef = ref<SVGPathElement | null>(null);
+  const svgMotion = useMotion(svgRef, {
+    initial: containerVariants.normal,
+    enter: containerVariants.normal,
+  });
+  const lightsMotion = useMotion(lightsRef, {
+    initial: lightVariants.normal,
+    enter: lightVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    svgMotion.apply(containerVariants.animate);
+    lightsMotion.apply(lightVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    svgMotion.apply(containerVariants.normal);
+    lightsMotion.apply(lightVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

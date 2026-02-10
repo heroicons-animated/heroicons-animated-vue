@@ -25,80 +25,80 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "BackwardIcon",
-};
+  export default {
+    name: "BackwardIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const pathVariants = {
-  normal: {
-    x: 0,
-    rotate: 0,
-  },
-  animate: {
-    x: [0, 1, -2, 0],
-    rotate: [0, 10, 0, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.2, 0.5, 1],
-      stiffness: 260,
-      damping: 20,
+  const pathVariants = {
+    normal: {
+      x: 0,
+      rotate: 0,
     },
-  },
-};
+    animate: {
+      x: [0, 1, -2, 0],
+      rotate: [0, 10, 0, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.2, 0.5, 1],
+        stiffness: 260,
+        damping: 20,
+      },
+    },
+  };
 
-const svgRef = ref<SVGSVGElement>();
-const svgMotion = useMotion(svgRef, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
+  const svgRef = ref<SVGSVGElement>();
+  const svgMotion = useMotion(svgRef, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  svgMotion.apply(pathVariants.animate);
-};
+  const startAnimation = () => {
+    svgMotion.apply(pathVariants.animate);
+  };
 
-const stopAnimation = () => {
-  svgMotion.apply(pathVariants.normal);
-};
+  const stopAnimation = () => {
+    svgMotion.apply(pathVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

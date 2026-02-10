@@ -30,79 +30,83 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ClipboardIcon",
-};
+  export default {
+    name: "ClipboardIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const clipVariants = {
-  normal: { scaleY: 1, translateY: 0 },
-  animate: {
-    scaleY: [1, 0.8, 1],
-    translateY: [0, 0.5, 0],
-    transition: { duration: 0.3, ease: "easeInOut" },
-  },
-};
+  const clipVariants = {
+    normal: { scaleY: 1, translateY: 0 },
+    animate: {
+      scaleY: [1, 0.8, 1],
+      translateY: [0, 0.5, 0],
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+  };
 
-const boardVariants = {
-  normal: { translateY: 0 },
-  animate: {
-    translateY: [0, -0.5, 0],
-    transition: { duration: 0.3, ease: "easeInOut" },
-  },
-};
+  const boardVariants = {
+    normal: { translateY: 0 },
+    animate: {
+      translateY: [0, -0.5, 0],
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+  };
 
-const clipRef = ref<SVGPathElement | null>();
-const boardRef = ref<SVGPathElement | null>();
-const motionClip = useMotion(clipRef, {
-  initial: clipVariants.normal,
-  enter: clipVariants.normal,
-});
-const motionBoard = useMotion(boardRef, {
-  initial: boardVariants.normal,
-  enter: boardVariants.normal,
-});
+  const clipRef = ref<SVGPathElement | null>();
+  const boardRef = ref<SVGPathElement | null>();
+  const motionClip = useMotion(clipRef, {
+    initial: clipVariants.normal,
+    enter: clipVariants.normal,
+  });
+  const motionBoard = useMotion(boardRef, {
+    initial: boardVariants.normal,
+    enter: boardVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motionClip.apply(clipVariants.animate);
-  motionBoard.apply(boardVariants.animate);
-};
+  const startAnimation = () => {
+    motionClip.apply(clipVariants.animate);
+    motionBoard.apply(boardVariants.animate);
+  };
 
-const stopAnimation = () => {
-  motionClip.apply(clipVariants.normal);
-  motionBoard.apply(boardVariants.normal);
-};
+  const stopAnimation = () => {
+    motionClip.apply(clipVariants.normal);
+    motionBoard.apply(boardVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

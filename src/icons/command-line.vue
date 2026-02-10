@@ -26,73 +26,73 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CommandLineIcon",
-};
+  export default {
+    name: "CommandLineIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-// Match React TEXT_VARIANTS: cursor blink on the line path
-const textVariants = {
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [1, 0, 1],
-    transition: {
-      duration: 0.8,
-      ease: "linear",
-      repeat: Number.POSITIVE_INFINITY,
+  // Match React TEXT_VARIANTS: cursor blink on the line path
+  const textVariants = {
+    normal: {
+      opacity: 1,
     },
-  },
-};
+    animate: {
+      opacity: [1, 0, 1],
+      transition: {
+        duration: 0.8,
+        ease: "linear",
+        repeat: Number.POSITIVE_INFINITY,
+      },
+    },
+  };
 
-const lineRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(lineRef, {
-  initial: textVariants.normal,
-  enter: textVariants.normal,
-});
+  const lineRef = ref<SVGPathElement | null>();
+  const motionInstance = useMotion(lineRef, {
+    initial: textVariants.normal,
+    enter: textVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => motionInstance.apply(textVariants.animate);
-const stopAnimation = () => motionInstance.apply(textVariants.normal);
+  const startAnimation = () => motionInstance.apply(textVariants.animate);
+  const stopAnimation = () => motionInstance.apply(textVariants.normal);
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

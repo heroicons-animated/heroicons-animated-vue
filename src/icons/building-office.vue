@@ -30,108 +30,108 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "BuildingOfficeIcon",
-};
+  export default {
+    name: "BuildingOfficeIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const createFloorVariants = (custom: number) => ({
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    transition: {
-      duration: 0.3,
-      ease: "linear",
-      delay: 0.1 + custom * 0.15,
+  const createFloorVariants = (custom: number) => ({
+    normal: {
+      opacity: 1,
     },
-  },
-});
+    animate: {
+      opacity: [0, 1],
+      transition: {
+        duration: 0.3,
+        ease: "linear",
+        delay: 0.1 + custom * 0.15,
+      },
+    },
+  });
 
-const floor0Variants = createFloorVariants(0);
-const floor1Variants = createFloorVariants(1);
-const floor2Variants = createFloorVariants(2);
+  const floor0Variants = createFloorVariants(0);
+  const floor1Variants = createFloorVariants(1);
+  const floor2Variants = createFloorVariants(2);
 
-const floor1Ref = ref<SVGPathElement | null>(null);
-const floor2Ref = ref<SVGPathElement | null>(null);
-const floor3Ref = ref<SVGPathElement | null>(null);
-const floor4Ref = ref<SVGPathElement | null>(null);
-const floor5Ref = ref<SVGPathElement | null>(null);
-const floor6Ref = ref<SVGPathElement | null>(null);
-const floorRefs = [
-  floor1Ref,
-  floor2Ref,
-  floor3Ref,
-  floor4Ref,
-  floor5Ref,
-  floor6Ref,
-] as const;
-const floorVariants = [
-  floor0Variants,
-  floor0Variants,
-  floor1Variants,
-  floor1Variants,
-  floor2Variants,
-  floor2Variants,
-] as const;
-const floorMotions = floorRefs.map((floorRef, index) =>
-  useMotion(floorRef, {
-    initial: floorVariants[index].normal,
-    enter: floorVariants[index].normal,
-  })
-);
+  const floor1Ref = ref<SVGPathElement | null>(null);
+  const floor2Ref = ref<SVGPathElement | null>(null);
+  const floor3Ref = ref<SVGPathElement | null>(null);
+  const floor4Ref = ref<SVGPathElement | null>(null);
+  const floor5Ref = ref<SVGPathElement | null>(null);
+  const floor6Ref = ref<SVGPathElement | null>(null);
+  const floorRefs = [
+    floor1Ref,
+    floor2Ref,
+    floor3Ref,
+    floor4Ref,
+    floor5Ref,
+    floor6Ref,
+  ] as const;
+  const floorVariants = [
+    floor0Variants,
+    floor0Variants,
+    floor1Variants,
+    floor1Variants,
+    floor2Variants,
+    floor2Variants,
+  ] as const;
+  const floorMotions = floorRefs.map((floorRef, index) =>
+    useMotion(floorRef, {
+      initial: floorVariants[index].normal,
+      enter: floorVariants[index].normal,
+    })
+  );
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  for (const [index, floorMotion] of floorMotions.entries()) {
-    floorMotion.apply(floorVariants[index].animate);
-  }
-};
+  const startAnimation = () => {
+    for (const [index, floorMotion] of floorMotions.entries()) {
+      floorMotion.apply(floorVariants[index].animate);
+    }
+  };
 
-const stopAnimation = () => {
-  for (const [index, floorMotion] of floorMotions.entries()) {
-    floorMotion.apply(floorVariants[index].normal);
-  }
-};
+  const stopAnimation = () => {
+    for (const [index, floorMotion] of floorMotions.entries()) {
+      floorMotion.apply(floorVariants[index].normal);
+    }
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

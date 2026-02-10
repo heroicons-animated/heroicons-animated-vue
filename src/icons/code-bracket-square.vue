@@ -26,91 +26,91 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CodeBracketSquareIcon",
-};
+  export default {
+    name: "CodeBracketSquareIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const createCodeVariants = (direction: number) => ({
-  normal: {
-    x: 0,
-    rotate: 0,
-    opacity: 1,
-  },
-  animate: {
-    x: [0, direction * 1.5, 0],
-    rotate: [0, direction * -6, 0],
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
+  const createCodeVariants = (direction: number) => ({
+    normal: {
+      x: 0,
+      rotate: 0,
+      opacity: 1,
     },
-  },
-});
+    animate: {
+      x: [0, direction * 1.5, 0],
+      rotate: [0, direction * -6, 0],
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  });
 
-const leftBracketVariants = createCodeVariants(-1);
-const rightBracketVariants = createCodeVariants(1);
+  const leftBracketVariants = createCodeVariants(-1);
+  const rightBracketVariants = createCodeVariants(1);
 
-const leftBracketRef = ref<SVGPathElement | null>(null);
-const rightBracketRef = ref<SVGPathElement | null>(null);
+  const leftBracketRef = ref<SVGPathElement | null>(null);
+  const rightBracketRef = ref<SVGPathElement | null>(null);
 
-const leftBracketMotion = useMotion(leftBracketRef, {
-  initial: leftBracketVariants.normal,
-  enter: leftBracketVariants.normal,
-});
-const rightBracketMotion = useMotion(rightBracketRef, {
-  initial: rightBracketVariants.normal,
-  enter: rightBracketVariants.normal,
-});
+  const leftBracketMotion = useMotion(leftBracketRef, {
+    initial: leftBracketVariants.normal,
+    enter: leftBracketVariants.normal,
+  });
+  const rightBracketMotion = useMotion(rightBracketRef, {
+    initial: rightBracketVariants.normal,
+    enter: rightBracketVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  leftBracketMotion.apply(leftBracketVariants.animate);
-  rightBracketMotion.apply(rightBracketVariants.animate);
-};
+  const startAnimation = () => {
+    leftBracketMotion.apply(leftBracketVariants.animate);
+    rightBracketMotion.apply(rightBracketVariants.animate);
+  };
 
-const stopAnimation = () => {
-  leftBracketMotion.apply(leftBracketVariants.normal);
-  rightBracketMotion.apply(rightBracketVariants.normal);
-};
+  const stopAnimation = () => {
+    leftBracketMotion.apply(leftBracketVariants.normal);
+    rightBracketMotion.apply(rightBracketVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

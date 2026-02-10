@@ -17,85 +17,82 @@
       stroke-linejoin="round"
     >
       <path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25" />
-      <path
-        ref="arrowRef"
-        d="M13.5 12.75L17.25 9L21 12.75M17.25 9v12"
-      />
+      <path ref="arrowRef" d="M13.5 12.75L17.25 9L21 12.75M17.25 9v12" />
     </svg>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: "BarsArrowUpIcon",
-};
+  export default {
+    name: "BarsArrowUpIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const arrowVariants = {
-  normal: {
-    translateY: 0,
-  },
-  animate: {
-    translateY: [0, -2, 0],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.4, 1],
+  const arrowVariants = {
+    normal: {
+      translateY: 0,
     },
-  },
-};
+    animate: {
+      translateY: [0, -2, 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.4, 1],
+      },
+    },
+  };
 
-const arrowRef = ref<SVGPathElement>();
-const arrowMotion = useMotion(arrowRef, {
-  initial: arrowVariants.normal,
-  enter: arrowVariants.normal,
-});
+  const arrowRef = ref<SVGPathElement>();
+  const arrowMotion = useMotion(arrowRef, {
+    initial: arrowVariants.normal,
+    enter: arrowVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  arrowMotion.apply(arrowVariants.animate);
-};
+  const startAnimation = () => {
+    arrowMotion.apply(arrowVariants.animate);
+  };
 
-const stopAnimation = () => {
-  arrowMotion.apply(arrowVariants.normal);
-};
+  const stopAnimation = () => {
+    arrowMotion.apply(arrowVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

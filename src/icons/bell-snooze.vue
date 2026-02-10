@@ -27,104 +27,104 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "BellSnoozeIcon",
-};
+  export default {
+    name: "BellSnoozeIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const bellVariants = {
-  normal: {
-    rotate: 0,
-    scale: 1,
-  },
-  animate: {
-    rotate: [0, -8, -8, 0],
-    scale: [1, 0.97, 0.97, 1],
-    transition: {
-      duration: 0.8,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const snoozeVariants = {
-  normal: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-  },
-  animate: {
-    opacity: [1, 1, 0.6, 1],
-    y: [0, -1, -2, 0],
-    scale: [1, 1.1, 1.15, 1],
-    transition: {
-      duration: 0.8,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const bellGroupRef = ref<SVGGElement>();
-const snoozeRef = ref<SVGPathElement>();
-
-const bellMotion = useMotion(bellGroupRef, {
-  initial: bellVariants.normal,
-  enter: bellVariants.normal,
-});
-
-const snoozeMotion = useMotion(snoozeRef, {
-  initial: snoozeVariants.normal,
-  enter: snoozeVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  bellMotion.apply(bellVariants.animate);
-  snoozeMotion.apply(snoozeVariants.animate);
-};
-
-const stopAnimation = () => {
-  bellMotion.apply(bellVariants.normal);
-  snoozeMotion.apply(snoozeVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const bellVariants = {
+    normal: {
+      rotate: 0,
+      scale: 1,
+    },
+    animate: {
+      rotate: [0, -8, -8, 0],
+      scale: [1, 0.97, 0.97, 1],
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const snoozeVariants = {
+    normal: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+    animate: {
+      opacity: [1, 1, 0.6, 1],
+      y: [0, -1, -2, 0],
+      scale: [1, 1.1, 1.15, 1],
+      transition: {
+        duration: 0.8,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const bellGroupRef = ref<SVGGElement>();
+  const snoozeRef = ref<SVGPathElement>();
+
+  const bellMotion = useMotion(bellGroupRef, {
+    initial: bellVariants.normal,
+    enter: bellVariants.normal,
+  });
+
+  const snoozeMotion = useMotion(snoozeRef, {
+    initial: snoozeVariants.normal,
+    enter: snoozeVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    bellMotion.apply(bellVariants.animate);
+    snoozeMotion.apply(snoozeVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    bellMotion.apply(bellVariants.normal);
+    snoozeMotion.apply(snoozeVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

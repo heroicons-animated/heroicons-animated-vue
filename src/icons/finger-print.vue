@@ -66,101 +66,101 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "FingerPrintIcon",
-};
+  export default {
+    name: "FingerPrintIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const pathVariants = {
-  normal: { pathLength: 1, opacity: 1 },
-  animate: {
-    opacity: [0, 0, 1, 1, 1],
-    pathLength: [0.1, 0.3, 0.5, 0.7, 0.9, 1],
-    transition: {
-      opacity: { duration: 0.5 },
-      pathLength: { duration: 2 },
+  const pathVariants = {
+    normal: { pathLength: 1, opacity: 1 },
+    animate: {
+      opacity: [0, 0, 1, 1, 1],
+      pathLength: [0.1, 0.3, 0.5, 0.7, 0.9, 1],
+      transition: {
+        opacity: { duration: 0.5 },
+        pathLength: { duration: 2 },
+      },
     },
-  },
-};
+  };
 
-const path0Ref = ref<SVGPathElement | null>(null);
-const path1Ref = ref<SVGPathElement | null>(null);
-const path2Ref = ref<SVGPathElement | null>(null);
-const path3Ref = ref<SVGPathElement | null>(null);
-const path4Ref = ref<SVGPathElement | null>(null);
+  const path0Ref = ref<SVGPathElement | null>(null);
+  const path1Ref = ref<SVGPathElement | null>(null);
+  const path2Ref = ref<SVGPathElement | null>(null);
+  const path3Ref = ref<SVGPathElement | null>(null);
+  const path4Ref = ref<SVGPathElement | null>(null);
 
-const motion0 = useMotion(path0Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const motion1 = useMotion(path1Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const motion2 = useMotion(path2Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const motion3 = useMotion(path3Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const motion4 = useMotion(path4Ref, {
-  initial: pathVariants.normal,
-  enter: pathVariants.normal,
-});
-const motions = [motion0, motion1, motion2, motion3, motion4];
+  const motion0 = useMotion(path0Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const motion1 = useMotion(path1Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const motion2 = useMotion(path2Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const motion3 = useMotion(path3Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const motion4 = useMotion(path4Ref, {
+    initial: pathVariants.normal,
+    enter: pathVariants.normal,
+  });
+  const motions = [motion0, motion1, motion2, motion3, motion4];
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  for (const motion of motions) {
-    motion.apply(pathVariants.animate);
-  }
-};
+  const startAnimation = () => {
+    for (const motion of motions) {
+      motion.apply(pathVariants.animate);
+    }
+  };
 
-const stopAnimation = () => {
-  for (const motion of motions) {
-    motion.apply(pathVariants.normal);
-  }
-};
+  const stopAnimation = () => {
+    for (const motion of motions) {
+      motion.apply(pathVariants.normal);
+    }
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

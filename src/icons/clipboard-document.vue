@@ -33,101 +33,101 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ClipboardDocumentIcon",
-};
+  export default {
+    name: "ClipboardDocumentIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const clipboardVariants = {
-  normal: {
-    y: 0,
-  },
-  animate: {
-    y: [0, -1, 0],
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const documentVariants = {
-  normal: {
-    x: 0,
-    y: 0,
-    opacity: 1,
-  },
-  animate: {
-    x: [-4, 0],
-    y: [4, 0],
-    opacity: [0, 1],
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
-    },
-  },
-};
-
-const clipboardRef = ref<SVGPathElement | null>();
-const documentRef = ref<SVGGElement | null>();
-
-const clipboardMotion = useMotion(clipboardRef, {
-  initial: clipboardVariants.normal,
-  enter: clipboardVariants.normal,
-});
-const documentMotion = useMotion(documentRef, {
-  initial: documentVariants.normal,
-  enter: documentVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  clipboardMotion.apply(clipboardVariants.animate);
-  documentMotion.apply(documentVariants.animate);
-};
-
-const stopAnimation = () => {
-  clipboardMotion.apply(clipboardVariants.normal);
-  documentMotion.apply(documentVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const clipboardVariants = {
+    normal: {
+      y: 0,
+    },
+    animate: {
+      y: [0, -1, 0],
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const documentVariants = {
+    normal: {
+      x: 0,
+      y: 0,
+      opacity: 1,
+    },
+    animate: {
+      x: [-4, 0],
+      y: [4, 0],
+      opacity: [0, 1],
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const clipboardRef = ref<SVGPathElement | null>();
+  const documentRef = ref<SVGGElement | null>();
+
+  const clipboardMotion = useMotion(clipboardRef, {
+    initial: clipboardVariants.normal,
+    enter: clipboardVariants.normal,
+  });
+  const documentMotion = useMotion(documentRef, {
+    initial: documentVariants.normal,
+    enter: documentVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    clipboardMotion.apply(clipboardVariants.animate);
+    documentMotion.apply(documentVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    clipboardMotion.apply(clipboardVariants.normal);
+    documentMotion.apply(documentVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

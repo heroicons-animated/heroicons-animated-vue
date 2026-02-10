@@ -28,114 +28,118 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "BuildingLibraryIcon",
-};
+  export default {
+    name: "BuildingLibraryIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const dotVariants = {
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    transition: {
-      delay: 0.1,
-      duration: 0.1,
+  const dotVariants = {
+    normal: {
+      opacity: 1,
     },
-  },
-};
-
-const createPillarVariants = (custom: number) => ({
-  normal: {
-    pathLength: 1,
-    opacity: 1,
-  },
-  animate: {
-    pathLength: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      delay: 0.2 + custom * 0.15,
-      duration: 0.3,
-      ease: "linear",
+    animate: {
+      opacity: [0, 1],
+      transition: {
+        delay: 0.1,
+        duration: 0.1,
+      },
     },
-  },
-});
+  };
 
-const dotRef = ref<SVGPathElement | null>(null);
-const pillar1Ref = ref<SVGPathElement | null>(null);
-const pillar2Ref = ref<SVGPathElement | null>(null);
-const pillar3Ref = ref<SVGPathElement | null>(null);
+  const createPillarVariants = (custom: number) => ({
+    normal: {
+      pathLength: 1,
+      opacity: 1,
+    },
+    animate: {
+      pathLength: [0, 1],
+      opacity: [0, 1],
+      transition: {
+        delay: 0.2 + custom * 0.15,
+        duration: 0.3,
+        ease: "linear",
+      },
+    },
+  });
 
-const pillar1Variants = createPillarVariants(0);
-const pillar2Variants = createPillarVariants(1);
-const pillar3Variants = createPillarVariants(2);
+  const dotRef = ref<SVGPathElement | null>(null);
+  const pillar1Ref = ref<SVGPathElement | null>(null);
+  const pillar2Ref = ref<SVGPathElement | null>(null);
+  const pillar3Ref = ref<SVGPathElement | null>(null);
 
-const dotMotion = useMotion(dotRef, {
-  initial: dotVariants.normal,
-  enter: dotVariants.normal,
-});
-const pillarRefs = [pillar1Ref, pillar2Ref, pillar3Ref] as const;
-const pillarVariants = [pillar1Variants, pillar2Variants, pillar3Variants] as const;
-const pillarMotions = pillarRefs.map((pillarRef, index) =>
-  useMotion(pillarRef, {
-    initial: pillarVariants[index].normal,
-    enter: pillarVariants[index].normal,
-  })
-);
+  const pillar1Variants = createPillarVariants(0);
+  const pillar2Variants = createPillarVariants(1);
+  const pillar3Variants = createPillarVariants(2);
 
-let isControlled = false;
+  const dotMotion = useMotion(dotRef, {
+    initial: dotVariants.normal,
+    enter: dotVariants.normal,
+  });
+  const pillarRefs = [pillar1Ref, pillar2Ref, pillar3Ref] as const;
+  const pillarVariants = [
+    pillar1Variants,
+    pillar2Variants,
+    pillar3Variants,
+  ] as const;
+  const pillarMotions = pillarRefs.map((pillarRef, index) =>
+    useMotion(pillarRef, {
+      initial: pillarVariants[index].normal,
+      enter: pillarVariants[index].normal,
+    })
+  );
 
-const startAnimation = () => {
-  dotMotion.apply(dotVariants.animate);
-  for (const [index, pillarMotion] of pillarMotions.entries()) {
-    pillarMotion.apply(pillarVariants[index].animate);
-  }
-};
+  let isControlled = false;
 
-const stopAnimation = () => {
-  dotMotion.apply(dotVariants.normal);
-  for (const [index, pillarMotion] of pillarMotions.entries()) {
-    pillarMotion.apply(pillarVariants[index].normal);
-  }
-};
+  const startAnimation = () => {
+    dotMotion.apply(dotVariants.animate);
+    for (const [index, pillarMotion] of pillarMotions.entries()) {
+      pillarMotion.apply(pillarVariants[index].animate);
+    }
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const stopAnimation = () => {
+    dotMotion.apply(dotVariants.normal);
+    for (const [index, pillarMotion] of pillarMotions.entries()) {
+      pillarMotion.apply(pillarVariants[index].normal);
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

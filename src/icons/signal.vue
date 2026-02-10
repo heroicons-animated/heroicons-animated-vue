@@ -39,107 +39,107 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "SignalIcon",
-};
+  export default {
+    name: "SignalIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const createWaveVariants = (custom: number) => ({
-  normal: {
-    opacity: 1,
-    scale: 1,
-  },
-  animate: {
-    opacity: 0,
-    scale: 0,
-    transition: {
-      opacity: {
-        duration: 0.2,
-        ease: "easeInOut",
-        repeat: 1,
-        repeatType: "reverse",
-        repeatDelay: 0.2,
-        delay: 0.2 * (custom - 1),
-      },
-      scale: {
-        duration: 0.2,
-        ease: "easeInOut",
-        repeat: 1,
-        repeatType: "reverse",
-        repeatDelay: 0.2,
-        delay: 0.2 * (custom - 1),
+  const createWaveVariants = (custom: number) => ({
+    normal: {
+      opacity: 1,
+      scale: 1,
+    },
+    animate: {
+      opacity: 0,
+      scale: 0,
+      transition: {
+        opacity: {
+          duration: 0.2,
+          ease: "easeInOut",
+          repeat: 1,
+          repeatType: "reverse",
+          repeatDelay: 0.2,
+          delay: 0.2 * (custom - 1),
+        },
+        scale: {
+          duration: 0.2,
+          ease: "easeInOut",
+          repeat: 1,
+          repeatType: "reverse",
+          repeatDelay: 0.2,
+          delay: 0.2 * (custom - 1),
+        },
       },
     },
-  },
-});
+  });
 
-const wave1Ref = ref<SVGPathElement | null>(null);
-const wave2Ref = ref<SVGPathElement | null>(null);
-const wave3Ref = ref<SVGPathElement | null>(null);
+  const wave1Ref = ref<SVGPathElement | null>(null);
+  const wave2Ref = ref<SVGPathElement | null>(null);
+  const wave3Ref = ref<SVGPathElement | null>(null);
 
-const motion1 = useMotion(wave1Ref, {
-  initial: createWaveVariants(1).normal,
-  enter: createWaveVariants(1).normal,
-});
-const motion2 = useMotion(wave2Ref, {
-  initial: createWaveVariants(2).normal,
-  enter: createWaveVariants(2).normal,
-});
-const motion3 = useMotion(wave3Ref, {
-  initial: createWaveVariants(3).normal,
-  enter: createWaveVariants(3).normal,
-});
+  const motion1 = useMotion(wave1Ref, {
+    initial: createWaveVariants(1).normal,
+    enter: createWaveVariants(1).normal,
+  });
+  const motion2 = useMotion(wave2Ref, {
+    initial: createWaveVariants(2).normal,
+    enter: createWaveVariants(2).normal,
+  });
+  const motion3 = useMotion(wave3Ref, {
+    initial: createWaveVariants(3).normal,
+    enter: createWaveVariants(3).normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motion1.apply(createWaveVariants(1).animate);
-  motion2.apply(createWaveVariants(2).animate);
-  motion3.apply(createWaveVariants(3).animate);
-};
+  const startAnimation = () => {
+    motion1.apply(createWaveVariants(1).animate);
+    motion2.apply(createWaveVariants(2).animate);
+    motion3.apply(createWaveVariants(3).animate);
+  };
 
-const stopAnimation = () => {
-  motion1.apply(createWaveVariants(1).normal);
-  motion2.apply(createWaveVariants(2).normal);
-  motion3.apply(createWaveVariants(3).normal);
-};
+  const stopAnimation = () => {
+    motion1.apply(createWaveVariants(1).normal);
+    motion2.apply(createWaveVariants(2).normal);
+    motion3.apply(createWaveVariants(3).normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

@@ -35,82 +35,82 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "IdentificationIcon",
-};
+  export default {
+    name: "IdentificationIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const baseNormal = { pathLength: 1, opacity: 1 };
-const makeAnimate = (delay: number) => ({
-  pathLength: [0, 1],
-  opacity: [0, 1],
-  transition: { duration: 0.3, delay },
-});
-
-const line0Ref = ref<SVGPathElement | null>(null);
-const line1Ref = ref<SVGPathElement | null>(null);
-const line2Ref = ref<SVGPathElement | null>(null);
-const circleRef = ref<SVGPathElement | null>(null);
-const chinRef = ref<SVGPathElement | null>(null);
-const motions = [
-  useMotion(chinRef, { initial: baseNormal, enter: baseNormal }),
-  useMotion(circleRef, { initial: baseNormal, enter: baseNormal }),
-  useMotion(line0Ref, { initial: baseNormal, enter: baseNormal }),
-  useMotion(line1Ref, { initial: baseNormal, enter: baseNormal }),
-  useMotion(line2Ref, { initial: baseNormal, enter: baseNormal }),
-];
-const delays = [0, 0.1, 0.2, 0.2, 0.2];
-
-let isControlled = false;
-
-const startAnimation = () => {
-  for (let i = 0; i < motions.length; i++) {
-    motions[i].apply(makeAnimate(delays[i]));
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const stopAnimation = () => {
-  for (const m of motions) {
-    m.apply(baseNormal);
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const baseNormal = { pathLength: 1, opacity: 1 };
+  const makeAnimate = (delay: number) => ({
+    pathLength: [0, 1],
+    opacity: [0, 1],
+    transition: { duration: 0.3, delay },
+  });
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const line0Ref = ref<SVGPathElement | null>(null);
+  const line1Ref = ref<SVGPathElement | null>(null);
+  const line2Ref = ref<SVGPathElement | null>(null);
+  const circleRef = ref<SVGPathElement | null>(null);
+  const chinRef = ref<SVGPathElement | null>(null);
+  const motions = [
+    useMotion(chinRef, { initial: baseNormal, enter: baseNormal }),
+    useMotion(circleRef, { initial: baseNormal, enter: baseNormal }),
+    useMotion(line0Ref, { initial: baseNormal, enter: baseNormal }),
+    useMotion(line1Ref, { initial: baseNormal, enter: baseNormal }),
+    useMotion(line2Ref, { initial: baseNormal, enter: baseNormal }),
+  ];
+  const delays = [0, 0.1, 0.2, 0.2, 0.2];
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  let isControlled = false;
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const startAnimation = () => {
+    for (let i = 0; i < motions.length; i++) {
+      motions[i].apply(makeAnimate(delays[i]));
+    }
+  };
+
+  const stopAnimation = () => {
+    for (const m of motions) {
+      m.apply(baseNormal);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

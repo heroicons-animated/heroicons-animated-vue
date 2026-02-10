@@ -39,82 +39,82 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "Battery50Icon",
-};
+  export default {
+    name: "Battery50Icon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref, useId } from "vue";
+  import { useMotion } from "../motion";
+  import { ref, useId } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const clipId = useId();
-
-const clipVariants = {
-  normal: {
-    width: 0,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-  animate: {
-    width: 6.75,
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-};
-
-const clipRectRef = ref<SVGRectElement>();
-const clipMotion = useMotion(clipRectRef, {
-  initial: clipVariants.normal,
-  enter: clipVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  clipMotion.apply(clipVariants.animate);
-};
-
-const stopAnimation = () => {
-  clipMotion.apply(clipVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const clipId = useId();
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const clipVariants = {
+    normal: {
+      width: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+    animate: {
+      width: 6.75,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const clipRectRef = ref<SVGRectElement>();
+  const clipMotion = useMotion(clipRectRef, {
+    initial: clipVariants.normal,
+    enter: clipVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    clipMotion.apply(clipVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    clipMotion.apply(clipVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

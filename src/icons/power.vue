@@ -27,93 +27,93 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "PowerIcon",
-};
+  export default {
+    name: "PowerIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const circleVariants = {
-  normal: { opacity: 1, scale: 1 },
-  animate: {
-    opacity: [0.5, 1, 0.5, 1],
-    scale: [1, 1.05, 1],
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const lineVariants = {
-  normal: { y: 0 },
-  animate: {
-    y: [0, -2, 0],
-    transition: {
-      duration: 0.3,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const circleRef = ref<SVGPathElement | null>(null);
-const lineRef = ref<SVGPathElement | null>(null);
-const circleMotion = useMotion(circleRef, {
-  initial: circleVariants.normal,
-  enter: circleVariants.normal,
-});
-const lineMotion = useMotion(lineRef, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  circleMotion.apply(circleVariants.animate);
-  lineMotion.apply(lineVariants.animate);
-};
-
-const stopAnimation = () => {
-  circleMotion.apply(circleVariants.normal);
-  lineMotion.apply(lineVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const circleVariants = {
+    normal: { opacity: 1, scale: 1 },
+    animate: {
+      opacity: [0.5, 1, 0.5, 1],
+      scale: [1, 1.05, 1],
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const lineVariants = {
+    normal: { y: 0 },
+    animate: {
+      y: [0, -2, 0],
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const circleRef = ref<SVGPathElement | null>(null);
+  const lineRef = ref<SVGPathElement | null>(null);
+  const circleMotion = useMotion(circleRef, {
+    initial: circleVariants.normal,
+    enter: circleVariants.normal,
+  });
+  const lineMotion = useMotion(lineRef, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    circleMotion.apply(circleVariants.animate);
+    lineMotion.apply(lineVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    circleMotion.apply(circleVariants.normal);
+    lineMotion.apply(lineVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

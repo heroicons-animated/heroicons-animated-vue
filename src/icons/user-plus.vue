@@ -26,99 +26,99 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "UserPlusIcon",
-};
+  export default {
+    name: "UserPlusIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const vertVariants = {
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      delay: 0.3,
-      duration: 0.2,
-      opacity: { duration: 0.1, delay: 0.3 },
-    },
-  },
-};
-const horizVariants = {
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    pathLength: [0, 1],
-    transition: {
-      delay: 0.6,
-      duration: 0.2,
-      opacity: { duration: 0.1, delay: 0.6 },
-    },
-  },
-};
-
-const vertRef = ref<SVGPathElement | null>(null);
-const horizRef = ref<SVGPathElement | null>(null);
-const motionVert = useMotion(vertRef, {
-  initial: vertVariants.normal,
-  enter: vertVariants.normal,
-});
-const motionHoriz = useMotion(horizRef, {
-  initial: horizVariants.normal,
-  enter: horizVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionVert.apply(vertVariants.animate);
-  motionHoriz.apply(horizVariants.animate);
-};
-
-const stopAnimation = () => {
-  motionVert.apply(vertVariants.normal);
-  motionHoriz.apply(horizVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const vertVariants = {
+    normal: {
+      opacity: 1,
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        delay: 0.3,
+        duration: 0.2,
+        opacity: { duration: 0.1, delay: 0.3 },
+      },
+    },
+  };
+  const horizVariants = {
+    normal: {
+      opacity: 1,
+    },
+    animate: {
+      opacity: [0, 1],
+      pathLength: [0, 1],
+      transition: {
+        delay: 0.6,
+        duration: 0.2,
+        opacity: { duration: 0.1, delay: 0.6 },
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const vertRef = ref<SVGPathElement | null>(null);
+  const horizRef = ref<SVGPathElement | null>(null);
+  const motionVert = useMotion(vertRef, {
+    initial: vertVariants.normal,
+    enter: vertVariants.normal,
+  });
+  const motionHoriz = useMotion(horizRef, {
+    initial: horizVariants.normal,
+    enter: horizVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionVert.apply(vertVariants.animate);
+    motionHoriz.apply(horizVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionVert.apply(vertVariants.normal);
+    motionHoriz.apply(horizVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

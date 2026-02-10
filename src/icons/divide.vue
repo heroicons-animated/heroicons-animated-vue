@@ -34,94 +34,97 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "DivideIcon",
-};
+  export default {
+    name: "DivideIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const lineVariants = {
-  normal: { scaleX: 1 },
-  animate: {
-    scaleX: [1, 1.1, 1],
-    transition: { duration: 0.4, ease: "easeInOut" },
-  },
-};
-const topVariants = {
-  normal: { y: 0 },
-  animate: { y: [0, -2, 0], transition: { duration: 0.4, ease: "easeInOut" } },
-};
-const bottomVariants = {
-  normal: { y: 0 },
-  animate: { y: [0, 2, 0], transition: { duration: 0.4, ease: "easeInOut" } },
-};
-
-const lineRef = ref<SVGPathElement | null>();
-const topRef = ref<SVGGElement | null>();
-const bottomRef = ref<SVGGElement | null>();
-
-const lineMotion = useMotion(lineRef, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-const topMotion = useMotion(topRef, {
-  initial: topVariants.normal,
-  enter: topVariants.normal,
-});
-const bottomMotion = useMotion(bottomRef, {
-  initial: bottomVariants.normal,
-  enter: bottomVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  lineMotion.apply(lineVariants.animate);
-  topMotion.apply(topVariants.animate);
-  bottomMotion.apply(bottomVariants.animate);
-};
-
-const stopAnimation = () => {
-  lineMotion.apply(lineVariants.normal);
-  topMotion.apply(topVariants.normal);
-  bottomMotion.apply(bottomVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const lineVariants = {
+    normal: { scaleX: 1 },
+    animate: {
+      scaleX: [1, 1.1, 1],
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+  };
+  const topVariants = {
+    normal: { y: 0 },
+    animate: {
+      y: [0, -2, 0],
+      transition: { duration: 0.4, ease: "easeInOut" },
+    },
+  };
+  const bottomVariants = {
+    normal: { y: 0 },
+    animate: { y: [0, 2, 0], transition: { duration: 0.4, ease: "easeInOut" } },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const lineRef = ref<SVGPathElement | null>();
+  const topRef = ref<SVGGElement | null>();
+  const bottomRef = ref<SVGGElement | null>();
+
+  const lineMotion = useMotion(lineRef, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+  const topMotion = useMotion(topRef, {
+    initial: topVariants.normal,
+    enter: topVariants.normal,
+  });
+  const bottomMotion = useMotion(bottomRef, {
+    initial: bottomVariants.normal,
+    enter: bottomVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    lineMotion.apply(lineVariants.animate);
+    topMotion.apply(topVariants.animate);
+    bottomMotion.apply(bottomVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    lineMotion.apply(lineVariants.normal);
+    topMotion.apply(topVariants.normal);
+    bottomMotion.apply(bottomVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

@@ -28,75 +28,75 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ComputerDesktopIcon",
-};
+  export default {
+    name: "ComputerDesktopIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-// Match React SCREEN_VARIANTS: fill opacity pulse on screen path
-const screenVariants = {
-  normal: {
-    fillOpacity: 0,
-    fill: "currentColor",
-  },
-  animate: {
-    fillOpacity: [0, 1, 0, 1, 0],
-    fill: "currentColor",
-    transition: {
-      duration: 0.6,
-      ease: "easeInOut",
-      times: [0, 0.25, 0.5, 0.75, 1],
+  // Match React SCREEN_VARIANTS: fill opacity pulse on screen path
+  const screenVariants = {
+    normal: {
+      fillOpacity: 0,
+      fill: "currentColor",
     },
-  },
-};
+    animate: {
+      fillOpacity: [0, 1, 0, 1, 0],
+      fill: "currentColor",
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
+        times: [0, 0.25, 0.5, 0.75, 1],
+      },
+    },
+  };
 
-const pathRef = ref<SVGPathElement | null>();
-const motionInstance = useMotion(pathRef, {
-  initial: screenVariants.normal,
-  enter: screenVariants.normal,
-});
+  const pathRef = ref<SVGPathElement | null>();
+  const motionInstance = useMotion(pathRef, {
+    initial: screenVariants.normal,
+    enter: screenVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => motionInstance.apply(screenVariants.animate);
-const stopAnimation = () => motionInstance.apply(screenVariants.normal);
+  const startAnimation = () => motionInstance.apply(screenVariants.animate);
+  const stopAnimation = () => motionInstance.apply(screenVariants.normal);
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

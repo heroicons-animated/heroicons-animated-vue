@@ -36,149 +36,149 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "FaceSmileIcon",
-};
+  export default {
+    name: "FaceSmileIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const faceVariants = {
-  normal: {
-    scale: 1,
-    rotate: 0,
-    transition: {
-      duration: 0.3,
-      ease: "easeOut",
+  const faceVariants = {
+    normal: {
+      scale: 1,
+      rotate: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
     },
-  },
-  animate: {
-    scale: [1, 1.15, 1.05, 1.1],
-    rotate: [0, -3, 3, 0],
-    transition: {
-      duration: 0.8,
-      times: [0, 0.3, 0.6, 1],
-      ease: "easeInOut",
-    },
-  },
-};
-
-const mouthVariants = {
-  normal: {
-    d: "M15.182 15.182C13.4246 16.9393 10.5754 16.9393 8.81802 15.182",
-    pathLength: 1,
-    pathOffset: 0,
-    transition: { duration: 0.3, ease: "easeOut" },
-  },
-  animate: {
-    d: [
-      "M15.182 15.182C13.4246 16.9393 10.5754 16.9393 8.81802 15.182",
-      "M14.5 14C13 15.5 11 15.5 9.5 14",
-      "M15.182 15.182C13.4246 16.9393 10.5754 16.9393 8.81802 15.182",
-    ],
-    pathLength: [0.3, 1, 1],
-    pathOffset: [0, 0, 0],
-    transition: {
-      d: { duration: 0.4, ease: "easeOut" },
-      pathLength: {
-        duration: 0.5,
-        times: [0, 0.5, 1],
+    animate: {
+      scale: [1, 1.15, 1.05, 1.1],
+      rotate: [0, -3, 3, 0],
+      transition: {
+        duration: 0.8,
+        times: [0, 0.3, 0.6, 1],
         ease: "easeInOut",
       },
-      delay: 0.1,
     },
-  },
-};
+  };
 
-const eyeVariants = {
-  normal: {
-    scale: 1,
-    opacity: 1,
-    transition: { duration: 0.3, ease: "easeOut" },
-  },
-  animate: {
-    scale: [1, 1.5, 0.8, 1.2],
-    opacity: [1, 1, 1, 1],
-    transition: {
-      duration: 0.5,
-      times: [0, 0.3, 0.6, 1],
-      ease: "easeInOut",
+  const mouthVariants = {
+    normal: {
+      d: "M15.182 15.182C13.4246 16.9393 10.5754 16.9393 8.81802 15.182",
+      pathLength: 1,
+      pathOffset: 0,
+      transition: { duration: 0.3, ease: "easeOut" },
     },
-  },
-};
+    animate: {
+      d: [
+        "M15.182 15.182C13.4246 16.9393 10.5754 16.9393 8.81802 15.182",
+        "M14.5 14C13 15.5 11 15.5 9.5 14",
+        "M15.182 15.182C13.4246 16.9393 10.5754 16.9393 8.81802 15.182",
+      ],
+      pathLength: [0.3, 1, 1],
+      pathOffset: [0, 0, 0],
+      transition: {
+        d: { duration: 0.4, ease: "easeOut" },
+        pathLength: {
+          duration: 0.5,
+          times: [0, 0.5, 1],
+          ease: "easeInOut",
+        },
+        delay: 0.1,
+      },
+    },
+  };
 
-const faceRef = ref<SVGSVGElement | null>(null);
-const mouthRef = ref<SVGPathElement | null>(null);
-const leftEyeRef = ref<SVGPathElement | null>(null);
-const rightEyeRef = ref<SVGPathElement | null>(null);
+  const eyeVariants = {
+    normal: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 0.3, ease: "easeOut" },
+    },
+    animate: {
+      scale: [1, 1.5, 0.8, 1.2],
+      opacity: [1, 1, 1, 1],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.3, 0.6, 1],
+        ease: "easeInOut",
+      },
+    },
+  };
 
-const faceMotion = useMotion(faceRef, {
-  initial: faceVariants.normal,
-  enter: faceVariants.normal,
-});
-const mouthMotion = useMotion(mouthRef, {
-  initial: mouthVariants.normal,
-  enter: mouthVariants.normal,
-});
-const leftEyeMotion = useMotion(leftEyeRef, {
-  initial: eyeVariants.normal,
-  enter: eyeVariants.normal,
-});
-const rightEyeMotion = useMotion(rightEyeRef, {
-  initial: eyeVariants.normal,
-  enter: eyeVariants.normal,
-});
+  const faceRef = ref<SVGSVGElement | null>(null);
+  const mouthRef = ref<SVGPathElement | null>(null);
+  const leftEyeRef = ref<SVGPathElement | null>(null);
+  const rightEyeRef = ref<SVGPathElement | null>(null);
 
-let isControlled = false;
+  const faceMotion = useMotion(faceRef, {
+    initial: faceVariants.normal,
+    enter: faceVariants.normal,
+  });
+  const mouthMotion = useMotion(mouthRef, {
+    initial: mouthVariants.normal,
+    enter: mouthVariants.normal,
+  });
+  const leftEyeMotion = useMotion(leftEyeRef, {
+    initial: eyeVariants.normal,
+    enter: eyeVariants.normal,
+  });
+  const rightEyeMotion = useMotion(rightEyeRef, {
+    initial: eyeVariants.normal,
+    enter: eyeVariants.normal,
+  });
 
-const startAnimation = () => {
-  faceMotion.apply(faceVariants.animate);
-  mouthMotion.apply(mouthVariants.animate);
-  leftEyeMotion.apply(eyeVariants.animate);
-  rightEyeMotion.apply(eyeVariants.animate);
-};
+  let isControlled = false;
 
-const stopAnimation = () => {
-  faceMotion.apply(faceVariants.normal);
-  mouthMotion.apply(mouthVariants.normal);
-  leftEyeMotion.apply(eyeVariants.normal);
-  rightEyeMotion.apply(eyeVariants.normal);
-};
+  const startAnimation = () => {
+    faceMotion.apply(faceVariants.animate);
+    mouthMotion.apply(mouthVariants.animate);
+    leftEyeMotion.apply(eyeVariants.animate);
+    rightEyeMotion.apply(eyeVariants.animate);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const stopAnimation = () => {
+    faceMotion.apply(faceVariants.normal);
+    mouthMotion.apply(mouthVariants.normal);
+    leftEyeMotion.apply(eyeVariants.normal);
+    rightEyeMotion.apply(eyeVariants.normal);
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

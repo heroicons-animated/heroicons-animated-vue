@@ -29,82 +29,106 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "TrashIcon",
-};
+  export default {
+    name: "TrashIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const lidVariants = {
-  normal: {
-    translateY: 0,
-    transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
-  },
-  animate: {
-    translateY: -1.5,
-    transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
-  },
-};
+  const lidVariants = {
+    normal: {
+      translateY: 0,
+      transition: {
+        duration: 0.2,
+        type: "spring",
+        stiffness: 200,
+        damping: 25,
+      },
+    },
+    animate: {
+      translateY: -1.5,
+      transition: {
+        duration: 0.2,
+        type: "spring",
+        stiffness: 200,
+        damping: 25,
+      },
+    },
+  };
 
-const bodyVariants = {
-  normal: {
-    translateY: 0,
-    transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
-  },
-  animate: {
-    translateY: 1,
-    transition: { duration: 0.2, type: "spring", stiffness: 200, damping: 25 },
-  },
-};
+  const bodyVariants = {
+    normal: {
+      translateY: 0,
+      transition: {
+        duration: 0.2,
+        type: "spring",
+        stiffness: 200,
+        damping: 25,
+      },
+    },
+    animate: {
+      translateY: 1,
+      transition: {
+        duration: 0.2,
+        type: "spring",
+        stiffness: 200,
+        damping: 25,
+      },
+    },
+  };
 
-const lidRef = ref<SVGPathElement | null>(null);
-const bodyRef = ref<SVGPathElement | null>(null);
-const lidMotion = useMotion(lidRef, {
-  initial: lidVariants.normal,
-  enter: lidVariants.normal,
-});
-const bodyMotion = useMotion(bodyRef, {
-  initial: bodyVariants.normal,
-  enter: bodyVariants.normal,
-});
+  const lidRef = ref<SVGPathElement | null>(null);
+  const bodyRef = ref<SVGPathElement | null>(null);
+  const lidMotion = useMotion(lidRef, {
+    initial: lidVariants.normal,
+    enter: lidVariants.normal,
+  });
+  const bodyMotion = useMotion(bodyRef, {
+    initial: bodyVariants.normal,
+    enter: bodyVariants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  lidMotion.apply(lidVariants.animate);
-  bodyMotion.apply(bodyVariants.animate);
-};
+  const startAnimation = () => {
+    lidMotion.apply(lidVariants.animate);
+    bodyMotion.apply(bodyVariants.animate);
+  };
 
-const stopAnimation = () => {
-  lidMotion.apply(lidVariants.normal);
-  bodyMotion.apply(bodyVariants.normal);
-};
+  const stopAnimation = () => {
+    lidMotion.apply(lidVariants.normal);
+    bodyMotion.apply(bodyVariants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

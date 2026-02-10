@@ -37,94 +37,94 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "AcademicCapIcon",
-};
+  export default {
+    name: "AcademicCapIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const capGroupRef = ref<SVGGElement | null>(null);
-const tasselGroupRef = ref<SVGGElement | null>(null);
-
-const capVariants = {
-  normal: { y: 0, rotate: 0 },
-  animate: {
-    y: [0, -3, 0],
-    rotate: [0, -5, 5, 0],
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const tasselVariants = {
-  normal: { rotate: 0 },
-  animate: {
-    rotate: [0, 10, -10, 5, 0],
-    transition: {
-      duration: 0.6,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const capMotion = useMotion(capGroupRef, {
-  initial: capVariants.normal,
-  enter: capVariants.normal,
-});
-const tasselMotion = useMotion(tasselGroupRef, {
-  initial: tasselVariants.normal,
-  enter: tasselVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  capMotion.apply(capVariants.animate);
-  tasselMotion.apply(tasselVariants.animate);
-};
-
-const stopAnimation = () => {
-  capMotion.apply(capVariants.normal);
-  tasselMotion.apply(tasselVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const capGroupRef = ref<SVGGElement | null>(null);
+  const tasselGroupRef = ref<SVGGElement | null>(null);
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const capVariants = {
+    normal: { y: 0, rotate: 0 },
+    animate: {
+      y: [0, -3, 0],
+      rotate: [0, -5, 5, 0],
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const tasselVariants = {
+    normal: { rotate: 0 },
+    animate: {
+      rotate: [0, 10, -10, 5, 0],
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const capMotion = useMotion(capGroupRef, {
+    initial: capVariants.normal,
+    enter: capVariants.normal,
+  });
+  const tasselMotion = useMotion(tasselGroupRef, {
+    initial: tasselVariants.normal,
+    enter: tasselVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    capMotion.apply(capVariants.animate);
+    tasselMotion.apply(tasselVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    capMotion.apply(capVariants.normal);
+    tasselMotion.apply(tasselVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

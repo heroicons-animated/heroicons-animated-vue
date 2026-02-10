@@ -30,87 +30,87 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CameraIcon",
-};
+  export default {
+    name: "CameraIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const bodyVariants = {
-  normal: { scale: 1 },
-  animate: {
-    scale: [1, 0.95, 1],
-    transition: { duration: 0.3, ease: "easeInOut" },
-  },
-};
-
-const lensVariants = {
-  normal: { scale: 1, opacity: 1 },
-  animate: {
-    scale: [1, 1.1, 1],
-    opacity: [1, 0.6, 1],
-    transition: { duration: 0.3, ease: "easeInOut" },
-  },
-};
-
-const svgRef = ref<SVGSVGElement | null>();
-const lensRef = ref<SVGPathElement | null>();
-const bodyMotion = useMotion(svgRef, {
-  initial: bodyVariants.normal,
-  enter: bodyVariants.normal,
-});
-const lensMotion = useMotion(lensRef, {
-  initial: lensVariants.normal,
-  enter: lensVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  bodyMotion.apply(bodyVariants.animate);
-  lensMotion.apply(lensVariants.animate);
-};
-
-const stopAnimation = () => {
-  bodyMotion.apply(bodyVariants.normal);
-  lensMotion.apply(lensVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const bodyVariants = {
+    normal: { scale: 1 },
+    animate: {
+      scale: [1, 0.95, 1],
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const lensVariants = {
+    normal: { scale: 1, opacity: 1 },
+    animate: {
+      scale: [1, 1.1, 1],
+      opacity: [1, 0.6, 1],
+      transition: { duration: 0.3, ease: "easeInOut" },
+    },
+  };
+
+  const svgRef = ref<SVGSVGElement | null>();
+  const lensRef = ref<SVGPathElement | null>();
+  const bodyMotion = useMotion(svgRef, {
+    initial: bodyVariants.normal,
+    enter: bodyVariants.normal,
+  });
+  const lensMotion = useMotion(lensRef, {
+    initial: lensVariants.normal,
+    enter: lensVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    bodyMotion.apply(bodyVariants.animate);
+    lensMotion.apply(lensVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    bodyMotion.apply(bodyVariants.normal);
+    lensMotion.apply(lensVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

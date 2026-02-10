@@ -28,114 +28,114 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ShareIcon",
-};
+  export default {
+    name: "ShareIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const lineVariants = {
-  normal: {
-    pathLength: 1,
-    opacity: 1,
-  },
-  animate: {
-    pathLength: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      duration: 0.4,
-      ease: "easeOut",
-    },
-  },
-};
-
-const createNodeVariants = (delay: number) => ({
-  normal: {
-    scale: 1,
-  },
-  animate: {
-    scale: [1, 1.3, 1],
-    transition: {
-      delay,
-      duration: 0.3,
-      ease: "easeOut",
-    },
-  },
-});
-
-const pathRef = ref<SVGPathElement | null>(null);
-const circleRef0 = ref<SVGCircleElement | null>(null);
-const circleRef1 = ref<SVGCircleElement | null>(null);
-const circleRef2 = ref<SVGCircleElement | null>(null);
-
-const pathMotion = useMotion(pathRef, {
-  initial: lineVariants.normal,
-  enter: lineVariants.normal,
-});
-const circle0Motion = useMotion(circleRef0, {
-  initial: createNodeVariants(0).normal,
-  enter: createNodeVariants(0).normal,
-});
-const circle1Motion = useMotion(circleRef1, {
-  initial: createNodeVariants(0.15).normal,
-  enter: createNodeVariants(0.15).normal,
-});
-const circle2Motion = useMotion(circleRef2, {
-  initial: createNodeVariants(0.3).normal,
-  enter: createNodeVariants(0.3).normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  pathMotion.apply(lineVariants.animate);
-  circle0Motion.apply(createNodeVariants(0).animate);
-  circle1Motion.apply(createNodeVariants(0.15).animate);
-  circle2Motion.apply(createNodeVariants(0.3).animate);
-};
-
-const stopAnimation = () => {
-  pathMotion.apply(lineVariants.normal);
-  circle0Motion.apply(createNodeVariants(0).normal);
-  circle1Motion.apply(createNodeVariants(0.15).normal);
-  circle2Motion.apply(createNodeVariants(0.3).normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const lineVariants = {
+    normal: {
+      pathLength: 1,
+      opacity: 1,
+    },
+    animate: {
+      pathLength: [0, 1],
+      opacity: [0, 1],
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const createNodeVariants = (delay: number) => ({
+    normal: {
+      scale: 1,
+    },
+    animate: {
+      scale: [1, 1.3, 1],
+      transition: {
+        delay,
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+  });
+
+  const pathRef = ref<SVGPathElement | null>(null);
+  const circleRef0 = ref<SVGCircleElement | null>(null);
+  const circleRef1 = ref<SVGCircleElement | null>(null);
+  const circleRef2 = ref<SVGCircleElement | null>(null);
+
+  const pathMotion = useMotion(pathRef, {
+    initial: lineVariants.normal,
+    enter: lineVariants.normal,
+  });
+  const circle0Motion = useMotion(circleRef0, {
+    initial: createNodeVariants(0).normal,
+    enter: createNodeVariants(0).normal,
+  });
+  const circle1Motion = useMotion(circleRef1, {
+    initial: createNodeVariants(0.15).normal,
+    enter: createNodeVariants(0.15).normal,
+  });
+  const circle2Motion = useMotion(circleRef2, {
+    initial: createNodeVariants(0.3).normal,
+    enter: createNodeVariants(0.3).normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    pathMotion.apply(lineVariants.animate);
+    circle0Motion.apply(createNodeVariants(0).animate);
+    circle1Motion.apply(createNodeVariants(0.15).animate);
+    circle2Motion.apply(createNodeVariants(0.3).animate);
+  };
+
+  const stopAnimation = () => {
+    pathMotion.apply(lineVariants.normal);
+    circle0Motion.apply(createNodeVariants(0).normal);
+    circle1Motion.apply(createNodeVariants(0.15).normal);
+    circle2Motion.apply(createNodeVariants(0.3).normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

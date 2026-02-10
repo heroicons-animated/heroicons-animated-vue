@@ -26,93 +26,97 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "CreditCardIcon",
-};
+  export default {
+    name: "CreditCardIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const visible = {
-  pathLength: 1,
-  opacity: 1,
-  transition: { duration: 0.3 },
-};
-
-const hidden = (delay: number) => ({
-  pathLength: 0,
-  opacity: 0,
-  transition: { delay, duration: 0.3 },
-});
-
-const toVisible = (delay: number) => ({
-  pathLength: 1,
-  opacity: 1,
-  transition: { delay, duration: 0.3 },
-});
-
-const line1Ref = ref<SVGPathElement | null>(null);
-const line2Ref = ref<SVGPathElement | null>(null);
-
-const motion1 = useMotion(line1Ref, { initial: visible, enter: visible });
-const motion2 = useMotion(line2Ref, { initial: visible, enter: visible });
-
-let isControlled = false;
-let animationTimeout: number | undefined;
-
-const clearAnimationTimeout = () => {
-  if (animationTimeout !== undefined) {
-    clearTimeout(animationTimeout);
-    animationTimeout = undefined;
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const startAnimation = () => {
-  clearAnimationTimeout();
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-  motion1.apply(hidden(0));
-  motion2.apply(hidden(0.1));
+  const visible = {
+    pathLength: 1,
+    opacity: 1,
+    transition: { duration: 0.3 },
+  };
 
-  const hideDurationMs = 400;
-  animationTimeout = window.setTimeout(() => {
-    motion1.apply(toVisible(0));
-    motion2.apply(toVisible(0.1));
-    animationTimeout = undefined;
-  }, hideDurationMs);
-};
+  const hidden = (delay: number) => ({
+    pathLength: 0,
+    opacity: 0,
+    transition: { delay, duration: 0.3 },
+  });
 
-const stopAnimation = () => {
-  clearAnimationTimeout();
-  motion1.apply(visible);
-  motion2.apply(visible);
-};
+  const toVisible = (delay: number) => ({
+    pathLength: 1,
+    opacity: 1,
+    transition: { delay, duration: 0.3 },
+  });
 
-const handleMouseEnter = () => {
-  if (!isControlled) startAnimation();
-};
+  const line1Ref = ref<SVGPathElement | null>(null);
+  const line2Ref = ref<SVGPathElement | null>(null);
 
-const handleMouseLeave = () => {
-  if (!isControlled) stopAnimation();
-};
+  const motion1 = useMotion(line1Ref, { initial: visible, enter: visible });
+  const motion2 = useMotion(line2Ref, { initial: visible, enter: visible });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  let isControlled = false;
+  let animationTimeout: number | undefined;
 
-defineExpose({ startAnimation, stopAnimation, setControlled });
+  const clearAnimationTimeout = () => {
+    if (animationTimeout !== undefined) {
+      clearTimeout(animationTimeout);
+      animationTimeout = undefined;
+    }
+  };
+
+  const startAnimation = () => {
+    clearAnimationTimeout();
+
+    motion1.apply(hidden(0));
+    motion2.apply(hidden(0.1));
+
+    const hideDurationMs = 400;
+    animationTimeout = window.setTimeout(() => {
+      motion1.apply(toVisible(0));
+      motion2.apply(toVisible(0.1));
+      animationTimeout = undefined;
+    }, hideDurationMs);
+  };
+
+  const stopAnimation = () => {
+    clearAnimationTimeout();
+    motion1.apply(visible);
+    motion2.apply(visible);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({ startAnimation, stopAnimation, setControlled });
 </script>

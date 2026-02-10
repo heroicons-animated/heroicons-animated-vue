@@ -23,84 +23,84 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ArrowTurnDownLeftIcon",
-};
+  export default {
+    name: "ArrowTurnDownLeftIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-// Must match React STRETCH_VARIANTS exactly: scaleX [1, 1.15, 1], x [0, -2, 0], 0.45s
-const variants = {
-  normal: {
-    scaleX: 1,
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.2,
-      ease: "easeOut",
-    },
-  },
-  animate: {
-    scaleX: [1, 1.15, 1],
-    x: [0, -2, 0],
-    transition: {
-      duration: 0.45,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const svgRef = ref();
-const motionInstance = useMotion(svgRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  motionInstance.apply(variants.animate);
-};
-
-const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  // Must match React STRETCH_VARIANTS exactly: scaleX [1, 1.15, 1], x [0, -2, 0], 0.45s
+  const variants = {
+    normal: {
+      scaleX: 1,
+      x: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut",
+      },
+    },
+    animate: {
+      scaleX: [1, 1.15, 1],
+      x: [0, -2, 0],
+      transition: {
+        duration: 0.45,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const svgRef = ref();
+  const motionInstance = useMotion(svgRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    motionInstance.apply(variants.animate);
+  };
+
+  const stopAnimation = () => {
+    motionInstance.apply(variants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

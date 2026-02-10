@@ -30,138 +30,138 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "ClipboardDocumentListIcon",
-};
+  export default {
+    name: "ClipboardDocumentListIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const DOT_DURATION = 0.1;
-const LINE_DURATION = 0.3;
+  const DOT_DURATION = 0.1;
+  const LINE_DURATION = 0.3;
 
-const createDotVariants = (delay: number) => ({
-  normal: {
-    opacity: 1,
-  },
-  animate: {
-    opacity: [0, 1],
-    transition: {
-      duration: DOT_DURATION,
-      ease: "easeInOut",
-      delay,
+  const createDotVariants = (delay: number) => ({
+    normal: {
+      opacity: 1,
     },
-  },
-});
-
-const createLineVariants = (delay: number) => ({
-  normal: {
-    pathLength: 1,
-    opacity: 1,
-  },
-  animate: {
-    pathLength: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      pathLength: { duration: LINE_DURATION, ease: "easeInOut", delay },
-      opacity: { duration: LINE_DURATION, ease: "easeInOut", delay },
+    animate: {
+      opacity: [0, 1],
+      transition: {
+        duration: DOT_DURATION,
+        ease: "easeInOut",
+        delay,
+      },
     },
-  },
-});
+  });
 
-const dotDelay0 = 0;
-const dotDelay1 = DOT_DURATION + LINE_DURATION;
-const dotDelay2 = (DOT_DURATION + LINE_DURATION) * 2;
+  const createLineVariants = (delay: number) => ({
+    normal: {
+      pathLength: 1,
+      opacity: 1,
+    },
+    animate: {
+      pathLength: [0, 1],
+      opacity: [0, 1],
+      transition: {
+        pathLength: { duration: LINE_DURATION, ease: "easeInOut", delay },
+        opacity: { duration: LINE_DURATION, ease: "easeInOut", delay },
+      },
+    },
+  });
 
-const lineDelay0 = dotDelay0 + DOT_DURATION;
-const lineDelay1 = dotDelay1 + DOT_DURATION;
-const lineDelay2 = dotDelay2 + DOT_DURATION;
+  const dotDelay0 = 0;
+  const dotDelay1 = DOT_DURATION + LINE_DURATION;
+  const dotDelay2 = (DOT_DURATION + LINE_DURATION) * 2;
 
-const dot1Variants = createDotVariants(dotDelay0);
-const dot2Variants = createDotVariants(dotDelay1);
-const dot3Variants = createDotVariants(dotDelay2);
+  const lineDelay0 = dotDelay0 + DOT_DURATION;
+  const lineDelay1 = dotDelay1 + DOT_DURATION;
+  const lineDelay2 = dotDelay2 + DOT_DURATION;
 
-const line1Variants = createLineVariants(lineDelay0);
-const line2Variants = createLineVariants(lineDelay1);
-const line3Variants = createLineVariants(lineDelay2);
+  const dot1Variants = createDotVariants(dotDelay0);
+  const dot2Variants = createDotVariants(dotDelay1);
+  const dot3Variants = createDotVariants(dotDelay2);
 
-const dot1Ref = ref<SVGPathElement | null>(null);
-const line1Ref = ref<SVGPathElement | null>(null);
-const dot2Ref = ref<SVGPathElement | null>(null);
-const line2Ref = ref<SVGPathElement | null>(null);
-const dot3Ref = ref<SVGPathElement | null>(null);
-const line3Ref = ref<SVGPathElement | null>(null);
-const itemRefs = [
-  { dotRef: dot1Ref, lineRef: line1Ref },
-  { dotRef: dot2Ref, lineRef: line2Ref },
-  { dotRef: dot3Ref, lineRef: line3Ref },
-] as const;
-const itemVariants = [
-  { dot: dot1Variants, line: line1Variants },
-  { dot: dot2Variants, line: line2Variants },
-  { dot: dot3Variants, line: line3Variants },
-] as const;
-const itemMotions = itemRefs.map((item, index) => ({
-  dotMotion: useMotion(item.dotRef, {
-    initial: itemVariants[index].dot.normal,
-    enter: itemVariants[index].dot.normal,
-  }),
-  lineMotion: useMotion(item.lineRef, {
-    initial: itemVariants[index].line.normal,
-    enter: itemVariants[index].line.normal,
-  }),
-}));
+  const line1Variants = createLineVariants(lineDelay0);
+  const line2Variants = createLineVariants(lineDelay1);
+  const line3Variants = createLineVariants(lineDelay2);
 
-let isControlled = false;
+  const dot1Ref = ref<SVGPathElement | null>(null);
+  const line1Ref = ref<SVGPathElement | null>(null);
+  const dot2Ref = ref<SVGPathElement | null>(null);
+  const line2Ref = ref<SVGPathElement | null>(null);
+  const dot3Ref = ref<SVGPathElement | null>(null);
+  const line3Ref = ref<SVGPathElement | null>(null);
+  const itemRefs = [
+    { dotRef: dot1Ref, lineRef: line1Ref },
+    { dotRef: dot2Ref, lineRef: line2Ref },
+    { dotRef: dot3Ref, lineRef: line3Ref },
+  ] as const;
+  const itemVariants = [
+    { dot: dot1Variants, line: line1Variants },
+    { dot: dot2Variants, line: line2Variants },
+    { dot: dot3Variants, line: line3Variants },
+  ] as const;
+  const itemMotions = itemRefs.map((item, index) => ({
+    dotMotion: useMotion(item.dotRef, {
+      initial: itemVariants[index].dot.normal,
+      enter: itemVariants[index].dot.normal,
+    }),
+    lineMotion: useMotion(item.lineRef, {
+      initial: itemVariants[index].line.normal,
+      enter: itemVariants[index].line.normal,
+    }),
+  }));
 
-const startAnimation = () => {
-  for (const [index, itemMotion] of itemMotions.entries()) {
-    itemMotion.dotMotion.apply(itemVariants[index].dot.animate);
-    itemMotion.lineMotion.apply(itemVariants[index].line.animate);
-  }
-};
+  let isControlled = false;
 
-const stopAnimation = () => {
-  for (const [index, itemMotion] of itemMotions.entries()) {
-    itemMotion.dotMotion.apply(itemVariants[index].dot.normal);
-    itemMotion.lineMotion.apply(itemVariants[index].line.normal);
-  }
-};
+  const startAnimation = () => {
+    for (const [index, itemMotion] of itemMotions.entries()) {
+      itemMotion.dotMotion.apply(itemVariants[index].dot.animate);
+      itemMotion.lineMotion.apply(itemVariants[index].line.animate);
+    }
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const stopAnimation = () => {
+    for (const [index, itemMotion] of itemMotions.entries()) {
+      itemMotion.dotMotion.apply(itemVariants[index].dot.normal);
+      itemMotion.lineMotion.apply(itemVariants[index].line.normal);
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

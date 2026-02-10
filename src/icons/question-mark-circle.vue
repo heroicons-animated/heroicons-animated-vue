@@ -30,79 +30,79 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "QuestionMarkCircleIcon",
-};
+  export default {
+    name: "QuestionMarkCircleIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const variants = {
-  normal: {
-    opacity: 1,
-    scale: 1,
-  },
-  animate: {
-    opacity: [1, 0.4, 1],
-    scale: [1, 1.1, 1],
-    transition: {
-      duration: 0.8,
-      repeat: Number.POSITIVE_INFINITY,
-      ease: "easeInOut",
+  const variants = {
+    normal: {
+      opacity: 1,
+      scale: 1,
     },
-  },
-};
+    animate: {
+      opacity: [1, 0.4, 1],
+      scale: [1, 1.1, 1],
+      transition: {
+        duration: 0.8,
+        repeat: Number.POSITIVE_INFINITY,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-const innerRef = ref<SVGGElement | null>(null);
-const motionInstance = useMotion(innerRef, {
-  initial: variants.normal,
-  enter: variants.normal,
-});
+  const innerRef = ref<SVGGElement | null>(null);
+  const motionInstance = useMotion(innerRef, {
+    initial: variants.normal,
+    enter: variants.normal,
+  });
 
-let isControlled = false;
+  let isControlled = false;
 
-const startAnimation = () => {
-  motionInstance.apply(variants.animate);
-};
+  const startAnimation = () => {
+    motionInstance.apply(variants.animate);
+  };
 
-const stopAnimation = () => {
-  motionInstance.apply(variants.normal);
-};
+  const stopAnimation = () => {
+    motionInstance.apply(variants.normal);
+  };
 
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
-  }
-};
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>

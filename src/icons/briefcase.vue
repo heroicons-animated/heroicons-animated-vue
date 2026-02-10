@@ -30,106 +30,106 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "BriefcaseIcon",
-};
+  export default {
+    name: "BriefcaseIcon",
+  };
 </script>
 
 <script setup lang="ts">
-import { useMotion } from "../motion";
-import { ref } from "vue";
+  import { useMotion } from "../motion";
+  import { ref } from "vue";
 
-export interface Props {
-  size?: number;
-  class?: string;
-  color?: string;
-  strokeWidth?: number | string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  size: 28,
-  color: "currentColor",
-  strokeWidth: 1.5,
-});
-
-const svgVariants = {
-  normal: {
-    y: 0,
-  },
-  animate: {
-    y: [0, -3, 0],
-    transition: {
-      duration: 0.4,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const handleVariants = {
-  normal: {
-    y: 0,
-  },
-  animate: {
-    y: [0, -1, 0],
-    transition: {
-      duration: 0.4,
-      ease: "easeInOut",
-    },
-  },
-};
-
-const svgRef = ref<SVGSVGElement>();
-const handlePathRef = ref<SVGPathElement>();
-const handle2PathRef = ref<SVGPathElement>();
-
-const svgMotion = useMotion(svgRef, {
-  initial: svgVariants.normal,
-  enter: svgVariants.normal,
-});
-
-const handlePathMotion = useMotion(handlePathRef, {
-  initial: handleVariants.normal,
-  enter: handleVariants.normal,
-});
-
-const handle2PathMotion = useMotion(handle2PathRef, {
-  initial: handleVariants.normal,
-  enter: handleVariants.normal,
-});
-
-let isControlled = false;
-
-const startAnimation = () => {
-  svgMotion.apply(svgVariants.animate);
-  handlePathMotion.apply(handleVariants.animate);
-  handle2PathMotion.apply(handleVariants.animate);
-};
-
-const stopAnimation = () => {
-  svgMotion.apply(svgVariants.normal);
-  handlePathMotion.apply(handleVariants.normal);
-  handle2PathMotion.apply(handleVariants.normal);
-};
-
-const handleMouseEnter = () => {
-  if (!isControlled) {
-    startAnimation();
+  export interface Props {
+    size?: number;
+    class?: string;
+    color?: string;
+    strokeWidth?: number | string;
   }
-};
 
-const handleMouseLeave = () => {
-  if (!isControlled) {
-    stopAnimation();
-  }
-};
+  const props = withDefaults(defineProps<Props>(), {
+    size: 28,
+    color: "currentColor",
+    strokeWidth: 1.5,
+  });
 
-const setControlled = (value: boolean) => {
-  isControlled = value;
-};
+  const svgVariants = {
+    normal: {
+      y: 0,
+    },
+    animate: {
+      y: [0, -3, 0],
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    },
+  };
 
-defineExpose({
-  startAnimation,
-  stopAnimation,
-  setControlled,
-});
+  const handleVariants = {
+    normal: {
+      y: 0,
+    },
+    animate: {
+      y: [0, -1, 0],
+      transition: {
+        duration: 0.4,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const svgRef = ref<SVGSVGElement>();
+  const handlePathRef = ref<SVGPathElement>();
+  const handle2PathRef = ref<SVGPathElement>();
+
+  const svgMotion = useMotion(svgRef, {
+    initial: svgVariants.normal,
+    enter: svgVariants.normal,
+  });
+
+  const handlePathMotion = useMotion(handlePathRef, {
+    initial: handleVariants.normal,
+    enter: handleVariants.normal,
+  });
+
+  const handle2PathMotion = useMotion(handle2PathRef, {
+    initial: handleVariants.normal,
+    enter: handleVariants.normal,
+  });
+
+  let isControlled = false;
+
+  const startAnimation = () => {
+    svgMotion.apply(svgVariants.animate);
+    handlePathMotion.apply(handleVariants.animate);
+    handle2PathMotion.apply(handleVariants.animate);
+  };
+
+  const stopAnimation = () => {
+    svgMotion.apply(svgVariants.normal);
+    handlePathMotion.apply(handleVariants.normal);
+    handle2PathMotion.apply(handleVariants.normal);
+  };
+
+  const handleMouseEnter = () => {
+    if (!isControlled) {
+      startAnimation();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isControlled) {
+      stopAnimation();
+    }
+  };
+
+  const setControlled = (value: boolean) => {
+    isControlled = value;
+  };
+
+  defineExpose({
+    startAnimation,
+    stopAnimation,
+    setControlled,
+  });
 </script>
