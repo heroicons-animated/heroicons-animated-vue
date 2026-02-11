@@ -10,15 +10,6 @@ npm install @heroicons-animated/vue motion-v
 pnpm add @heroicons-animated/vue motion-v
 ```
 
-## Add Icons with shadcn-vue CLI
-
-```bash
-npx shadcn-vue@latest add @heroicons-animated/vue/beaker
-pnpm dlx shadcn-vue@latest add @heroicons-animated/vue/beaker
-yarn dlx shadcn-vue@latest add @heroicons-animated/vue/beaker
-bunx shadcn-vue@latest add @heroicons-animated/vue/beaker
-```
-
 ## Usage
 
 ```vue
