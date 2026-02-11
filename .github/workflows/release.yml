@@ -41,6 +41,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Prepare Nuxt
+        run: pnpm nuxt prepare
+
       - name: Build Library
         run: pnpm run build:lib
 
