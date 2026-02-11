@@ -1,13 +1,47 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "extends": ["ultracite/biome/core", "ultracite/biome/vue"],
+  "files": {
+    "includes": ["!public/r", "!registry.json"],
+    "ignoreUnknown": false
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "@heroicons-animated/vue": {
+                "message": "Import icons individually from @heroicons-animated/vue/{icon} instead of using @heroicons-animated/vue directly."
+              }
+            }
+          }
+        }
+      },
+      "performance": {
+        "noBarrelFile": "off"
+      }
+    }
+  },
   "overrides": [
     {
-      "includes": ["**/index.ts"],
+      "includes": ["**/*.vue"],
       "linter": {
         "rules": {
-          "performance": {
-            "noBarrelFile": "off"
+          "style": {
+            "useConst": "off",
+            "useImportType": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
           }
         }
       }
