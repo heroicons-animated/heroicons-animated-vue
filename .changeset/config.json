@@ -2,9 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.1.2/schema.json",
   "changelog": [
     "@changesets/changelog-github",
-    {
-      "repo": "heroicons-animated/heroicons-animated-vue"
-    }
+    { "repo": "heroicons-animated/heroicons-animated-vue" }
   ],
   "commit": false,
   "fixed": [],
