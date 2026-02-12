@@ -9,6 +9,9 @@
     "enabled": true,
     "indentStyle": "space"
   },
+  "javascript": {
+    "globals": ["umTrackEvent"]
+  },
   "linter": {
     "enabled": true,
     "rules": {

@@ -10,6 +10,7 @@
   import { getCLICommand, getFileExtension } from "~/lib/cli";
   import { usePackageManager } from "~/lib/state";
   import { toast } from "vue-sonner";
+  import { ANALYTIC_EVENT } from "~/lib/analytics";
   import { cn } from "~/lib/utils";
   import { IconState } from "~/components/ui/icon-state";
   import {
@@ -47,6 +48,7 @@
   let playTimeout: number | undefined;
 
   const packageManager = usePackageManager();
+  const fileExtension = getFileExtension();
 
   const handleMouseEnter = () => {
     if (isTouch.value) {
@@ -104,6 +106,9 @@
       return;
     }
     try {
+      umTrackEvent(ANALYTIC_EVENT.ICON_COPY_TERMINAL, {
+        icon: `${props.name}.${fileExtension}`,
+      });
       await navigator.clipboard.writeText(
         getCLICommand(packageManager.value, props.name)
       );
@@ -128,6 +133,9 @@
     }
     try {
       codeState.value = "loading";
+      umTrackEvent(ANALYTIC_EVENT.ICON_COPY, {
+        icon: `${props.name}.${fileExtension}`,
+      });
       const response = await fetch(`/r/${props.name}.json`);
       if (!response.ok) {
         throw new Error("Missing content");
@@ -223,11 +231,11 @@
         <Tooltip>
           <TooltipTrigger
             :aria-disabled="codeState !== 'idle'"
-            :aria-label="`Copy .${getFileExtension()} code`"
+            :aria-label="`Copy .${fileExtension} code`"
             class="supports-[corner-shape:squircle]:corner-squircle flex size-10 cursor-pointer items-center justify-center rounded-[14px] bg-neutral-200/20 transition-[background-color] duration-100 focus-within:-outline-offset-1 hover:bg-neutral-200 focus-visible:outline-1 focus-visible:outline-primary supports-[corner-shape:squircle]:rounded-[20px] dark:bg-neutral-800/20 dark:hover:bg-neutral-700"
             :data-busy="codeState !== 'idle' ? '' : undefined"
             @click="handleCopyCode"
-            :title="`Copy .${getFileExtension()} code`"
+            :title="`Copy .${fileExtension} code`"
           >
             <IconState :status="codeState">
               <ClipboardDocumentIcon
@@ -239,7 +247,7 @@
           <TooltipContent>
             Copy
             <code class="rounded-[4px] bg-neutral-50/20 px-1 py-0.5 font-mono">
-              .{{ getFileExtension() }}
+              .{{ fileExtension }}
             </code>
             code
           </TooltipContent>

@@ -2,9 +2,11 @@
   import type { HTMLAttributes } from "vue";
   import { computed, ref, watch } from "vue";
   import { ClipboardDocumentIcon } from "@heroicons/vue/24/outline";
+  import { ANALYTIC_EVENT } from "~/lib/analytics";
   import { PACKAGE_MANAGER } from "~/lib/constants";
   import {
     getCLICommand,
+    getFileExtension,
     getRegistryPathPrefix,
     getShadcnCLI,
   } from "~/lib/cli";
@@ -56,6 +58,9 @@
       return;
     }
     try {
+      umTrackEvent(ANALYTIC_EVENT.ICON_COPY_TERMINAL, {
+        icon: `${currentIconName.value}.${getFileExtension()}`,
+      });
       await navigator.clipboard.writeText(
         getCLICommand(packageManager.value, currentIconName.value)
       );

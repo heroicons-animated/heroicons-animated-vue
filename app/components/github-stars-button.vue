@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { onBeforeUnmount, onMounted, ref } from "vue";
   import NumberFlow from "@number-flow/vue";
+  import { ANALYTIC_EVENT } from "~/lib/analytics";
   import { LINK } from "~/lib/constants";
   import type { GitHubRepoResponse } from "~/types";
 
@@ -85,6 +86,7 @@
     rel="noopener noreferrer"
     tabIndex="0"
     target="_blank"
+    @click="umTrackEvent(ANALYTIC_EVENT.HEADER_GITHUB)"
   >
     <svg
       aria-hidden="true"

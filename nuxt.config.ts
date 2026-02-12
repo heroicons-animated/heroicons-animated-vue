@@ -9,16 +9,23 @@ const SITE_DEFAULT_TITLE = "Animated Heroicons for Vue";
 const SITE_OG_TITLE = `${SITE.NAME} | ${SITE_DEFAULT_TITLE}`;
 const SITE_OG_IMAGE_URL = `${SITE.URL}${SITE.OG_IMAGE}`;
 const SITE_OG_IMAGE_ALT = `${SITE.NAME} - Animated Heroicons Library for Vue`;
+const OG_IMAGE_DIMENSIONS = { width: 1200, height: 630 } as const;
+
+const toIsoDate = (date: Date) => date.toISOString().split("T")[0] ?? "";
+const now = new Date();
+const lastmod = toIsoDate(now);
 
 const SITEMAP_URLS: SitemapEntry[] = [
   {
     loc: "/",
+    lastmod,
     changefreq: "weekly",
     priority: 1,
   },
   ...ICON_MANIFEST.map(
     (icon): SitemapEntry => ({
       loc: `/icons/${icon.name}`,
+      lastmod,
       changefreq: "monthly",
       priority: 0.7,
     })
@@ -35,7 +42,14 @@ export default defineNuxtConfig({
     "motion-v/nuxt",
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
+    "nuxt-umami",
   ],
+  umami: {
+    id: process.env.NUXT_UMAMI_ID,
+    host: process.env.NUXT_UMAMI_HOST,
+    autoTrack: true,
+    ignoreLocalhost: true,
+  },
   colorMode: {
     classSuffix: "",
   },
@@ -56,6 +70,7 @@ export default defineNuxtConfig({
         allow: ["/"],
       },
     ],
+    sitemap: `${SITE.URL}/sitemap.xml`,
   },
   sitemap: {
     urls: SITEMAP_URLS,
@@ -71,8 +86,11 @@ export default defineNuxtConfig({
       ogLocale: "en_US",
       ogType: "website",
       ogUrl: SITE.URL,
-      ogImage: SITE_OG_IMAGE_URL,
-      ogImageAlt: SITE_OG_IMAGE_ALT,
+      ogImage: {
+        url: SITE_OG_IMAGE_URL,
+        alt: SITE_OG_IMAGE_ALT,
+        ...OG_IMAGE_DIMENSIONS,
+      },
       twitterCard: "summary_large_image",
       twitterTitle: SITE_OG_TITLE,
       twitterDescription: SITE.DESCRIPTION.SHORT,

@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import ArrowTopRightOnSquareIcon from "@heroicons-animated/vue/arrow-top-right-on-square";
+  import { ANALYTIC_EVENT } from "~/lib/analytics";
   import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
   import type { AnimatedIconInstance } from "~/types";
 
@@ -21,6 +22,7 @@
         rel="noopener external"
         tabIndex="0"
         target="_blank"
+        @click="umTrackEvent(ANALYTIC_EVENT.COMMENT_LUCIDE_ANIMATED_LINK)"
       >
         lucide-animated by dmytro
       </a>
@@ -31,6 +33,7 @@
         rel="noopener external"
         tabIndex="0"
         target="_blank"
+        @click="umTrackEvent(ANALYTIC_EVENT.COMMENT_ANIMATIONS_DEV_LINK)"
       >
         animations.dev
       </a>
@@ -56,6 +59,7 @@
             rel="noopener external"
             tabIndex="0"
             target="_blank"
+            @click="umTrackEvent(ANALYTIC_EVENT.COMMENT_AUTHOR_LINK)"
           >
             aniket
           </a>, creator of heroicons-animated
@@ -67,6 +71,7 @@
         rel="noopener external"
         tabIndex="0"
         target="_blank"
+        @click="umTrackEvent(ANALYTIC_EVENT.COMMENT_BUTTON_CLICK)"
         @mouseenter="arrowRef?.setControlled?.(true); arrowRef?.startAnimation?.()"
         @mouseleave="arrowRef?.setControlled?.(false); arrowRef?.stopAnimation?.()"
       >

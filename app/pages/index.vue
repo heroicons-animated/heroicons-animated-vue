@@ -13,10 +13,10 @@
     title: homeTitle,
     description: SITE.DESCRIPTION.LONG,
     keywords: SITE.KEYWORDS.join(", "),
-    ogTitle: `${SITE.NAME} | ${homeTitle}`,
+    ogTitle: homeTitle,
     ogDescription: SITE.DESCRIPTION.SHORT,
     ogUrl: SITE.URL,
-    twitterTitle: `${SITE.NAME} | ${homeTitle}`,
+    twitterTitle: homeTitle,
     twitterDescription: SITE.DESCRIPTION.SHORT,
   });
 
