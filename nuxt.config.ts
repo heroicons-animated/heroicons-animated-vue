@@ -5,8 +5,7 @@ import type { SitemapEntry } from "./app/types";
 import { SITE } from "./app/lib/constants";
 import { ICON_MANIFEST } from "./app/lib/manifest";
 
-const SITE_DEFAULT_TITLE = "Animated Heroicons for Vue";
-const SITE_OG_TITLE = `${SITE.NAME} | ${SITE_DEFAULT_TITLE}`;
+const SITE_OG_TITLE = `${SITE.NAME} | Free Animated Heroicons for Vue`;
 const SITE_OG_IMAGE_URL = `${SITE.URL}${SITE.OG_IMAGE}`;
 const SITE_OG_IMAGE_ALT = `${SITE.NAME} - Animated Heroicons Library for Vue`;
 const OG_IMAGE_DIMENSIONS = { width: 1200, height: 630 } as const;

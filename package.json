@@ -1,13 +1,13 @@
 {
   "name": "@heroicons-animated/vue",
   "version": "1.2.0",
-  "description": "Animated Heroicons for Vue, built with Motion for Vue",
+  "description": "Beautifully animated Heroicons for Vue",
   "author": "Aniket-508",
   "license": "MIT",
   "homepage": "https://vue.heroicons-animated.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroicons-animated/heroicons-animated-vue"
+    "url": "git+https://github.com/heroicons-animated/heroicons-animated-vue.git"
   },
   "bugs": {
     "url": "https://github.com/heroicons-animated/heroicons-animated-vue/issues"

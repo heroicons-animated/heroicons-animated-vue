@@ -6,8 +6,7 @@
   import CommentBlock from "~/components/comment-block.vue";
   import IconsList from "~/components/icons-list.vue";
 
-  const icons = ICON_MANIFEST;
-  const homeTitle = `${SITE.NAME} | Animated Heroicons for Vue`;
+  const homeTitle = `${SITE.NAME} | Free Animated Heroicons for Vue`;
 
   useSeoMeta({
     title: homeTitle,
@@ -68,7 +67,7 @@
         Heroicons
       </a>
     </p>
-    <CliBlock :icons="icons" />
+    <CliBlock :icons="ICON_MANIFEST" />
     <CommentBlock />
   </section>
   <section id="icons">

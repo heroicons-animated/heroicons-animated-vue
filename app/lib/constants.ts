@@ -1,5 +1,5 @@
 const SITE = {
-  NAME: "heroicons-animated",
+  NAME: "heroicons-animated-vue",
   URL: "https://vue.heroicons-animated.com",
   OG_IMAGE: "/og.png",
   AUTHOR: {
