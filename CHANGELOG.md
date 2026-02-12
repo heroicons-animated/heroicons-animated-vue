@@ -1,5 +1,18 @@
 # @heroicons-animated/vue
 
+## 2.0.0
+
+### Major Changes
+
+- Migrate from @vueuse/motion to motion-v
+
+  **BREAKING CHANGE:** The peer dependency has been switched from `@vueuse/motion` to `motion-v`. You need to install `motion-v` instead:
+
+  ```bash
+  pnpm remove @vueuse/motion
+  pnpm add motion-v
+  ```
+
 ## 1.2.0
 
 ### Minor Changes
