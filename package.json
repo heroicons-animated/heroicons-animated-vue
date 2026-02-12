@@ -22,9 +22,7 @@
     "motion",
     "nuxt"
   ],
-  "sideEffects": [
-    "**/*.css"
-  ],
+  "sideEffects": false,
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
